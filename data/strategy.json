@@ -1,0 +1,166 @@
+{
+ "version": 1,
+ "updatedAt": "2026-10-01 21:30",
+ "params": {
+  "th": 0.75
+ },
+ "principles": [
+  "五只基金高度同向，本质是一笔科技成长仓位：先看科技整体方向，再看个别差异。",
+  "华夏全球科技的T日净值对应海外T日收盘，开盘前无法知道，预测它只能靠美股的延续性。",
+  "单日涨跌随机性大：方向命中率要稳定高于笨办法才算有效，样本少时不下结论。"
+ ],
+ "rules": [
+  {
+   "id": "R1",
+   "fund": "*",
+   "name": "隔夜外盘大涨跟涨（QDII看纳指，其余看费城半导体）",
+   "when": "(qdii ? ndx_on : sox_on) > 1",
+   "vote": 1,
+   "weight": 1,
+   "status": "active",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "R2",
+   "fund": "*",
+   "name": "隔夜外盘大跌跟跌",
+   "when": "(qdii ? ndx_on : sox_on) < -1",
+   "vote": -1,
+   "weight": 1,
+   "status": "active",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "R3",
+   "fund": "*",
+   "name": "近5日跌超8%，超跌反弹",
+   "when": "mom5 < -8",
+   "vote": 1,
+   "weight": 0.5,
+   "status": "active",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "R4",
+   "fund": "*",
+   "name": "近5日涨超8%，涨多回调",
+   "when": "mom5 > 8",
+   "vote": -1,
+   "weight": 0.5,
+   "status": "active",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "R5",
+   "fund": "*",
+   "name": "单日大跌超3%后反抽",
+   "when": "prev < -3",
+   "vote": 1,
+   "weight": 0.5,
+   "status": "active",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S1",
+   "fund": "*",
+   "name": "天津股侠看多（跟随）",
+   "when": "guxia >= 1",
+   "vote": 1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S2",
+   "fund": "*",
+   "name": "天津股侠看空（跟随）",
+   "when": "guxia <= -1",
+   "vote": -1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S3",
+   "fund": "*",
+   "name": "天津股侠看多（反向）",
+   "when": "guxia >= 1",
+   "vote": -1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S4",
+   "fund": "*",
+   "name": "天津股侠看空（反向）",
+   "when": "guxia <= -1",
+   "vote": 1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S5",
+   "fund": "*",
+   "name": "长假后首日看涨",
+   "when": "gap >= 4",
+   "vote": 1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S6",
+   "fund": "*",
+   "name": "跑输锚定指数2%以上，次日补涨",
+   "when": "dev < -2",
+   "vote": 1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S7",
+   "fund": "*",
+   "name": "跑赢锚定指数2%以上，次日回吐",
+   "when": "dev > 2",
+   "vote": -1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S8",
+   "fund": "*",
+   "name": "周一看跌",
+   "when": "wd == 1",
+   "vote": -1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  },
+  {
+   "id": "S9",
+   "fund": "*",
+   "name": "恒生科技前一日大涨跟涨",
+   "when": "!qdii && hstech_prev > 1.5",
+   "vote": 1,
+   "weight": 1,
+   "status": "shadow",
+   "since": "2026-10-01"
+  }
+ ],
+ "changelog": [
+  {
+   "version": 1,
+   "date": "2026-10-01",
+   "changes": "初始版本：外盘跟随、超跌反弹、涨多回调 5 条正式规则；天津股侠正反向、节后效应、偏离修复、周一效应、港股带动 9 条观察规则",
+   "reason": "先用常见逻辑建立基准，再让复盘逐步修正",
+   "before": null,
+   "after": null
+  }
+ ],
+ "rejected": [],
+ "ideas": []
+}

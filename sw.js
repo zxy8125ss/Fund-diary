@@ -1,6 +1,6 @@
 // 网络优先，离线时用缓存
-const CACHE = 'fund-diary-v1';
-const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'data/funds.json', 'data/diary.json', 'data/status.json'];
+const CACHE = 'fund-diary-v2';
+const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'data/funds.json', 'data/records.json', 'data/backtest.json', 'data/stats.json', 'data/strategy.json', 'data/status.json'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

@@ -2,19 +2,31 @@
 
 五只持仓基金的「前一天预测、后一天复盘」日记，PWA，部署在 GitHub Pages，运行不依赖 Claude。
 
+## 这是一个预测实验
+目的：验证基金单日涨跌能不能预测。每个交易日，五个预测方同场预测五只基金：
+- **规则模型**：`data/strategy.json` 里的规则投票（带版本号），每天复盘后由 Gemini 提出修改，回测不变差才采纳
+- **AI 判断**：Gemini 看因子、规则结果和快讯后独立判断
+- **笨办法**：昨日延续、全猜涨、跟随隔夜外盘，用来检验前两者是否真有本事
+
+新想法（野路子）先作为"观察规则"只记录成绩，证明有效再转正。天津股侠的微博立场就是观察信号之一。
+
+## 数据文件
+- `records.json` / `records.csv`：实盘预测记录总表（CSV 可用 Excel 打开）
+- `backtest.json`：当前规则在最近约 120 个交易日的回测
+- `stats.json`：命中率统计、p 值、规则成绩单
+- `strategy.json`：规则、修改记录、被拒的修改、野路子候选
+
 ## 自动更新
-- **每晚 22:13（北京时间）**：抓天天基金净值 → 滚动更新持仓金额 → 复盘当日预测、沉淀经验 → 预测下一交易日
-- **交易日 8:07**：结合隔夜美股收盘定稿当日预测（晚间版本保存在 `predsEvening`）；9:25 之后不再修改
-- 数据源：天天基金（净值、指数、板块、快讯），新浪财经作备用；AI 用 Gemini 免费额度（不带搜索）
-- GitHub 定时任务高峰期可能延迟几十分钟；Actions 页面可手动 Run workflow
+- **每晚 22:13**：抓净值 → 复盘 → 修正规则 → 抓天津股侠立场 → 预测下一交易日
+- **交易日 8:07**：用隔夜美股重算并定稿（晚间版本保留在 `predsEvening`），9:25 后不再修改
+- Actions 页面可手动 Run workflow
 
 ## 配置
-- Settings → Secrets and variables → Actions：`GEMINI_API_KEY`（可选变量 `GEMINI_MODEL`）
-- Settings → Pages：Deploy from branch，`main` / root
+- Secrets：`GEMINI_API_KEY`
+- Pages：main / root
 
 ## 手动维护
-- 加减仓：改 `data/funds.json` 里对应基金的 `amount`、`pnl`，`navDate` 设为金额对应的净值日期
-- 休市日：每年 12 月交易所公布次年安排后，补进 `data/calendar.json`
-- 经验库：`data/diary.json` 的 `lessons`，可手动增删
+- 加减仓：改 `data/funds.json` 的 `amount`、`pnl`，`navDate` 设为金额对应的净值日期
+- 休市日：每年 12 月补进 `data/calendar.json`
 
-预测仅作记录与复盘练习，不构成投资建议。
+预测仅作实验记录，不构成投资建议。
