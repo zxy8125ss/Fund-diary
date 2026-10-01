@@ -1,6 +1,6 @@
 {
  "strategyVersion": 1,
- "generatedAt": "2026-10-01 21:43",
+ "generatedAt": "2026-10-01 21:46",
  "days": {
   "2026-04-09": {
    "date": "2026-04-09",
@@ -8,9 +8,9 @@
    "features": {
     "c": {
      "sh_prev": 2.69,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 6.16,
+     "kc50_prev": 6.18,
+     "kc50_mom5": 7.64,
      "ndx_on": 2.9,
      "sox_on": 6.34,
      "hstech_prev": 5.69,
@@ -50,8 +50,8 @@
      "001672": {
       "prev": 5.5,
       "mom5": 6.77,
-      "anc": null,
-      "dev": null,
+      "anc": 6.16,
+      "dev": -0.66,
       "vol20": 2.85
      }
     }
@@ -154,9 +154,9 @@
    "features": {
     "c": {
      "sh_prev": -0.72,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.75,
+     "kc50_prev": -0.7,
+     "kc50_mom5": 3.54,
      "ndx_on": 0.72,
      "sox_on": 2.1,
      "hstech_prev": -2.4,
@@ -196,8 +196,8 @@
      "001672": {
       "prev": 0.71,
       "mom5": 4.15,
-      "anc": null,
-      "dev": null,
+      "anc": -0.75,
+      "dev": 1.46,
       "vol20": 2.85
      }
     }
@@ -292,9 +292,9 @@
    "features": {
     "c": {
      "sh_prev": 0.51,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.52,
+     "kc50_prev": 1.55,
+     "kc50_mom5": 7.94,
      "ndx_on": 0.14,
      "sox_on": 2.31,
      "hstech_prev": 0.93,
@@ -334,8 +334,8 @@
      "001672": {
       "prev": 0.31,
       "mom5": 8,
-      "anc": null,
-      "dev": null,
+      "anc": 3.52,
+      "dev": -3.21,
       "vol20": 2.84
      }
     }
@@ -397,6 +397,7 @@
       "conf": "中",
       "fired": [
        "R1",
+       "S6",
        "S8"
       ]
      }
@@ -437,9 +438,9 @@
    "features": {
     "c": {
      "sh_prev": 0.06,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.9,
+     "kc50_prev": 0.77,
+     "kc50_mom5": 9.16,
      "ndx_on": 1.06,
      "sox_on": 1.68,
      "hstech_prev": -0.71,
@@ -479,8 +480,8 @@
      "001672": {
       "prev": 0.97,
       "mom5": 8.97,
-      "anc": null,
-      "dev": null,
+      "anc": 0.9,
+      "dev": 0.07,
       "vol20": 2.84
      }
     }
@@ -578,9 +579,9 @@
    "features": {
     "c": {
      "sh_prev": 0.95,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.36,
+     "kc50_prev": 2.14,
+     "kc50_mom5": 9.94,
      "ndx_on": 1.81,
      "sox_on": 2.04,
      "hstech_prev": 0.55,
@@ -620,8 +621,8 @@
      "001672": {
       "prev": 3.32,
       "mom5": 10.81,
-      "anc": null,
-      "dev": null,
+      "anc": 2.36,
+      "dev": 0.96,
       "vol20": 2.93
      }
     }
@@ -720,9 +721,9 @@
    "features": {
     "c": {
      "sh_prev": 0.01,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.1,
+     "kc50_prev": 0.2,
+     "kc50_mom5": 3.96,
      "ndx_on": 1.4,
      "sox_on": 0.16,
      "hstech_prev": 1.35,
@@ -762,8 +763,8 @@
      "001672": {
       "prev": -1.01,
       "mom5": 4.3,
-      "anc": null,
-      "dev": null,
+      "anc": -1.1,
+      "dev": 0.09,
       "vol20": 2.77
      }
     }
@@ -852,9 +853,9 @@
    "features": {
     "c": {
      "sh_prev": 0.7,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.22,
+     "kc50_prev": 1.08,
+     "kc50_mom5": 5.74,
      "ndx_on": 0.49,
      "sox_on": 0.97,
      "hstech_prev": 3.74,
@@ -894,8 +895,8 @@
      "001672": {
       "prev": 1.58,
       "mom5": 5.17,
-      "anc": null,
-      "dev": null,
+      "anc": 3.22,
+      "dev": -1.64,
       "vol20": 2.77
      }
     }
@@ -989,9 +990,9 @@
    "features": {
     "c": {
      "sh_prev": -0.1,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.27,
+     "kc50_prev": 0.07,
+     "kc50_mom5": 4.26,
      "ndx_on": 1.29,
      "sox_on": 2.43,
      "hstech_prev": -1.16,
@@ -1031,8 +1032,8 @@
      "001672": {
       "prev": 1.13,
       "mom5": 5.99,
-      "anc": null,
-      "dev": null,
+      "anc": 1.27,
+      "dev": -0.14,
       "vol20": 2.67
      }
     }
@@ -1133,9 +1134,9 @@
    "features": {
     "c": {
      "sh_prev": 0.76,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.05,
+     "kc50_prev": 1.87,
+     "kc50_mom5": 5.36,
      "ndx_on": -0.31,
      "sox_on": 0.45,
      "hstech_prev": 0.28,
@@ -1175,8 +1176,8 @@
      "001672": {
       "prev": 0.79,
       "mom5": 5.81,
-      "anc": null,
-      "dev": null,
+      "anc": 0.05,
+      "dev": 0.74,
       "vol20": 2.63
      }
     }
@@ -1264,9 +1265,9 @@
    "features": {
     "c": {
      "sh_prev": 0.07,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.25,
+     "kc50_prev": -1.51,
+     "kc50_mom5": 1.71,
      "ndx_on": -0.42,
      "sox_on": 0.5,
      "hstech_prev": 0.12,
@@ -1306,8 +1307,8 @@
      "001672": {
       "prev": 0.16,
       "mom5": 2.65,
-      "anc": null,
-      "dev": null,
+      "anc": 0.25,
+      "dev": -0.09,
       "vol20": 2.2
      }
     }
@@ -1391,9 +1392,9 @@
    "features": {
     "c": {
      "sh_prev": 0.52,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.09,
+     "kc50_prev": 1.66,
+     "kc50_mom5": 3.17,
      "ndx_on": 1.73,
      "sox_on": 2.72,
      "hstech_prev": -1.98,
@@ -1433,8 +1434,8 @@
      "001672": {
       "prev": 1.52,
       "mom5": 5.18,
-      "anc": null,
-      "dev": null,
+      "anc": 2.09,
+      "dev": -0.57,
       "vol20": 2.05
      }
     }
@@ -1530,9 +1531,9 @@
    "features": {
     "c": {
      "sh_prev": -0.32,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.8,
+     "kc50_prev": -1.37,
+     "kc50_mom5": 0.72,
      "ndx_on": -0.57,
      "sox_on": 1.71,
      "hstech_prev": -2.06,
@@ -1572,8 +1573,8 @@
      "001672": {
       "prev": -2.51,
       "mom5": 1.09,
-      "anc": null,
-      "dev": null,
+      "anc": -0.8,
+      "dev": -1.71,
       "vol20": 2.14
      }
     }
@@ -1665,9 +1666,9 @@
    "features": {
     "c": {
      "sh_prev": -0.33,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.45,
+     "kc50_prev": 1.53,
+     "kc50_mom5": 2.18,
      "ndx_on": 1.95,
      "sox_on": 4.32,
      "hstech_prev": 0.88,
@@ -1707,8 +1708,8 @@
      "001672": {
       "prev": 0.04,
       "mom5": 0,
-      "anc": null,
-      "dev": null,
+      "anc": -1.45,
+      "dev": 1.49,
       "vol20": 2.11
      }
     }
@@ -1809,9 +1810,9 @@
    "features": {
     "c": {
      "sh_prev": 0.16,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.6,
+     "kc50_prev": 3.92,
+     "kc50_mom5": 4.23,
      "ndx_on": 0.01,
      "sox_on": -1,
      "hstech_prev": 0.62,
@@ -1851,8 +1852,8 @@
      "001672": {
       "prev": 1.58,
       "mom5": 0.79,
-      "anc": null,
-      "dev": null,
+      "anc": -0.6,
+      "dev": 2.18,
       "vol20": 2.12
      }
     }
@@ -1899,7 +1900,9 @@
       "high": 1.91,
       "score": 0,
       "conf": "低",
-      "fired": []
+      "fired": [
+       "S7"
+      ]
      }
     },
     "base_prev": {
@@ -1938,9 +1941,9 @@
    "features": {
     "c": {
      "sh_prev": -0.19,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.37,
+     "kc50_prev": -1.45,
+     "kc50_mom5": 4.29,
      "ndx_on": -1.01,
      "sox_on": -3.58,
      "hstech_prev": -2.15,
@@ -1980,8 +1983,8 @@
      "001672": {
       "prev": -0.57,
       "mom5": 0.06,
-      "anc": null,
-      "dev": null,
+      "anc": -1.37,
+      "dev": 0.8,
       "vol20": 2.13
      }
     }
@@ -2077,9 +2080,9 @@
    "features": {
     "c": {
      "sh_prev": 0.71,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.55,
+     "kc50_prev": 0.45,
+     "kc50_mom5": 3.08,
      "ndx_on": 0.58,
      "sox_on": 2.35,
      "hstech_prev": 1.78,
@@ -2119,8 +2122,8 @@
      "001672": {
       "prev": 2.18,
       "mom5": 0.72,
-      "anc": null,
-      "dev": null,
+      "anc": 2.55,
+      "dev": -0.37,
       "vol20": 2
      }
     }
@@ -2216,9 +2219,9 @@
    "features": {
     "c": {
      "sh_prev": 0.11,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.14,
+     "kc50_prev": 5.02,
+     "kc50_mom5": 9.47,
      "ndx_on": 1.31,
      "sox_on": 4.23,
      "hstech_prev": -1.15,
@@ -2258,8 +2261,8 @@
      "001672": {
       "prev": 0.81,
       "mom5": 4.04,
-      "anc": null,
-      "dev": null,
+      "anc": -0.14,
+      "dev": 0.95,
       "vol20": 1.91
      }
     }
@@ -2358,9 +2361,9 @@
    "features": {
     "c": {
      "sh_prev": 1.17,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.63,
+     "kc50_prev": 5.44,
+     "kc50_mom5": 13.38,
      "ndx_on": 2.08,
      "sox_on": 4.48,
      "hstech_prev": 1.08,
@@ -2400,8 +2403,8 @@
      "001672": {
       "prev": 3.04,
       "mom5": 7.04,
-      "anc": null,
-      "dev": null,
+      "anc": 2.63,
+      "dev": 0.41,
       "vol20": 1.69
      }
     }
@@ -2500,9 +2503,9 @@
    "features": {
     "c": {
      "sh_prev": 0.48,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.56,
+     "kc50_prev": 1.43,
+     "kc50_mom5": 10.89,
      "ndx_on": -0.12,
      "sox_on": -2.72,
      "hstech_prev": 2.87,
@@ -2542,8 +2545,8 @@
      "001672": {
       "prev": 2.91,
       "mom5": 8.37,
-      "anc": null,
-      "dev": null,
+      "anc": 1.56,
+      "dev": 1.35,
       "vol20": 1.72
      }
     }
@@ -2641,9 +2644,9 @@
    "features": {
     "c": {
      "sh_prev": 0,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.01,
+     "kc50_prev": -2.37,
+     "kc50_mom5": 9.97,
      "ndx_on": 2.35,
      "sox_on": 5.51,
      "hstech_prev": -0.24,
@@ -2683,8 +2686,8 @@
      "001672": {
       "prev": -0.34,
       "mom5": 8.6,
-      "anc": null,
-      "dev": null,
+      "anc": -1.01,
+      "dev": 0.67,
       "vol20": 1.75
      }
     }
@@ -2787,9 +2790,9 @@
    "features": {
     "c": {
      "sh_prev": 1.08,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.7,
+     "kc50_prev": 4.86,
+     "kc50_mom5": 14.38,
      "ndx_on": 0.29,
      "sox_on": 2.59,
      "hstech_prev": 0,
@@ -2829,8 +2832,8 @@
      "001672": {
       "prev": 2.12,
       "mom5": 8.54,
-      "anc": null,
-      "dev": null,
+      "anc": 3.7,
+      "dev": -1.58,
       "vol20": 1.44
      }
     }
@@ -2930,9 +2933,9 @@
    "features": {
     "c": {
      "sh_prev": -0.25,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.18,
+     "kc50_prev": 0.28,
+     "kc50_mom5": 9.64,
      "ndx_on": -0.87,
      "sox_on": -3.01,
      "hstech_prev": -0.6,
@@ -2972,8 +2975,8 @@
      "001672": {
       "prev": 1.55,
       "mom5": 9.28,
-      "anc": null,
-      "dev": null,
+      "anc": -0.18,
+      "dev": 1.73,
       "vol20": 1.45
      }
     }
@@ -3071,9 +3074,9 @@
    "features": {
     "c": {
      "sh_prev": 0.67,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.74,
+     "kc50_prev": 2.7,
+     "kc50_mom5": 6.9,
      "ndx_on": 1.04,
      "sox_on": 2.57,
      "hstech_prev": 0.4,
@@ -3113,8 +3116,8 @@
      "001672": {
       "prev": 3.46,
       "mom5": 9.7,
-      "anc": null,
-      "dev": null,
+      "anc": 2.74,
+      "dev": 0.72,
       "vol20": 1.54
      }
     }
@@ -3212,9 +3215,9 @@
    "features": {
     "c": {
      "sh_prev": -1.52,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.15,
+     "kc50_prev": -2.68,
+     "kc50_mom5": 2.79,
      "ndx_on": 0.73,
      "sox_on": 0.46,
      "hstech_prev": -0.56,
@@ -3254,8 +3257,8 @@
      "001672": {
       "prev": -2.18,
       "mom5": 4.61,
-      "anc": null,
-      "dev": null,
+      "anc": -2.15,
+      "dev": -0.03,
       "vol20": 1.71
      }
     }
@@ -3343,9 +3346,9 @@
    "features": {
     "c": {
      "sh_prev": -1.02,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.23,
+     "kc50_prev": -1.54,
+     "kc50_mom5": 3.62,
      "ndx_on": -1.54,
      "sox_on": -4.02,
      "hstech_prev": -2.62,
@@ -3385,8 +3388,8 @@
      "001672": {
       "prev": -0.4,
       "mom5": 4.55,
-      "anc": null,
-      "dev": null,
+      "anc": 0.23,
+      "dev": -0.63,
       "vol20": 1.64
      }
     }
@@ -3489,9 +3492,9 @@
    "features": {
     "c": {
      "sh_prev": -0.09,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.18,
+     "kc50_prev": 0.9,
+     "kc50_mom5": -0.34,
      "ndx_on": -0.45,
      "sox_on": -2.47,
      "hstech_prev": -1.95,
@@ -3531,8 +3534,8 @@
      "001672": {
       "prev": 1.19,
       "mom5": 3.62,
-      "anc": null,
-      "dev": null,
+      "anc": -1.18,
+      "dev": 2.37,
       "vol20": 1.59
      }
     }
@@ -3584,7 +3587,8 @@
       "score": -1,
       "conf": "中",
       "fired": [
-       "R2"
+       "R2",
+       "S7"
       ]
      }
     },
@@ -3624,9 +3628,9 @@
    "features": {
     "c": {
      "sh_prev": 0.92,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.03,
+     "kc50_prev": 3.77,
+     "kc50_mom5": 3.15,
      "ndx_on": -0.61,
      "sox_on": 0.03,
      "hstech_prev": 0.51,
@@ -3666,8 +3670,8 @@
      "001672": {
       "prev": 2.39,
       "mom5": 4.46,
-      "anc": null,
-      "dev": null,
+      "anc": -0.03,
+      "dev": 2.42,
       "vol20": 1.62
      }
     }
@@ -3712,7 +3716,9 @@
       "high": 1.46,
       "score": 0,
       "conf": "低",
-      "fired": []
+      "fired": [
+       "S7"
+      ]
      }
     },
     "base_prev": {
@@ -3751,9 +3757,9 @@
    "features": {
     "c": {
      "sh_prev": -0.18,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.25,
+     "kc50_prev": 3.21,
+     "kc50_mom5": 3.66,
      "ndx_on": 1.66,
      "sox_on": 4.49,
      "hstech_prev": 0.21,
@@ -3793,8 +3799,8 @@
      "001672": {
       "prev": 2.41,
       "mom5": 3.41,
-      "anc": null,
-      "dev": null,
+      "anc": 0.25,
+      "dev": 2.16,
       "vol20": 1.65
      }
     }
@@ -3849,7 +3855,8 @@
       "score": 1,
       "conf": "中",
       "fired": [
-       "R1"
+       "R1",
+       "S7"
       ]
      }
     },
@@ -3889,9 +3896,9 @@
    "features": {
     "c": {
      "sh_prev": -2.04,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.19,
+     "kc50_prev": -3.68,
+     "kc50_mom5": 2.66,
      "ndx_on": 0.2,
      "sox_on": 1.28,
      "hstech_prev": -2.14,
@@ -3931,8 +3938,8 @@
      "001672": {
       "prev": -3.44,
       "mom5": 2.15,
-      "anc": null,
-      "dev": null,
+      "anc": -2.19,
+      "dev": -1.25,
       "vol20": 1.93
      }
     }
@@ -4026,9 +4033,9 @@
    "features": {
     "c": {
      "sh_prev": 0.87,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.6,
+     "kc50_prev": 1.45,
+     "kc50_mom5": 5.65,
      "ndx_on": 0.42,
      "sox_on": 1.99,
      "hstech_prev": 1.89,
@@ -4068,8 +4075,8 @@
      "001672": {
       "prev": 5.97,
       "mom5": 8.52,
-      "anc": null,
-      "dev": null,
+      "anc": 2.6,
+      "dev": 3.37,
       "vol20": 2.24
      }
     }
@@ -4136,6 +4143,7 @@
       "fired": [
        "R1",
        "R4",
+       "S7",
        "S8",
        "S9"
       ]
@@ -4177,9 +4185,9 @@
    "features": {
     "c": {
      "sh_prev": 0.96,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.23,
+     "kc50_prev": 5.88,
+     "kc50_mom5": 10.63,
      "ndx_on": 0.42,
      "sox_on": 1.99,
      "hstech_prev": 1.89,
@@ -4219,8 +4227,8 @@
      "001672": {
       "prev": 1.63,
       "mom5": 8.96,
-      "anc": null,
-      "dev": null,
+      "anc": 2.23,
+      "dev": -0.6,
       "vol20": 2.24
      }
     }
@@ -4322,9 +4330,9 @@
    "features": {
     "c": {
      "sh_prev": -0.17,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.52,
+     "kc50_prev": -1.5,
+     "kc50_mom5": 5.36,
      "ndx_on": 1.76,
      "sox_on": 5.53,
      "hstech_prev": 1.77,
@@ -4364,8 +4372,8 @@
      "001672": {
       "prev": -0.82,
       "mom5": 5.75,
-      "anc": null,
-      "dev": null,
+      "anc": 0.52,
+      "dev": -1.34,
       "vol20": 2.13
      }
     }
@@ -4466,9 +4474,9 @@
    "features": {
     "c": {
      "sh_prev": -1.25,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.02,
+     "kc50_prev": -2.9,
+     "kc50_mom5": -0.75,
      "ndx_on": -0.09,
      "sox_on": -1.36,
      "hstech_prev": -0.79,
@@ -4508,8 +4516,8 @@
      "001672": {
       "prev": -0.3,
       "mom5": 3.04,
-      "anc": null,
-      "dev": null,
+      "anc": 0.02,
+      "dev": -0.32,
       "vol20": 2.14
      }
     }
@@ -4604,9 +4612,9 @@
    "features": {
     "c": {
      "sh_prev": 0.12,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.02,
+     "kc50_prev": 1.62,
+     "kc50_mom5": 4.55,
      "ndx_on": 0.84,
      "sox_on": 1,
      "hstech_prev": -0.42,
@@ -4646,8 +4654,8 @@
      "001672": {
       "prev": 3.35,
       "mom5": 9.83,
-      "anc": null,
-      "dev": null,
+      "anc": 2.02,
+      "dev": 1.33,
       "vol20": 2.19
      }
     }
@@ -4741,9 +4749,9 @@
    "features": {
     "c": {
      "sh_prev": -0.73,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.05,
+     "kc50_prev": -5.05,
+     "kc50_mom5": -1.95,
      "ndx_on": 0.36,
      "sox_on": 0,
      "hstech_prev": 0.04,
@@ -4783,8 +4791,8 @@
      "001672": {
       "prev": -3.21,
       "mom5": 0.65,
-      "anc": null,
-      "dev": null,
+      "anc": -2.05,
+      "dev": -1.16,
       "vol20": 2.38
      }
     }
@@ -4884,9 +4892,9 @@
    "features": {
     "c": {
      "sh_prev": -0.27,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.2,
+     "kc50_prev": -4.88,
+     "kc50_mom5": -12.71,
      "ndx_on": 0.6,
      "sox_on": 1.06,
      "hstech_prev": 1.71,
@@ -4926,8 +4934,8 @@
      "001672": {
       "prev": -2.25,
       "mom5": -3.23,
-      "anc": null,
-      "dev": null,
+      "anc": -2.2,
+      "dev": -0.05,
       "vol20": 2.48
      }
     }
@@ -5029,9 +5037,9 @@
    "features": {
     "c": {
      "sh_prev": 0.43,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.7,
+     "kc50_prev": 1.54,
+     "kc50_mom5": -9.67,
      "ndx_on": 0.48,
      "sox_on": 5.87,
      "hstech_prev": 4.71,
@@ -5071,8 +5079,8 @@
      "001672": {
       "prev": 4,
       "mom5": 1.59,
-      "anc": null,
-      "dev": null,
+      "anc": 2.7,
+      "dev": 1.3,
       "vol20": 2.57
      }
     }
@@ -5171,9 +5179,9 @@
    "features": {
     "c": {
      "sh_prev": 0.22,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.82,
+     "kc50_prev": 2.36,
+     "kc50_mom5": -4.41,
      "ndx_on": -0.29,
      "sox_on": 1.39,
      "hstech_prev": -2.85,
@@ -5213,8 +5221,8 @@
      "001672": {
       "prev": 0.39,
       "mom5": 2.28,
-      "anc": null,
-      "dev": null,
+      "anc": 1.82,
+      "dev": -1.43,
       "vol20": 2.53
      }
     }
@@ -5308,9 +5316,9 @@
    "features": {
     "c": {
      "sh_prev": -0.64,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.09,
+     "kc50_prev": 0.49,
+     "kc50_mom5": -5.54,
      "ndx_on": -0.53,
      "sox_on": -2.15,
      "hstech_prev": -1.62,
@@ -5350,8 +5358,8 @@
      "001672": {
       "prev": 3.67,
       "mom5": 2.6,
-      "anc": null,
-      "dev": null,
+      "anc": -1.09,
+      "dev": 4.76,
       "vol20": 2.57
      }
     }
@@ -5403,7 +5411,8 @@
       "score": -1,
       "conf": "中",
       "fired": [
-       "R2"
+       "R2",
+       "S7"
       ]
      }
     },
@@ -5443,9 +5452,9 @@
    "features": {
     "c": {
      "sh_prev": -0.74,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -3,
+     "kc50_prev": -3.77,
+     "kc50_mom5": -4.26,
      "ndx_on": -4.77,
      "sox_on": -10.26,
      "hstech_prev": -1.72,
@@ -5485,8 +5494,8 @@
      "001672": {
       "prev": -1.5,
       "mom5": 4.31,
-      "anc": null,
-      "dev": null,
+      "anc": -3,
+      "dev": 1.5,
       "vol20": 2.61
      }
     }
@@ -5589,9 +5598,9 @@
    "features": {
     "c": {
      "sh_prev": -1.7,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -3.77,
+     "kc50_prev": -4.54,
+     "kc50_mom5": -3.92,
      "ndx_on": 1.58,
      "sox_on": 5.61,
      "hstech_prev": -2.55,
@@ -5631,8 +5640,8 @@
      "001672": {
       "prev": -2.8,
       "mom5": 3.76,
-      "anc": null,
-      "dev": null,
+      "anc": -3.77,
+      "dev": 0.97,
       "vol20": 2.72
      }
     }
@@ -5729,9 +5738,9 @@
    "features": {
     "c": {
      "sh_prev": 1.28,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.79,
+     "kc50_prev": 4.28,
+     "kc50_mom5": -1.18,
      "ndx_on": -1.12,
      "sox_on": -1.93,
      "hstech_prev": 0.26,
@@ -5771,8 +5780,8 @@
      "001672": {
       "prev": 5.95,
       "mom5": 5.71,
-      "anc": null,
-      "dev": null,
+      "anc": 3.79,
+      "dev": 2.16,
       "vol20": 2.97
      }
     }
@@ -5831,7 +5840,8 @@
       "score": -1,
       "conf": "中",
       "fired": [
-       "R2"
+       "R2",
+       "S7"
       ]
      }
     },
@@ -5871,9 +5881,9 @@
    "features": {
     "c": {
      "sh_prev": -0.42,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.57,
+     "kc50_prev": -0.63,
+     "kc50_mom5": -4.17,
      "ndx_on": -1.98,
      "sox_on": -3.57,
      "hstech_prev": -0.9,
@@ -5913,8 +5923,8 @@
      "001672": {
       "prev": -2.44,
       "mom5": 2.88,
-      "anc": null,
-      "dev": null,
+      "anc": -2.57,
+      "dev": 0.13,
       "vol20": 2.99
      }
     }
@@ -6010,9 +6020,9 @@
    "features": {
     "c": {
      "sh_prev": -0.16,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.03,
+     "kc50_prev": 0.69,
+     "kc50_mom5": -3.97,
      "ndx_on": 3.29,
      "sox_on": 7.91,
      "hstech_prev": -1.6,
@@ -6052,8 +6062,8 @@
      "001672": {
       "prev": -0.44,
       "mom5": -1.23,
-      "anc": null,
-      "dev": null,
+      "anc": -1.03,
+      "dev": 0.59,
       "vol20": 2.93
      }
     }
@@ -6147,9 +6157,9 @@
    "features": {
     "c": {
      "sh_prev": 1.12,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.42,
+     "kc50_prev": 0,
+     "kc50_mom5": -0.2,
      "ndx_on": 0.64,
      "sox_on": 1.52,
      "hstech_prev": 1.1,
@@ -6189,8 +6199,8 @@
      "001672": {
       "prev": -0.79,
       "mom5": -0.52,
-      "anc": null,
-      "dev": null,
+      "anc": 0.42,
+      "dev": -1.21,
       "vol20": 2.94
      }
     }
@@ -6290,9 +6300,9 @@
    "features": {
     "c": {
      "sh_prev": 1.61,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 5.17,
+     "kc50_prev": 5.01,
+     "kc50_mom5": 9.35,
      "ndx_on": 3.06,
      "sox_on": 5.45,
      "hstech_prev": 1.26,
@@ -6332,8 +6342,8 @@
      "001672": {
       "prev": 7.59,
       "mom5": 9.87,
-      "anc": null,
-      "dev": null,
+      "anc": 5.17,
+      "dev": 2.42,
       "vol20": 3.32
      }
     }
@@ -6395,7 +6405,8 @@
       "conf": "低",
       "fired": [
        "R1",
-       "R4"
+       "R4",
+       "S7"
       ]
      }
     },
@@ -6435,9 +6446,9 @@
    "features": {
     "c": {
      "sh_prev": -0.11,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.63,
+     "kc50_prev": 0.6,
+     "kc50_mom5": 5.67,
      "ndx_on": -1.89,
      "sox_on": -5.71,
      "hstech_prev": -2.27,
@@ -6477,8 +6488,8 @@
      "001672": {
       "prev": 3.75,
       "mom5": 7.67,
-      "anc": null,
-      "dev": null,
+      "anc": 1.63,
+      "dev": 2.12,
       "vol20": 3.37
      }
     }
@@ -6538,7 +6549,8 @@
       "score": -1,
       "conf": "中",
       "fired": [
-       "R2"
+       "R2",
+       "S7"
       ]
      }
     },
@@ -6578,9 +6590,9 @@
    "features": {
     "c": {
      "sh_prev": 0.4,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.75,
+     "kc50_prev": 4.53,
+     "kc50_mom5": 10.83,
      "ndx_on": -0.99,
      "sox_on": 1.38,
      "hstech_prev": 0.09,
@@ -6620,8 +6632,8 @@
      "001672": {
       "prev": 4.79,
       "mom5": 14.9,
-      "anc": null,
-      "dev": null,
+      "anc": 1.75,
+      "dev": 3.04,
       "vol20": 3.46
      }
     }
@@ -6680,7 +6692,8 @@
       "conf": "低",
       "fired": [
        "R1",
-       "R4"
+       "R4",
+       "S7"
       ]
      }
     },
@@ -6720,9 +6733,9 @@
    "features": {
     "c": {
      "sh_prev": -0.43,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.06,
+     "kc50_prev": 4.02,
+     "kc50_mom5": 14.16,
      "ndx_on": 2.48,
      "sox_on": 6.42,
      "hstech_prev": -1.18,
@@ -6762,8 +6775,8 @@
      "001672": {
       "prev": 3.07,
       "mom5": 18.41,
-      "anc": null,
-      "dev": null,
+      "anc": 2.06,
+      "dev": 1.01,
       "vol20": 3.31
      }
     }
@@ -6874,9 +6887,9 @@
    "features": {
     "c": {
      "sh_prev": 1.78,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.58,
+     "kc50_prev": 1.93,
+     "kc50_mom5": 16.09,
      "ndx_on": -0.19,
      "sox_on": 2.04,
      "hstech_prev": -1.06,
@@ -6916,8 +6929,8 @@
      "001672": {
       "prev": 0.74,
       "mom5": 19.94,
-      "anc": null,
-      "dev": null,
+      "anc": 2.58,
+      "dev": -1.84,
       "vol20": 3.14
      }
     }
@@ -7016,9 +7029,9 @@
    "features": {
     "c": {
      "sh_prev": -1.37,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -3.86,
+     "kc50_prev": -1.61,
+     "kc50_mom5": 9.47,
      "ndx_on": -3.29,
      "sox_on": -7.87,
      "hstech_prev": -3.36,
@@ -7058,8 +7071,8 @@
      "001672": {
       "prev": -5.12,
       "mom5": 7.23,
-      "anc": null,
-      "dev": null,
+      "anc": -3.86,
+      "dev": -1.26,
       "vol20": 3.44
      }
     }
@@ -7161,9 +7174,9 @@
    "features": {
     "c": {
      "sh_prev": 0.11,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.14,
+     "kc50_prev": 3.61,
+     "kc50_mom5": 12.48,
      "ndx_on": -0.43,
      "sox_on": -0.18,
      "hstech_prev": 1.99,
@@ -7203,8 +7216,8 @@
      "001672": {
       "prev": 2.97,
       "mom5": 6.45,
-      "anc": null,
-      "dev": null,
+      "anc": 1.14,
+      "dev": 1.83,
       "vol20": 3.44
      }
     }
@@ -7300,9 +7313,9 @@
    "features": {
     "c": {
      "sh_prev": 0.23,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.22,
+     "kc50_prev": 3.91,
+     "kc50_mom5": 11.86,
      "ndx_on": 0.75,
      "sox_on": 3.59,
      "hstech_prev": -1.59,
@@ -7342,8 +7355,8 @@
      "001672": {
       "prev": 2.46,
       "mom5": 4.12,
-      "anc": null,
-      "dev": null,
+      "anc": 3.22,
+      "dev": -0.76,
       "vol20": 3.44
      }
     }
@@ -7439,9 +7452,9 @@
    "features": {
     "c": {
      "sh_prev": -2.26,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -4.1,
+     "kc50_prev": -2.07,
+     "kc50_mom5": 5.77,
      "ndx_on": -1.09,
      "sox_on": -5.29,
      "hstech_prev": -3.46,
@@ -7481,8 +7494,8 @@
      "001672": {
       "prev": -0.71,
       "mom5": 0.34,
-      "anc": null,
-      "dev": null,
+      "anc": -4.1,
+      "dev": 3.39,
       "vol20": 3.43
      }
     }
@@ -7545,6 +7558,7 @@
       "conf": "中",
       "fired": [
        "R2",
+       "S7",
        "S8"
       ]
      }
@@ -7585,9 +7599,9 @@
    "features": {
     "c": {
      "sh_prev": 1.16,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.5,
+     "kc50_prev": 5.39,
+     "kc50_mom5": 9.23,
      "ndx_on": 2.25,
      "sox_on": 3.83,
      "hstech_prev": 3.06,
@@ -7627,8 +7641,8 @@
      "001672": {
       "prev": -1.51,
       "mom5": -1.91,
-      "anc": null,
-      "dev": null,
+      "anc": 0.5,
+      "dev": -2.01,
       "vol20": 3.34
      }
     }
@@ -7692,6 +7706,7 @@
       "conf": "中",
       "fired": [
        "R1",
+       "S6",
        "S9"
       ]
      }
@@ -7732,9 +7747,9 @@
    "features": {
     "c": {
      "sh_prev": 0.5,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.02,
+     "kc50_prev": 4.27,
+     "kc50_mom5": 15.11,
      "ndx_on": 1.68,
      "sox_on": 3.92,
      "hstech_prev": 1.9,
@@ -7774,8 +7789,8 @@
      "001672": {
       "prev": 2.26,
       "mom5": 5.47,
-      "anc": null,
-      "dev": null,
+      "anc": 3.02,
+      "dev": -0.76,
       "vol20": 3.25
      }
     }
@@ -7876,9 +7891,9 @@
    "features": {
     "c": {
      "sh_prev": 0.44,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.06,
+     "kc50_prev": -2.3,
+     "kc50_mom5": 9.2,
      "ndx_on": -1.54,
      "sox_on": -6.27,
      "hstech_prev": 1.9,
@@ -7918,8 +7933,8 @@
      "001672": {
       "prev": -1.24,
       "mom5": 1.26,
-      "anc": null,
-      "dev": null,
+      "anc": -2.06,
+      "dev": 0.82,
       "vol20": 3.23
      }
     }
@@ -8021,9 +8036,9 @@
    "features": {
     "c": {
      "sh_prev": -2.03,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -5.57,
+     "kc50_prev": -7.47,
+     "kc50_mom5": -2.18,
      "ndx_on": -1.61,
      "sox_on": -5.44,
      "hstech_prev": -0.59,
@@ -8063,8 +8078,8 @@
      "001672": {
       "prev": -3.42,
       "mom5": -4.62,
-      "anc": null,
-      "dev": null,
+      "anc": -5.57,
+      "dev": 2.15,
       "vol20": 3.38
      }
     }
@@ -8128,7 +8143,8 @@
       "conf": "低",
       "fired": [
        "R2",
-       "R5"
+       "R5",
+       "S7"
       ]
      }
     },
@@ -8168,9 +8184,9 @@
    "features": {
     "c": {
      "sh_prev": 0.37,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.02,
+     "kc50_prev": -0.8,
+     "kc50_mom5": -0.91,
      "ndx_on": -1.61,
      "sox_on": -5.44,
      "hstech_prev": 1.19,
@@ -8210,8 +8226,8 @@
      "001672": {
       "prev": 0.22,
       "mom5": -3.69,
-      "anc": null,
-      "dev": null,
+      "anc": 0.02,
+      "dev": 0.2,
       "vol20": 3.32
      }
     }
@@ -8315,9 +8331,9 @@
    "features": {
     "c": {
      "sh_prev": -0.06,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.66,
+     "kc50_prev": 0.67,
+     "kc50_mom5": -5.63,
      "ndx_on": 1.26,
      "sox_on": 2.17,
      "hstech_prev": 0.91,
@@ -8357,8 +8373,8 @@
      "001672": {
       "prev": -3.89,
       "mom5": -6.07,
-      "anc": null,
-      "dev": null,
+      "anc": -1.66,
+      "dev": -2.23,
       "vol20": 3.44
      }
     }
@@ -8421,7 +8437,8 @@
       "conf": "中",
       "fired": [
        "R1",
-       "R5"
+       "R5",
+       "S6"
       ]
      }
     },
@@ -8461,9 +8478,9 @@
    "features": {
     "c": {
      "sh_prev": -1.26,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.96,
+     "kc50_prev": 0.47,
+     "kc50_mom5": -9.43,
      "ndx_on": -1.77,
      "sox_on": -4.65,
      "hstech_prev": -0.85,
@@ -8503,8 +8520,8 @@
      "001672": {
       "prev": -2.78,
       "mom5": -11.11,
-      "anc": null,
-      "dev": null,
+      "anc": -0.96,
+      "dev": -1.82,
       "vol20": 3.44
      }
     }
@@ -8603,9 +8620,9 @@
    "features": {
     "c": {
      "sh_prev": -0.49,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.65,
+     "kc50_prev": 0.89,
+     "kc50_mom5": -6.24,
      "ndx_on": 0.27,
      "sox_on": 2.23,
      "hstech_prev": 5.02,
@@ -8645,8 +8662,8 @@
      "001672": {
       "prev": -3.36,
       "mom5": -13.23,
-      "anc": null,
-      "dev": null,
+      "anc": -1.65,
+      "dev": -1.71,
       "vol20": 3.31
      }
     }
@@ -8750,9 +8767,9 @@
    "features": {
     "c": {
      "sh_prev": 1.65,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 4.47,
+     "kc50_prev": 8.53,
+     "kc50_mom5": 9.76,
      "ndx_on": 1.62,
      "sox_on": 3.06,
      "hstech_prev": 0,
@@ -8792,8 +8809,8 @@
      "001672": {
       "prev": 5.22,
       "mom5": -4.59,
-      "anc": null,
-      "dev": null,
+      "anc": 4.47,
+      "dev": 0.75,
       "vol20": 3.44
      }
     }
@@ -8891,9 +8908,9 @@
    "features": {
     "c": {
      "sh_prev": -1,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -4.41,
+     "kc50_prev": -5.11,
+     "kc50_mom5": 5.45,
      "ndx_on": 0.33,
      "sox_on": 0.06,
      "hstech_prev": -0.13,
@@ -8933,8 +8950,8 @@
      "001672": {
       "prev": -3.77,
       "mom5": -8.58,
-      "anc": null,
-      "dev": null,
+      "anc": -4.41,
+      "dev": 0.64,
       "vol20": 3.56
      }
     }
@@ -9037,9 +9054,9 @@
    "features": {
     "c": {
      "sh_prev": -2.06,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.87,
+     "kc50_prev": -4.93,
+     "kc50_mom5": -0.15,
      "ndx_on": -1.88,
      "sox_on": -4.78,
      "hstech_prev": -0.95,
@@ -9079,8 +9096,8 @@
      "001672": {
       "prev": -6.9,
       "mom5": -11.59,
-      "anc": null,
-      "dev": null,
+      "anc": -2.87,
+      "dev": -4.03,
       "vol20": 3.91
      }
     }
@@ -9145,7 +9162,8 @@
       "fired": [
        "R2",
        "R3",
-       "R5"
+       "R5",
+       "S6"
       ]
      }
     },
@@ -9185,9 +9203,9 @@
    "features": {
     "c": {
      "sh_prev": 1.36,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.09,
+     "kc50_prev": 1.19,
+     "kc50_mom5": 0.57,
      "ndx_on": 1.1,
      "sox_on": 2.54,
      "hstech_prev": 0.22,
@@ -9227,8 +9245,8 @@
      "001672": {
       "prev": 5.15,
       "mom5": -3.66,
-      "anc": null,
-      "dev": null,
+      "anc": 3.09,
+      "dev": 2.06,
       "vol20": 3.69
      }
     }
@@ -9285,7 +9303,8 @@
       "score": 1,
       "conf": "中",
       "fired": [
-       "R1"
+       "R1",
+       "S7"
       ]
      }
     },
@@ -9325,9 +9344,9 @@
    "features": {
     "c": {
      "sh_prev": -0.29,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.01,
+     "kc50_prev": -4.56,
+     "kc50_mom5": -4.88,
      "ndx_on": -0.28,
      "sox_on": -2.08,
      "hstech_prev": 1.04,
@@ -9367,8 +9386,8 @@
      "001672": {
       "prev": -3.91,
       "mom5": -4.21,
-      "anc": null,
-      "dev": null,
+      "anc": -1.01,
+      "dev": -2.9,
       "vol20": 3.67
      }
     }
@@ -9426,7 +9445,8 @@
       "conf": "低",
       "fired": [
        "R2",
-       "R5"
+       "R5",
+       "S6"
       ]
      }
     },
@@ -9466,9 +9486,9 @@
    "features": {
     "c": {
      "sh_prev": -1.85,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.74,
+     "kc50_prev": -4.09,
+     "kc50_mom5": -17.5,
      "ndx_on": -1.62,
      "sox_on": -4.29,
      "hstech_prev": 2.15,
@@ -9508,8 +9528,8 @@
      "001672": {
       "prev": -4.55,
       "mom5": -13.98,
-      "anc": null,
-      "dev": null,
+      "anc": -2.74,
+      "dev": -1.81,
       "vol20": 3.55
      }
     }
@@ -9617,9 +9637,9 @@
    "features": {
     "c": {
      "sh_prev": -3.05,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -6.98,
+     "kc50_prev": -7.1,
+     "kc50_mom5": -19.49,
      "ndx_on": -1.49,
      "sox_on": -1.63,
      "hstech_prev": -4.51,
@@ -9659,8 +9679,8 @@
      "001672": {
       "prev": -9.17,
       "mom5": -19.38,
-      "anc": null,
-      "dev": null,
+      "anc": -6.98,
+      "dev": -2.19,
       "vol20": 3.86
      }
     }
@@ -9732,6 +9752,7 @@
        "R2",
        "R3",
        "R5",
+       "S6",
        "S8"
       ]
      }
@@ -9772,9 +9793,9 @@
    "features": {
     "c": {
      "sh_prev": 0.85,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.4,
+     "kc50_prev": 0.44,
+     "kc50_mom5": -14.12,
      "ndx_on": 0.04,
      "sox_on": 0.6,
      "hstech_prev": 2.56,
@@ -9814,8 +9835,8 @@
      "001672": {
       "prev": -9.39,
       "mom5": -21.87,
-      "anc": null,
-      "dev": null,
+      "anc": 0.4,
+      "dev": -9.79,
       "vol20": 4.2
      }
     }
@@ -9878,6 +9899,7 @@
       "fired": [
        "R3",
        "R5",
+       "S6",
        "S9"
       ]
      }
@@ -9918,9 +9940,9 @@
    "features": {
     "c": {
      "sh_prev": 1.79,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 6.67,
+     "kc50_prev": 11.07,
+     "kc50_mom5": -4.24,
      "ndx_on": 1.93,
      "sox_on": 5.21,
      "hstech_prev": 1.55,
@@ -9960,8 +9982,8 @@
      "001672": {
       "prev": 8.12,
       "mom5": -18.9,
-      "anc": null,
-      "dev": null,
+      "anc": 6.67,
+      "dev": 1.45,
       "vol20": 4.7
      }
     }
@@ -10066,9 +10088,9 @@
    "features": {
     "c": {
      "sh_prev": 0.07,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -3.32,
+     "kc50_prev": -3.03,
+     "kc50_mom5": -2.71,
      "ndx_on": -0.54,
      "sox_on": 0.44,
      "hstech_prev": -3.01,
@@ -10108,8 +10130,8 @@
      "001672": {
       "prev": -3.13,
       "mom5": -18.12,
-      "anc": null,
-      "dev": null,
+      "anc": -3.32,
+      "dev": 0.19,
       "vol20": 4.6
      }
     }
@@ -10206,9 +10228,9 @@
    "features": {
     "c": {
      "sh_prev": 0.25,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.31,
+     "kc50_prev": -3.43,
+     "kc50_mom5": -2.05,
      "ndx_on": -1.87,
      "sox_on": -0.54,
      "hstech_prev": 0.66,
@@ -10248,8 +10270,8 @@
      "001672": {
       "prev": -0.39,
       "mom5": -13.96,
-      "anc": null,
-      "dev": null,
+      "anc": 0.31,
+      "dev": -0.7,
       "vol20": 4.51
      }
     }
@@ -10345,9 +10367,9 @@
    "features": {
     "c": {
      "sh_prev": -1.61,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.47,
+     "kc50_prev": -0.16,
+     "kc50_mom5": 4.89,
      "ndx_on": -1.15,
      "sox_on": -4.25,
      "hstech_prev": -1.48,
@@ -10387,8 +10409,8 @@
      "001672": {
       "prev": -3.21,
       "mom5": -8,
-      "anc": null,
-      "dev": null,
+      "anc": -2.47,
+      "dev": -0.74,
       "vol20": 4.51
      }
     }
@@ -10494,9 +10516,9 @@
    "features": {
     "c": {
      "sh_prev": 1.15,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.96,
+     "kc50_prev": 1.38,
+     "kc50_mom5": 5.83,
      "ndx_on": -0.32,
      "sox_on": -2.23,
      "hstech_prev": 1.63,
@@ -10536,8 +10558,8 @@
      "001672": {
       "prev": 5.33,
       "mom5": 6.72,
-      "anc": null,
-      "dev": null,
+      "anc": 2.96,
+      "dev": 2.37,
       "vol20": 4.8
      }
     }
@@ -10596,6 +10618,7 @@
       "conf": "中",
       "fired": [
        "R2",
+       "S7",
        "S9"
       ]
      }
@@ -10636,9 +10659,9 @@
    "features": {
     "c": {
      "sh_prev": -1.16,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -7.12,
+     "kc50_prev": -6.59,
+     "kc50_mom5": -11.83,
      "ndx_on": -0.98,
      "sox_on": -4.49,
      "hstech_prev": 0.61,
@@ -10678,8 +10701,8 @@
      "001672": {
       "prev": -6.14,
       "mom5": -7.54,
-      "anc": null,
-      "dev": null,
+      "anc": -7.12,
+      "dev": 0.98,
       "vol20": 4.8
      }
     }
@@ -10781,9 +10804,9 @@
    "features": {
     "c": {
      "sh_prev": 0.4,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.4,
+     "kc50_prev": -0.5,
+     "kc50_mom5": -9.3,
      "ndx_on": -2.06,
      "sox_on": -5.33,
      "hstech_prev": 2.67,
@@ -10823,8 +10846,8 @@
      "001672": {
       "prev": -0.65,
       "mom5": -5.06,
-      "anc": null,
-      "dev": null,
+      "anc": 1.4,
+      "dev": -2.05,
       "vol20": 4.81
      }
     }
@@ -10886,6 +10909,7 @@
       "conf": "中",
       "fired": [
        "R2",
+       "S6",
        "S9"
       ]
      }
@@ -10926,9 +10950,9 @@
    "features": {
     "c": {
      "sh_prev": -0.62,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -3.88,
+     "kc50_prev": -6.02,
+     "kc50_mom5": -11.89,
      "ndx_on": 3.36,
      "sox_on": 8.19,
      "hstech_prev": -1.05,
@@ -10968,8 +10992,8 @@
      "001672": {
       "prev": -5.35,
       "mom5": -10.02,
-      "anc": null,
-      "dev": null,
+      "anc": -3.88,
+      "dev": -1.47,
       "vol20": 4.86
      }
     }
@@ -11071,9 +11095,9 @@
    "features": {
     "c": {
      "sh_prev": 0.72,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3,
+     "kc50_prev": 3.54,
+     "kc50_mom5": -8.19,
      "ndx_on": 0.6,
      "sox_on": 0.07,
      "hstech_prev": 0.25,
@@ -11113,8 +11137,8 @@
      "001672": {
       "prev": 4.95,
       "mom5": -1.86,
-      "anc": null,
-      "dev": null,
+      "anc": 3,
+      "dev": 1.95,
       "vol20": 5.09
      }
     }
@@ -11210,9 +11234,9 @@
    "features": {
     "c": {
      "sh_prev": -0.59,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.28,
+     "kc50_prev": -5.32,
+     "kc50_mom5": -14.89,
      "ndx_on": 1.78,
      "sox_on": 1.05,
      "hstech_prev": 1.06,
@@ -11252,8 +11276,8 @@
      "001672": {
       "prev": -2.57,
       "mom5": -9.76,
-      "anc": null,
-      "dev": null,
+      "anc": -1.28,
+      "dev": -1.29,
       "vol20": 5.07
      }
     }
@@ -11353,9 +11377,9 @@
    "features": {
     "c": {
      "sh_prev": 0.33,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 5.68,
+     "kc50_prev": 4.28,
+     "kc50_mom5": -4.02,
      "ndx_on": 3.32,
      "sox_on": 6.55,
      "hstech_prev": 0.21,
@@ -11395,8 +11419,8 @@
      "001672": {
       "prev": 5.82,
       "mom5": 2.2,
-      "anc": null,
-      "dev": null,
+      "anc": 5.68,
+      "dev": 0.14,
       "vol20": 5.34
      }
     }
@@ -11492,9 +11516,9 @@
    "features": {
     "c": {
      "sh_prev": 1.47,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.31,
+     "kc50_prev": 4.69,
+     "kc50_mom5": 1.17,
      "ndx_on": -0.83,
      "sox_on": -1.4,
      "hstech_prev": 1.04,
@@ -11534,8 +11558,8 @@
      "001672": {
       "prev": 5.74,
       "mom5": 8.59,
-      "anc": null,
-      "dev": null,
+      "anc": 1.31,
+      "dev": 4.43,
       "vol20": 5.55
      }
     }
@@ -11591,7 +11615,8 @@
       "conf": "中",
       "fired": [
        "R2",
-       "R4"
+       "R4",
+       "S7"
       ]
      }
     },
@@ -11631,9 +11656,9 @@
    "features": {
     "c": {
      "sh_prev": 0.57,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.56,
+     "kc50_prev": 0.45,
+     "kc50_mom5": 7.64,
      "ndx_on": -0.39,
      "sox_on": 0.33,
      "hstech_prev": -2.19,
@@ -11673,8 +11698,8 @@
      "001672": {
       "prev": 1.86,
       "mom5": 15.8,
-      "anc": null,
-      "dev": null,
+      "anc": -0.56,
+      "dev": 2.42,
       "vol20": 5.4
      }
     }
@@ -11724,7 +11749,8 @@
       "score": -0.5,
       "conf": "低",
       "fired": [
-       "R4"
+       "R4",
+       "S7"
       ]
      }
     },
@@ -11764,9 +11790,9 @@
    "features": {
     "c": {
      "sh_prev": 1.02,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.3,
+     "kc50_prev": 2.56,
+     "kc50_mom5": 6.66,
      "ndx_on": 1.19,
      "sox_on": 2.56,
      "hstech_prev": 0.68,
@@ -11806,8 +11832,8 @@
      "001672": {
       "prev": 3.77,
       "mom5": 14.62,
-      "anc": null,
-      "dev": null,
+      "anc": 1.3,
+      "dev": 2.47,
       "vol20": 5.47
      }
     }
@@ -11871,6 +11897,7 @@
       "fired": [
        "R1",
        "R4",
+       "S7",
        "S8"
       ]
      }
@@ -11911,9 +11938,9 @@
    "features": {
     "c": {
      "sh_prev": 0.67,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.75,
+     "kc50_prev": -0.27,
+     "kc50_mom5": 11.71,
      "ndx_on": -0.34,
      "sox_on": -2.94,
      "hstech_prev": 1.13,
@@ -11953,8 +11980,8 @@
      "001672": {
       "prev": -0.36,
       "mom5": 16.83,
-      "anc": null,
-      "dev": null,
+      "anc": -0.75,
+      "dev": 0.39,
       "vol20": 5.27
      }
     }
@@ -12051,9 +12078,9 @@
    "features": {
     "c": {
      "sh_prev": -0.82,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.17,
+     "kc50_prev": -1.58,
+     "kc50_mom5": 5.85,
      "ndx_on": -0.33,
      "sox_on": 0.87,
      "hstech_prev": -1.74,
@@ -12093,8 +12120,8 @@
      "001672": {
       "prev": -1.08,
       "mom5": 9.93,
-      "anc": null,
-      "dev": null,
+      "anc": 0.17,
+      "dev": -1.25,
       "vol20": 5.11
      }
     }
@@ -12185,9 +12212,9 @@
    "features": {
     "c": {
      "sh_prev": 0.32,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.57,
+     "kc50_prev": 1.5,
+     "kc50_mom5": 2.66,
      "ndx_on": 0.74,
      "sox_on": 2.49,
      "hstech_prev": -1.14,
@@ -12227,8 +12254,8 @@
      "001672": {
       "prev": 2.73,
       "mom5": 6.92,
-      "anc": null,
-      "dev": null,
+      "anc": 1.57,
+      "dev": 1.16,
       "vol20": 5.11
      }
     }
@@ -12324,9 +12351,9 @@
    "features": {
     "c": {
      "sh_prev": -0.5,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.47,
+     "kc50_prev": -1.15,
+     "kc50_mom5": 1.06,
      "ndx_on": 1.15,
      "sox_on": 0.46,
      "hstech_prev": 0.47,
@@ -12366,8 +12393,8 @@
      "001672": {
       "prev": -0.46,
       "mom5": 4.6,
-      "anc": null,
-      "dev": null,
+      "anc": -0.47,
+      "dev": 0.01,
       "vol20": 5.01
      }
     }
@@ -12453,9 +12480,9 @@
    "features": {
     "c": {
      "sh_prev": 0.01,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.14,
+     "kc50_prev": 0.11,
+     "kc50_mom5": -1.39,
      "ndx_on": -0.13,
      "sox_on": -0.31,
      "hstech_prev": -1.87,
@@ -12495,8 +12522,8 @@
      "001672": {
       "prev": 1.96,
       "mom5": 2.79,
-      "anc": null,
-      "dev": null,
+      "anc": 1.14,
+      "dev": 0.82,
       "vol20": 4.56
      }
     }
@@ -12591,9 +12618,9 @@
    "features": {
     "c": {
      "sh_prev": 1.41,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.05,
+     "kc50_prev": 4.08,
+     "kc50_mom5": 2.96,
      "ndx_on": -0.17,
      "sox_on": 1.64,
      "hstech_prev": 1.82,
@@ -12633,8 +12660,8 @@
      "001672": {
       "prev": 2.83,
       "mom5": 5.98,
-      "anc": null,
-      "dev": null,
+      "anc": 3.05,
+      "dev": -0.22,
       "vol20": 3.96
      }
     }
@@ -12735,9 +12762,9 @@
    "features": {
     "c": {
      "sh_prev": 0.19,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.88,
+     "kc50_prev": 0,
+     "kc50_mom5": 4.54,
      "ndx_on": -1.68,
      "sox_on": -4.98,
      "hstech_prev": -1.02,
@@ -12777,8 +12804,8 @@
      "001672": {
       "prev": -0.44,
       "mom5": 6.62,
-      "anc": null,
-      "dev": null,
+      "anc": -0.88,
+      "dev": 0.44,
       "vol20": 3.6
      }
     }
@@ -12873,9 +12900,9 @@
    "features": {
     "c": {
      "sh_prev": -2.4,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -6.04,
+     "kc50_prev": -6.73,
+     "kc50_mom5": -3.69,
      "ndx_on": -0.22,
      "sox_on": -2.12,
      "hstech_prev": -1.12,
@@ -12915,8 +12942,8 @@
      "001672": {
       "prev": -8.5,
       "mom5": -4.61,
-      "anc": null,
-      "dev": null,
+      "anc": -6.04,
+      "dev": -2.46,
       "vol20": 4.06
      }
     }
@@ -12976,7 +13003,8 @@
       "conf": "低",
       "fired": [
        "R2",
-       "R5"
+       "R5",
+       "S6"
       ]
      }
     },
@@ -13016,9 +13044,9 @@
    "features": {
     "c": {
      "sh_prev": 0.24,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.4,
+     "kc50_prev": -0.97,
+     "kc50_mom5": -3.51,
      "ndx_on": -0.72,
      "sox_on": 0.53,
      "hstech_prev": 0.13,
@@ -13058,8 +13086,8 @@
      "001672": {
       "prev": 1.46,
       "mom5": -2.69,
-      "anc": null,
-      "dev": null,
+      "anc": 0.4,
+      "dev": 1.06,
       "vol20": 4.06
      }
     }
@@ -13145,9 +13173,9 @@
    "features": {
     "c": {
      "sh_prev": 0.04,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.37,
+     "kc50_prev": 0.06,
+     "kc50_mom5": -3.56,
      "ndx_on": 0.33,
      "sox_on": -0.51,
      "hstech_prev": 1.39,
@@ -13187,8 +13215,8 @@
      "001672": {
       "prev": 2.28,
       "mom5": -2.37,
-      "anc": null,
-      "dev": null,
+      "anc": 1.37,
+      "dev": 0.91,
       "vol20": 3.99
      }
     }
@@ -13282,9 +13310,9 @@
    "features": {
     "c": {
      "sh_prev": -0.59,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.89,
+     "kc50_prev": -3.09,
+     "kc50_mom5": -10.73,
      "ndx_on": -0.97,
      "sox_on": -2.7,
      "hstech_prev": -3.73,
@@ -13324,8 +13352,8 @@
      "001672": {
       "prev": -3.09,
       "mom5": -8.29,
-      "anc": null,
-      "dev": null,
+      "anc": -2.89,
+      "dev": -0.2,
       "vol20": 3.92
      }
     }
@@ -13427,9 +13455,9 @@
    "features": {
     "c": {
      "sh_prev": 0.19,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.1,
+     "kc50_prev": 0.12,
+     "kc50_mom5": -10.61,
      "ndx_on": 0.64,
      "sox_on": 1.44,
      "hstech_prev": 0.04,
@@ -13469,8 +13497,8 @@
      "001672": {
       "prev": 0.3,
       "mom5": -7.55,
-      "anc": null,
-      "dev": null,
+      "anc": -1.1,
+      "dev": 1.4,
       "vol20": 3.62
      }
     }
@@ -13564,9 +13592,9 @@
    "features": {
     "c": {
      "sh_prev": 0.59,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.38,
+     "kc50_prev": 1.65,
+     "kc50_mom5": -2.23,
      "ndx_on": 0.05,
      "sox_on": 0.2,
      "hstech_prev": 0.76,
@@ -13606,8 +13634,8 @@
      "001672": {
       "prev": 0.07,
       "mom5": 1.02,
-      "anc": null,
-      "dev": null,
+      "anc": 0.38,
+      "dev": -0.31,
       "vol20": 3.61
      }
     }
@@ -13691,9 +13719,9 @@
    "features": {
     "c": {
      "sh_prev": 1.13,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.81,
+     "kc50_prev": 3.89,
+     "kc50_mom5": 2.63,
      "ndx_on": 1.43,
      "sox_on": 2.33,
      "hstech_prev": 0.09,
@@ -13733,8 +13761,8 @@
      "001672": {
       "prev": 4.22,
       "mom5": 3.78,
-      "anc": null,
-      "dev": null,
+      "anc": 1.81,
+      "dev": 2.41,
       "vol20": 3.41
      }
     }
@@ -13790,7 +13818,8 @@
       "score": 1,
       "conf": "中",
       "fired": [
-       "R1"
+       "R1",
+       "S7"
       ]
      }
     },
@@ -13830,9 +13859,9 @@
    "features": {
     "c": {
      "sh_prev": -0.11,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.46,
+     "kc50_prev": -1.79,
+     "kc50_mom5": 0.78,
      "ndx_on": -0.7,
      "sox_on": -3.47,
      "hstech_prev": -0.31,
@@ -13872,8 +13901,8 @@
      "001672": {
       "prev": -1.03,
       "mom5": 0.47,
-      "anc": null,
-      "dev": null,
+      "anc": -1.46,
+      "dev": 0.43,
       "vol20": 3.31
      }
     }
@@ -13972,9 +14001,9 @@
    "features": {
     "c": {
      "sh_prev": 0.86,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.38,
+     "kc50_prev": 1.2,
+     "kc50_mom5": 5.07,
      "ndx_on": 0.08,
      "sox_on": 0.57,
      "hstech_prev": 0.22,
@@ -14014,8 +14043,8 @@
      "001672": {
       "prev": 2.58,
       "mom5": 6.14,
-      "anc": null,
-      "dev": null,
+      "anc": 0.38,
+      "dev": 2.2,
       "vol20": 3.24
      }
     }
@@ -14060,7 +14089,9 @@
       "high": 2.92,
       "score": 0,
       "conf": "低",
-      "fired": []
+      "fired": [
+       "S7"
+      ]
      }
     },
     "base_prev": {
@@ -14099,9 +14130,9 @@
    "features": {
     "c": {
      "sh_prev": -0.16,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.27,
+     "kc50_prev": -2.08,
+     "kc50_mom5": 2.87,
      "ndx_on": -1.29,
      "sox_on": -2.14,
      "hstech_prev": -1.41,
@@ -14141,8 +14172,8 @@
      "001672": {
       "prev": -3.77,
       "mom5": 2.07,
-      "anc": null,
-      "dev": null,
+      "anc": -1.27,
+      "dev": -2.5,
       "vol20": 3.2
      }
     }
@@ -14200,7 +14231,8 @@
       "conf": "低",
       "fired": [
        "R2",
-       "R5"
+       "R5",
+       "S6"
       ]
      }
     },
@@ -14240,9 +14272,9 @@
    "features": {
     "c": {
      "sh_prev": -0.97,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.26,
+     "kc50_prev": -1.84,
+     "kc50_mom5": -0.62,
      "ndx_on": 0.23,
      "sox_on": 0.45,
      "hstech_prev": -0.81,
@@ -14282,8 +14314,8 @@
      "001672": {
       "prev": -1.42,
       "mom5": 0.58,
-      "anc": null,
-      "dev": null,
+      "anc": -2.26,
+      "dev": 0.84,
       "vol20": 2.98
      }
     }
@@ -14367,9 +14399,9 @@
    "features": {
     "c": {
      "sh_prev": 0.02,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.15,
+     "kc50_prev": -0.29,
+     "kc50_mom5": -4.8,
      "ndx_on": 1.16,
      "sox_on": 0.11,
      "hstech_prev": -1.13,
@@ -14409,8 +14441,8 @@
      "001672": {
       "prev": 0.74,
       "mom5": -2.9,
-      "anc": null,
-      "dev": null,
+      "anc": -0.15,
+      "dev": 0.89,
       "vol20": 2.96
      }
     }
@@ -14496,9 +14528,9 @@
    "features": {
     "c": {
      "sh_prev": -0.3,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.75,
+     "kc50_prev": -2.06,
+     "kc50_mom5": -5.07,
      "ndx_on": 0.21,
      "sox_on": 3.37,
      "hstech_prev": 2.33,
@@ -14538,8 +14570,8 @@
      "001672": {
       "prev": -2.67,
       "mom5": -4.54,
-      "anc": null,
-      "dev": null,
+      "anc": -0.75,
+      "dev": -1.92,
       "vol20": 2.89
      }
     }
@@ -14642,9 +14674,9 @@
    "features": {
     "c": {
      "sh_prev": 0.07,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 3.3,
+     "kc50_prev": 2.22,
+     "kc50_mom5": -4.05,
      "ndx_on": 0.21,
      "sox_on": 3.37,
      "hstech_prev": -1.03,
@@ -14684,8 +14716,8 @@
      "001672": {
       "prev": 4.36,
       "mom5": -2.76,
-      "anc": null,
-      "dev": null,
+      "anc": 3.3,
+      "dev": 1.06,
       "vol20": 3.06
      }
     }
@@ -14779,9 +14811,9 @@
    "features": {
     "c": {
      "sh_prev": 0.2,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.11,
+     "kc50_prev": -1.41,
+     "kc50_mom5": -3.38,
      "ndx_on": -0.12,
      "sox_on": 1.3,
      "hstech_prev": -1.49,
@@ -14821,8 +14853,8 @@
      "001672": {
       "prev": -1.48,
       "mom5": -0.47,
-      "anc": null,
-      "dev": null,
+      "anc": -1.11,
+      "dev": -0.37,
       "vol20": 3.07
      }
     }
@@ -14915,9 +14947,9 @@
    "features": {
     "c": {
      "sh_prev": 0.28,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.09,
+     "kc50_prev": -0.59,
+     "kc50_mom5": -2.13,
      "ndx_on": -0.29,
      "sox_on": 0.37,
      "hstech_prev": -0.91,
@@ -14957,8 +14989,8 @@
      "001672": {
       "prev": 0.18,
       "mom5": 1.13,
-      "anc": null,
-      "dev": null,
+      "anc": -0.09,
+      "dev": 0.27,
       "vol20": 3.01
      }
     }
@@ -15042,9 +15074,9 @@
    "features": {
     "c": {
      "sh_prev": -0.43,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.44,
+     "kc50_prev": -0.72,
+     "kc50_mom5": -2.56,
      "ndx_on": -1.08,
      "sox_on": -2.66,
      "hstech_prev": -1.89,
@@ -15084,8 +15116,8 @@
      "001672": {
       "prev": -0.95,
       "mom5": -0.56,
-      "anc": null,
-      "dev": null,
+      "anc": -0.44,
+      "dev": -0.51,
       "vol20": 3.01
      }
     }
@@ -15179,9 +15211,9 @@
    "features": {
     "c": {
      "sh_prev": -1.18,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.51,
+     "kc50_prev": -1.21,
+     "kc50_mom5": -1.71,
      "ndx_on": 0.91,
      "sox_on": 1.81,
      "hstech_prev": -0.28,
@@ -15221,8 +15253,8 @@
      "001672": {
       "prev": -1.03,
       "mom5": 1.08,
-      "anc": null,
-      "dev": null,
+      "anc": -0.51,
+      "dev": -0.52,
       "vol20": 2.98
      }
     }
@@ -15323,9 +15355,9 @@
    "features": {
     "c": {
      "sh_prev": -0.07,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.11,
+     "kc50_prev": -1.59,
+     "kc50_mom5": -5.52,
      "ndx_on": -0.82,
      "sox_on": -5.86,
      "hstech_prev": -0.05,
@@ -15365,8 +15397,8 @@
      "001672": {
       "prev": 0.74,
       "mom5": -2.54,
-      "anc": null,
-      "dev": null,
+      "anc": -1.11,
+      "dev": 1.85,
       "vol20": 2.9
      }
     }
@@ -15462,9 +15494,9 @@
    "features": {
     "c": {
      "sh_prev": -0.54,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -1.09,
+     "kc50_prev": 1.55,
+     "kc50_mom5": -2.56,
      "ndx_on": -0.65,
      "sox_on": 0.4,
      "hstech_prev": -0.57,
@@ -15504,8 +15536,8 @@
      "001672": {
       "prev": 0.74,
       "mom5": -0.32,
-      "anc": null,
-      "dev": null,
+      "anc": -1.09,
+      "dev": 1.83,
       "vol20": 2.91
      }
     }
@@ -15591,9 +15623,9 @@
    "features": {
     "c": {
      "sh_prev": 0.71,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 1.9,
+     "kc50_prev": 4.27,
+     "kc50_mom5": 2.3,
      "ndx_on": 0.02,
      "sox_on": 0.63,
      "hstech_prev": 0.71,
@@ -15633,8 +15665,8 @@
      "001672": {
       "prev": 2.27,
       "mom5": 1.77,
-      "anc": null,
-      "dev": null,
+      "anc": 1.9,
+      "dev": 0.37,
       "vol20": 2.23
      }
     }
@@ -15722,9 +15754,9 @@
    "features": {
     "c": {
      "sh_prev": -0.41,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.33,
+     "kc50_prev": -0.7,
+     "kc50_mom5": 2.32,
      "ndx_on": 1.73,
      "sox_on": 3.14,
      "hstech_prev": -0.57,
@@ -15764,8 +15796,8 @@
      "001672": {
       "prev": -0.86,
       "mom5": 1.86,
-      "anc": null,
-      "dev": null,
+      "anc": -0.33,
+      "dev": -0.53,
       "vol20": 2.23
      }
     }
@@ -15859,9 +15891,9 @@
    "features": {
     "c": {
      "sh_prev": 0.94,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 2.17,
+     "kc50_prev": 2.83,
+     "kc50_mom5": 6.36,
      "ndx_on": 0.67,
      "sox_on": 2.78,
      "hstech_prev": 2.42,
@@ -15901,8 +15933,8 @@
      "001672": {
       "prev": 2.21,
       "mom5": 5.1,
-      "anc": null,
-      "dev": null,
+      "anc": 2.17,
+      "dev": 0.04,
       "vol20": 2.22
      }
     }
@@ -16006,9 +16038,9 @@
    "features": {
     "c": {
      "sh_prev": 0.97,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.8,
+     "kc50_prev": 0.29,
+     "kc50_mom5": 8.24,
      "ndx_on": 2.83,
      "sox_on": 4.29,
      "hstech_prev": 0.42,
@@ -16048,8 +16080,8 @@
      "001672": {
       "prev": 1.24,
       "mom5": 5.6,
-      "anc": null,
-      "dev": null,
+      "anc": 0.8,
+      "dev": 0.44,
       "vol20": 2.1
      }
     }
@@ -16144,9 +16176,9 @@
    "features": {
     "c": {
      "sh_prev": 0.06,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.06,
+     "kc50_prev": 0.51,
+     "kc50_mom5": 7.2,
      "ndx_on": 0.82,
      "sox_on": 2.06,
      "hstech_prev": 0.37,
@@ -16186,8 +16218,8 @@
      "001672": {
       "prev": -0.45,
       "mom5": 4.41,
-      "anc": null,
-      "dev": null,
+      "anc": 0.06,
+      "dev": -0.51,
       "vol20": 2.11
      }
     }
@@ -16282,9 +16314,9 @@
    "features": {
     "c": {
      "sh_prev": -0.39,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -0.61,
+     "kc50_prev": -0.17,
+     "kc50_mom5": 2.76,
      "ndx_on": -0.85,
      "sox_on": -1.23,
      "hstech_prev": -1.7,
@@ -16324,8 +16356,8 @@
      "001672": {
       "prev": 1.33,
       "mom5": 3.47,
-      "anc": null,
-      "dev": null,
+      "anc": -0.61,
+      "dev": 1.94,
       "vol20": 2.12
      }
     }
@@ -16417,9 +16449,9 @@
    "features": {
     "c": {
      "sh_prev": -1.22,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -2.56,
+     "kc50_prev": -2.39,
+     "kc50_mom5": 1.07,
      "ndx_on": 0.42,
      "sox_on": 1.41,
      "hstech_prev": -0.75,
@@ -16459,8 +16491,8 @@
      "001672": {
       "prev": -2.22,
       "mom5": 2.11,
-      "anc": null,
-      "dev": null,
+      "anc": -2.56,
+      "dev": 0.34,
       "vol20": 1.99
      }
     }
@@ -16565,9 +16597,9 @@
    "features": {
     "c": {
      "sh_prev": -1.67,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": -4.62,
+     "kc50_prev": -4.09,
+     "kc50_mom5": -5.85,
      "ndx_on": -1.08,
      "sox_on": -1.61,
      "hstech_prev": -0.85,
@@ -16607,8 +16639,8 @@
      "001672": {
       "prev": -5.46,
       "mom5": -5.56,
-      "anc": null,
-      "dev": null,
+      "anc": -4.62,
+      "dev": -0.84,
       "vol20": 2.33
      }
     }
@@ -16710,9 +16742,9 @@
    "features": {
     "c": {
      "sh_prev": 0.18,
-     "cyb_prev": null,
-     "kc50_prev": null,
-     "kc50_mom5": null,
+     "cyb_prev": 0.09,
+     "kc50_prev": 0.85,
+     "kc50_mom5": -5.29,
      "ndx_on": 0.21,
      "sox_on": 1.32,
      "hstech_prev": -1.24,
@@ -16752,8 +16784,8 @@
      "001672": {
       "prev": 0.86,
       "mom5": -5.94,
-      "anc": null,
-      "dev": null,
+      "anc": 0.09,
+      "dev": 0.77,
       "vol20": 2.25
      }
     }
