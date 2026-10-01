@@ -124,7 +124,7 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
   <section id="tab-logic" hidden></section>
   <section id="tab-hold" hidden></section>
 
-  <footer>数据由 GitHub Actions 自动更新：每晚 22:13 复盘并预测下一交易日，交易日 8:07 用隔夜美股定稿（9:25 后不再修改）。命中＝方向一致，涨跌幅 &gt;+0.3% 记涨、&lt;−0.3% 记跌、其余记平。预测仅作实验记录，不构成投资建议。</footer>
+  <footer>数据由 GitHub Actions 自动更新：每晚 22:13 复盘并预测下一交易日，交易日 8:07 用隔夜美股定稿（9:25 后不再修改）。命中＝方向一致，实际涨跌按正负判断；预测为「平」表示不出手，不计入命中率，另计出手率。预测仅作实验记录，不构成投资建议。</footer>
 </div>
 
 <script>
@@ -134,14 +134,14 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
   const fmt=v=>v==null||isNaN(v)?"–":(v>0?"+":"")+Number(v).toFixed(2)+"%";
   const cls=v=>v>0.3?"up":v<-0.3?"down":"flat";
   const DIR={up:["涨","up","↑"],down:["跌","down","↓"],flat:["平","flat","→"]};
-  const dirOf=v=>v>0.3?"up":v<-0.3?"down":"flat";
+  const dirOf=v=>v>0?"up":v<0?"down":"flat";
   const NAMES={rule:"规则模型",ai:"AI 判断",base_prev:"笨办法：昨日延续",base_up:"笨办法：全猜涨",base_us:"笨办法：跟随外盘"};
   const FEAT_NAMES={sh_prev:"上证昨日",cyb_prev:"创业板昨日",kc50_prev:"科创50昨日",kc50_mom5:"科创50近5日",ndx_on:"隔夜纳指100",sox_on:"隔夜费城半导体",hstech_prev:"恒生科技",gap:"距上一交易日(天)",wd:"星期",guxia:"天津股侠立场"};
   let D={funds:[],rec:{days:{}},bt:{days:{}},stats:null,strat:null,status:{}};
   let logMode="live";
 
   const chip=d=>{const x=DIR[d]||DIR.flat;return '<span class="chip '+x[1]+'">'+x[0]+'</span>'};
-  const rate=(s,good)=>s&&s.n?'<span class="num '+(good?'rate-good':'')+'">'+s.rate.toFixed(1)+'%</span> <span class="label num">'+s.hit+'/'+s.n+'</span>':'<span class="muted">–</span>';
+  const rate=(s,good)=>s&&s.n?'<span class="num '+(good?'rate-good':'')+'">'+s.rate.toFixed(1)+'%</span> <span class="label num">'+s.hit+'/'+s.n+(s.cover!=null&&s.cover<100?' · 出手'+Math.round(s.cover)+'%':'')+'</span>':'<span class="muted">–</span>';
   const fname=c=>{const f=D.funds.find(x=>x.code===c);return f?f.short:c};
   const codes=()=>D.funds.map(f=>f.code);
 
@@ -151,11 +151,11 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
     const P=s.predictors, L=k=>P[k]&&P[k].live;
     const bases=["base_prev","base_up","base_us"].map(k=>({k,s:L(k)})).filter(x=>x.s&&x.s.n);
     const best=bases.sort((a,b)=>b.s.rate-a.s.rate)[0];
-    $("k-rule").textContent=L("rule").n?L("rule").rate.toFixed(1)+"%":"–"; $("k-rule-n").textContent=L("rule").n+" 次预测";
-    $("k-ai").textContent=L("ai").n?L("ai").rate.toFixed(1)+"%":"–"; $("k-ai-n").textContent=L("ai").n+" 次预测";
+    $("k-rule").textContent=L("rule").n?L("rule").rate.toFixed(1)+"%":"–"; $("k-rule-n").textContent=L("rule").n+" 次出手"+(L("rule").cover!=null?" · 出手率 "+Math.round(L("rule").cover)+"%":"");
+    $("k-ai").textContent=L("ai").n?L("ai").rate.toFixed(1)+"%":"–"; $("k-ai-n").textContent=L("ai").n+" 次出手"+(L("ai").cover!=null?" · 出手率 "+Math.round(L("ai").cover)+"%":"");
     $("k-base").textContent=best?best.s.rate.toFixed(1)+"%":"–"; $("k-base-n").textContent=best?NAMES[best.k].replace("笨办法：",""):"";
-    const bt=P.rule.backtest; $("k-bt").textContent=bt&&bt.n?bt.rate.toFixed(1)+"%":"–"; $("k-bt-n").textContent=bt&&bt.n?bt.n+" 次 · 笨办法最好 "+(bt.vsBest??"–")+"%":"";
-    const n=L("rule").n;
+    const bt=P.rule.backtest; $("k-bt").textContent=bt&&bt.n?bt.rate.toFixed(1)+"%":"–"; $("k-bt-n").textContent=bt&&bt.n?bt.n+" 次出手 · 出手率 "+Math.round(bt.cover)+"% · 笨办法最好 "+(bt.vsBest??"–")+"%":"";
+    const n=L("rule").total||0;
     let t;
     if(n<50) t="实盘样本只有 "+n+" 次（每个交易日 5 次），不足以下结论，先积累。回测里规则模型命中 "+(bt&&bt.n?bt.rate.toFixed(1):"–")+"%，最好的笨办法 "+(bt&&bt.vsBest!=null?bt.vsBest:"–")+"%"+(bt&&bt.p!=null?"，差距是运气的概率约 "+(bt.p*100).toFixed(0)+"%。":"。");
     else{
@@ -192,7 +192,7 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
   }
 
   // ---------- 记录表 ----------
-  function dayScore(d,k){let n=0,h=0;codes().forEach(c=>{const a=d.actual&&d.actual[c],p=d.preds&&d.preds[k]&&d.preds[k][c];if(a==null||p==null)return;n++;h+=((typeof p==="string"?p:p.dir)===dirOf(a))});return n?h+"/"+n:"–"}
+  function dayScore(d,k){let n=0,h=0;codes().forEach(c=>{const a=d.actual&&d.actual[c],p=d.preds&&d.preds[k]&&d.preds[k][c];if(a==null||p==null)return;const dr=typeof p==="string"?p:p.dir;if(dr==="flat")return;n++;h+=(dr===dirOf(a))});return n?h+"/"+n:"–"}
   function renderLog(){
     const src=logMode==="live"?Object.values(D.rec.days).filter(d=>d.phase==="live"):Object.values(D.bt.days||{});
     const rows=src.sort((a,b)=>b.date.localeCompare(a.date));
@@ -203,7 +203,7 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
       h+='<tr class="row" data-i="'+i+'"><td class="num">'+esc(d.date.slice(5))+(d.status==="pending"?'<div class="label">待验证</div>':'')+'</td>';
       codes().forEach(c=>{
         const a=d.actual&&d.actual[c], p=d.preds||{};
-        const mk=k=>{const x=p[k]&&p[k][c];if(!x)return '<span class="muted">–</span>';const dr=typeof x==="string"?x:x.dir;const ar=DIR[dr]||DIR.flat;return '<span class="'+ar[1]+'">'+ar[2]+'</span>'+(a==null?'':(dr===dirOf(a)?'<span class="hitm">✓</span>':'<span class="missm">✗</span>'))};
+        const mk=k=>{const x=p[k]&&p[k][c];if(!x)return '<span class="muted">–</span>';const dr=typeof x==="string"?x:x.dir;const ar=DIR[dr]||DIR.flat;return '<span class="'+ar[1]+'">'+ar[2]+'</span>'+(a==null||dr==="flat"?'':(dr===dirOf(a)?'<span class="hitm">✓</span>':'<span class="missm">✗</span>'))};
         h+='<td><div class="cell"><span>规 '+mk("rule")+'　AI '+mk("ai")+'</span><span class="num '+(a==null?'muted':cls(a))+'">'+fmt(a)+'</span></div></td>';
       });
       h+='<td class="num">'+dayScore(d,"rule")+'</td><td class="num">'+dayScore(d,"ai")+'</td><td class="num">'+dayScore(d,"base_us")+'</td>';
@@ -242,7 +242,7 @@ footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padd
       const sig=x=>x&&x.p!=null?(x.p<0.05?'<span class="rate-good">是（p='+x.p+'）</span>':'否（p='+x.p+'）'):'';
       h+='<tr><td>'+NAMES[k]+'</td><td>'+rate(L,L.n&&L.rate>bestLive&&k.indexOf("base")<0)+'</td><td class="num">'+(L.rangeRate!=null?L.rangeRate.toFixed(1)+'%':'–')+'</td><td>'+(B?rate(B,B.n&&B.rate>bestBt&&k.indexOf("base")<0):'<span class="label">无法回测</span>')+'</td><td class="label">'+(k.indexOf("base")<0?[L.p!=null?'实盘 '+sig(L):'',B&&B.p!=null?'回测 '+sig(B):''].filter(Boolean).join('<br>'):'')+'</td></tr>';
     });
-    h+='</tbody></table></div><p class="label">p 值＝在"真实命中率只等于最好的笨办法"的假设下，出现这么高命中的概率；小于 0.05 才算显著。回测用的是当前规则版本，规则是看着历史数据改的，回测成绩会偏乐观，以实盘为准。</p>';
+    h+='</tbody></table></div><p class="label">命中率只算出手的那些次（判「平」＝不出手）。p 值＝在"真实命中率只等于最好的笨办法"的假设下，出现这么高命中的概率；小于 0.05 才算显著。回测用的是当前规则版本，规则是看着历史数据改的，回测成绩会偏乐观，以实盘为准。</p>';
     h+='<div class="panel"><h3>实盘累计命中率</h3>'+lineChart(s.rolling||[])+'</div>';
     h+='<h3>分基金</h3><div class="tbl-wrap"><table><thead><tr><th>基金</th><th>规则 实盘</th><th>规则 回测</th><th>AI 实盘</th><th>跟随外盘 回测</th><th>昨日延续 回测</th></tr></thead><tbody>';
     codes().forEach(c=>{const b=s.byFund[c];h+='<tr><td>'+esc(fname(c))+'</td><td>'+rate(b.rule.live)+'</td><td>'+rate(b.rule.backtest)+'</td><td>'+rate(b.ai.live)+'</td><td>'+rate(b.base_us.backtest)+'</td><td>'+rate(b.base_prev.backtest)+'</td></tr>'});

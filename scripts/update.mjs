@@ -90,17 +90,35 @@ async function boardSecid(name) {
   return boardCodes[name] || boardCodes[Object.keys(boardCodes).find(n => n.includes(name))] || null;
 }
 
-const K = {};
-for (const [k, [name, secid]] of Object.entries(IDX)) {
-  try { K[k] = await kline(secid); } catch (e) { log(`${name} 行情抓取失败：${e.message}`); K[k] = {}; }
+// Yahoo Finance（GitHub 美国服务器访问稳定）为主，东方财富为备用
+const YAHOO = { sh: ['000001.SS'], cyb: ['399006.SZ'], kc50: ['000688.SS'], ndx: ['^NDX'], sox: ['^SOX'], hstech: ['^HSTECH', '3033.HK'] };
+const YAHOO_BOARD = { '半导体': ['512480.SS'], 'PCB': ['515260.SS'], '元件': ['515260.SS'] };
+async function yahoo(sym) {
+  const t = await get(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1y&interval=1d`);
+  const j = JSON.parse(t)?.chart?.result?.[0]; if (!j?.timestamp) throw new Error('空');
+  const off = j.meta?.gmtoffset || 0, c = j.indicators.quote[0].close, map = {};
+  let prev = null;
+  j.timestamp.forEach((ts, i) => { const v = c[i]; if (v == null) return; if (prev != null) map[new Date((ts + off) * 1000).toISOString().slice(0, 10)] = +((v / prev - 1) * 100).toFixed(2); prev = v; });
+  if (!Object.keys(map).length) throw new Error('空');
+  return map;
 }
+async function series(name, yahooSyms, emSecid) {
+  for (const s of yahooSyms || []) { try { return await yahoo(s); } catch (e) { console.error(`${name} Yahoo ${s}：${e.message}`); } }
+  if (emSecid) { try { return await kline(emSecid); } catch (e) { console.error(`${name} 东财：${e.message}`); } }
+  log(`${name} 行情抓取失败`); return {};
+}
+const K = {};
+for (const [k, [name, secid]] of Object.entries(IDX)) K[k] = await series(name, YAHOO[k], secid);
 const NAV = {}, ANC = {};
 for (const f of funds) {
   try { NAV[f.code] = await navHist(f.code); } catch (e) { log(`${f.short} 净值抓取失败：${e.message}`); NAV[f.code] = {}; }
   if (f.qdii) ANC[f.code] = { name: '纳斯达克100', map: K.ndx };
   else if (ANCHORS[f.code]) {
-    try { const id = await boardSecid(ANCHORS[f.code]); ANC[f.code] = { name: ANCHORS[f.code], map: id ? await kline(id) : {} }; }
-    catch (e) { log(`${ANCHORS[f.code]} 板块行情失败：${e.message}`); ANC[f.code] = { name: ANCHORS[f.code], map: {} }; }
+    const nm = ANCHORS[f.code];
+    let map = {};
+    try { const id = await boardSecid(nm); if (id) map = await kline(id); } catch (e) { console.error(`${nm} 东财板块：${e.message}`); }
+    if (!Object.keys(map).length) map = await series(nm + '（ETF 代替）', YAHOO_BOARD[nm], null);
+    ANC[f.code] = { name: nm, map };
   } else ANC[f.code] = { name: '创业板指', map: K.cyb };
 }
 
@@ -158,7 +176,8 @@ function fires(rule, feat, code) {
   const v = { ...feat.c, ...feat.f[code], qdii: !!FUND[code].qdii };
   try { return !!compile(rule.when)(...VARS.map(k => k === 'qdii' ? v.qdii : (v[k] == null ? NaN : v[k])), Math); } catch { return false; }
 }
-const DIR_OF = v => v > 0.3 ? 'up' : v < -0.3 ? 'down' : 'flat';
+const DIR_OF = v => v > 0.3 ? 'up' : v < -0.3 ? 'down' : 'flat';   // 只用于把因子转成笨办法的方向
+const ACT = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';             // 实际方向：按正负
 function rulePredict(strat, feat, code) {
   let score = 0; const fired = [];
   for (const r of strat.rules) if (fires(r, feat, code)) { fired.push(r.id); if (r.status === 'active') score += r.vote * r.weight; }
@@ -196,16 +215,18 @@ const PREDICTORS = ['rule', 'ai', 'base_prev', 'base_up', 'base_us'];
 function lnC(n, k) { let s = 0; for (let i = 1; i <= k; i++) s += Math.log((n - k + i) / i); return s; }
 function pUpper(n, k, p0) { if (!n) return null; let s = 0; for (let i = k; i <= n; i++) s += Math.exp(lnC(n, i) + i * Math.log(p0) + (n - i) * Math.log(1 - p0)); return Math.min(1, s); }
 function tally(dayList, predictor, codeFilter) {
-  let n = 0, hit = 0, rn = 0, rhit = 0;
+  let n = 0, hit = 0, rn = 0, rhit = 0, tot = 0;
   for (const d of dayList) for (const c of CODES) {
     if (codeFilter && c !== codeFilter) continue;
     const a = d.actual?.[c]; const p = d.preds?.[predictor]?.[c];
     if (a == null || p == null) continue;
     const dir = typeof p === 'string' ? p : p.dir;
-    n++; hit += dir === DIR_OF(a);
+    tot++;
     if (typeof p === 'object' && p.low != null) { rn++; rhit += a >= p.low && a <= p.high; }
+    if (dir === 'flat') continue;   // 判平＝不出手
+    n++; hit += dir === ACT(a);
   }
-  return { n, hit, rate: n ? r2(hit / n * 100) : null, rangeRate: rn ? r2(rhit / rn * 100) : null };
+  return { n, hit, rate: n ? r2(hit / n * 100) : null, total: tot, cover: tot ? r2(n / tot * 100) : null, rangeRate: rn ? r2(rhit / rn * 100) : null };
 }
 function ruleScorecard(strat, dayList) {
   return strat.rules.map(r => {
@@ -213,7 +234,7 @@ function ruleScorecard(strat, dayList) {
     for (const d of dayList) for (const c of CODES) {
       const a = d.actual?.[c]; if (a == null || !d.features) continue;
       if (!fires(r, d.features, c)) continue;
-      n++; hit += (r.vote > 0 ? a > 0.3 : a < -0.3);
+      n++; hit += (r.vote > 0 ? a > 0 : a < 0);
     }
     return { id: r.id, n, hit, rate: n ? r2(hit / n * 100) : null };
   });
@@ -313,7 +334,7 @@ for (const d of toReview) {
   const score = r => { const s = stats.rules.find(x => x.id === r.id); return `${r.id}${r.status === 'shadow' ? '(观察)' : ''}［${r.fund}］${r.name}：when ${r.when} → ${r.vote > 0 ? '看涨' : '看跌'} 权重${r.weight}｜历史触发${s?.n ?? 0}次，命中${s?.rate ?? '–'}%`; };
   try {
     const out = await gemini(`你是量化研究员，在做"基金单日涨跌能否预测"的实验，用简体中文。今天复盘 ${d.date}。
-判定：涨跌幅>+0.3%为up，<-0.3%为down，其余flat；命中=方向一致。
+判定：实际涨跌按正负算涨或跌；预测flat表示不出手（不计入命中率，但出手率太低也说明没本事）。
 
 当日各预测方 vs 实际：
 ${table}
@@ -385,7 +406,7 @@ async function aiPredict(T, feat, rulePreds, note) {
   newsCache ??= await news();
   const recent = Object.values(rec.days).filter(d => d.review?.summary && d.phase === 'live').sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(d => `${d.date}：${d.review.summary}`).join('\n') || '无';
   const out = await gemini(`你在做"基金单日涨跌能否预测"的实验，用简体中文。现在是北京时间 ${nowStr}，请独立判断五只基金在 ${T} 的净值涨跌。${note}
-判定：>+0.3%为up，<-0.3%为down，其余flat。
+判定：实际按正负算涨跌；flat表示不出手，不计入命中率。只在有把握时出手。
 
 基金：
 ${funds.map(f => `${f.code} ${f.name}：${f.drivers.join('；')}`).join('\n')}
@@ -436,7 +457,7 @@ try {
     const e = rec.days[T];
     const isEve = addDays(today, 1) === T || isTD(today);
     if (e?.status === 'reviewed') log(`${T} 已复盘`);
-    else if (!e || !e.features || (isEve && !String(e.madeAt || '').startsWith(today))) {
+    else if (!e || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
       const P = tdays.filter(d => d < T).at(-1) || today;
       let gx = null;
       try { gx = await guxia(P); log(`天津股侠：${gx.stance ?? '无观点'} ${gx.summary}`); } catch (err) { log('天津股侠抓取失败：' + err.message); }
@@ -463,7 +484,7 @@ const csv = ['日期,阶段,规则版本,基金代码,基金,规则方向,规则
 for (const d of [...Object.values(bt), ...Object.values(rec.days).filter(x => x.phase === 'live')].sort((a, b) => a.date.localeCompare(b.date))) {
   for (const f of funds) {
     const p = d.preds || {}, a = d.actual?.[f.code], rl = p.rule?.[f.code], ai = p.ai?.[f.code];
-    csv.push([d.date, d.phase === 'live' ? '实盘' : '回测', d.strategyVersion ?? strategy.version, f.code, f.short, rl?.dir ?? '', rl?.score ?? '', rl?.low ?? '', rl?.high ?? '', ai?.dir ?? '', ai?.low ?? '', ai?.high ?? '', ai?.conf ?? '', p.base_prev?.[f.code] ?? '', p.base_up?.[f.code] ?? '', p.base_us?.[f.code] ?? '', d.guxia?.stance ?? '', a ?? '', a == null || !rl ? '' : +(rl.dir === DIR_OF(a)), a == null || !ai ? '' : +(ai.dir === DIR_OF(a))].join(','));
+    csv.push([d.date, d.phase === 'live' ? '实盘' : '回测', d.strategyVersion ?? strategy.version, f.code, f.short, rl?.dir ?? '', rl?.score ?? '', rl?.low ?? '', rl?.high ?? '', ai?.dir ?? '', ai?.low ?? '', ai?.high ?? '', ai?.conf ?? '', p.base_prev?.[f.code] ?? '', p.base_up?.[f.code] ?? '', p.base_us?.[f.code] ?? '', d.guxia?.stance ?? '', a ?? '', a == null || !rl || rl.dir === 'flat' ? '' : +(rl.dir === ACT(a)), a == null || !ai || ai.dir === 'flat' ? '' : +(ai.dir === ACT(a))].join(','));
   }
 }
 write('records.csv', '﻿' + csv.join('\n') + '\n');
