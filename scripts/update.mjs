@@ -91,7 +91,7 @@ async function boardSecid(name) {
 }
 
 // Yahoo Finance（GitHub 美国服务器访问稳定）为主，东方财富为备用
-const YAHOO = { sh: ['000001.SS'], cyb: ['399006.SZ'], kc50: ['000688.SS'], ndx: ['^NDX'], sox: ['^SOX'], hstech: ['^HSTECH', '3033.HK'] };
+const YAHOO = { sh: ['000001.SS'], cyb: ['399006.SZ', '159915.SZ'], kc50: ['000688.SS', '588000.SS'], ndx: ['^NDX'], sox: ['^SOX'], hstech: ['^HSTECH', '3033.HK'] };
 const YAHOO_BOARD = { '半导体': ['512480.SS'], 'PCB': ['515260.SS'], '元件': ['515260.SS'] };
 async function yahoo(sym) {
   const t = await get(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1y&interval=1d`);
