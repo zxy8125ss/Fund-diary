@@ -77,8 +77,6 @@ details.day>summary:focus-visible{outline:2px solid var(--accent);outline-offset
 .empty{color:var(--muted);padding:18px;text-align:center;background:var(--paper);border:1px dashed var(--line);border-radius:8px}
 .status{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
 .status button,.status a{font:inherit;color:var(--accent);background:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;cursor:pointer;text-decoration:none}
-.status details{width:100%}
-.status pre{white-space:pre-wrap;margin:6px 0 0;font-size:.8rem}
 footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);padding-top:12px}
 </style>
 </head>
@@ -90,8 +88,7 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
       <h1>基金日记</h1>
       <p class="sub">前一交易日晚预测，开盘前用隔夜外盘定稿，净值出来后复盘，经验滚动沉淀。红涨绿跌。</p>
     </div>
-    <div class="status"><span id="st-run">读取中…</span><button id="reload" type="button">刷新</button><a id="run-now" href="#" target="_blank" rel="noopener">手动更新</a>
-      <details><summary>运行日志</summary><pre id="st-log"></pre></details></div>
+    <div class="status"><span id="st-run">读取中…</span><button id="reload" type="button">刷新</button><a id="run-now" href="#" target="_blank" rel="noopener">手动更新</a></div>
     <div class="stats">
       <div class="stat"><span class="label">已复盘交易日</span><b id="s-days">–</b></div>
       <div class="stat"><span class="label">方向命中率</span><b id="s-hit">–</b></div>
@@ -159,11 +156,19 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
     $("s-mae").textContent=n?(es/n).toFixed(2)+"%":"–";
   }
 
+  function benchCell(e,c,a){
+    const list=e.bench&&e.bench.funds&&e.bench.funds[c];
+    if(a==null||!list||!list.length)return '<span class="miss">–</span>';
+    const x=list[0].pct;
+    const bad=(a*x<0&&Math.abs(a)>0.5&&Math.abs(x)>0.5)||Math.abs(a-x)>4;
+    return list.map(b=>'<div class="num" style="font-size:.82rem">'+esc(b.name)+' <span class="'+cls(b.pct)+'">'+fmtPct(b.pct)+'</span></div>').join('')+
+      (bad?'<span class="chip flat">⚠ 背离，需核对</span>':'<span class="chip st">✓ 一致</span>');
+  }
   function predTable(e,withActual){
     const codes=orderedCodes(e.preds);
     if(!codes.length)return '<p class="sub">本日无预测。</p>';
     let h='<div class="tbl-wrap"><table><thead><tr><th>基金</th><th>方向</th><th>预测区间</th><th>信心</th>';
-    if(withActual)h+='<th>实际</th><th>判定</th>';
+    if(withActual)h+='<th>实际</th><th>判定</th><th>大盘核验</th>';
     h+='<th>'+(withActual?'复盘要点':'预测依据')+'</th></tr></thead><tbody>';
     codes.forEach(c=>{
       const p=e.preds[c];const d=DIR[p.dir]||DIR.flat;
@@ -174,6 +179,7 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
       if(withActual){
         h+='<td class="num '+(a==null?"":cls(a))+'">'+fmtPct(a)+'</td>';
         h+='<td>'+(j?(j.dirHit?'<span class="hit up">✓ 方向</span>':'<span class="miss">✗ 方向</span>')+'<br>'+(j.rangeHit?'<span class="hit up">✓ 区间</span>':'<span class="miss">✗ 区间</span>'):'<span class="miss">待净值</span>')+'</td>';
+        h+='<td>'+benchCell(e,c,a)+'</td>';
         const r=e.review&&e.review.perFund&&e.review.perFund[c];
         h+='<td class="basis">'+esc(r||p.basis||"")+'</td>';
       }else h+='<td class="basis">'+esc(p.basis||"")+'</td>';
@@ -182,6 +188,11 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
     return h+'</tbody></table></div>';
   }
 
+  function benchOnly(e){
+    const codes=orderedCodes(e.actual);if(!codes.length)return '';
+    return '<div class="tbl-wrap"><table><thead><tr><th>基金</th><th>实际</th><th>大盘核验</th></tr></thead><tbody>'+
+      codes.map(c=>'<tr><td>'+esc(fundName(c))+'</td><td class="num '+cls(e.actual[c])+'">'+fmtPct(e.actual[c])+'</td><td>'+benchCell(e,c,e.actual[c])+'</td></tr>').join('')+'</tbody></table></div>';
+  }
   function renderNext(){
     const pending=entries.filter(e=>e.status==="predicted").sort((a,b)=>b.date.localeCompare(a.date));
     const e=pending[0];
@@ -200,9 +211,10 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
       return '<details class="day"'+(i===0?' open':'')+'><summary><span class="sum-date">'+esc(e.date)+'</span>'+
         (e.status==="baseline"?'<span class="chip st">基准</span>':'<span class="chip st">已复盘</span>')+
         '<span class="sum-score">'+score+'</span></summary><div class="day-body">'+
-        (actualChips?'<div style="display:flex;flex-wrap:wrap;gap:6px">'+actualChips+'</div>':'')+
+        
         ((e.marketActual||e.market)?'<div class="ctx"><span class="label">'+(e.marketActual?'当日市场':'预测时背景')+'</span>\n'+esc(e.marketActual||e.market)+'</div>':'')+
-        (e.preds&&Object.keys(e.preds).length?predTable(e,true):'')+
+        (e.bench&&e.bench.market&&Object.keys(e.bench.market).length?'<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="label">当日大盘</span>'+Object.entries(e.bench.market).map(([n,v])=>'<span class="chip num '+cls(v)+'">'+esc(n)+' '+fmtPct(v)+'</span>').join(' ')+'</div>':'')+
+        (e.preds&&Object.keys(e.preds).length?predTable(e,true):benchOnly(e))+
         (e.review&&e.review.summary?'<div class="review"><span class="label">复盘经验</span>\n'+esc(e.review.summary)+'</div>':'')+
         '</div></details>';
     }).join("");
@@ -237,7 +249,6 @@ footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);paddi
       funds=[...f].sort((a,b)=>(a.order||0)-(b.order||0)).map(x=>({...x,asof:x.navDate}));
       entries=Object.values(d.entries||{});lessons=d.lessons||[];
       $("st-run").textContent=s.lastRun?('上次自动更新 '+s.lastRun+(s.mode==='morning'?'（晨间）':'（晚间）')):'尚未自动更新';
-      $("st-log").textContent=(s.report||[]).join('\n');
       renderAll();
     }catch(e){$("st-run").textContent='数据读取失败：'+e.message+'（离线时显示上次缓存）'}
   }

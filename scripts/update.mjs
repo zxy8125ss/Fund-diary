@@ -171,6 +171,61 @@ function stats() {
   return n ? `累计 ${n} 次预测，方向命中 ${(dh / n * 100).toFixed(0)}%，区间命中 ${(rh / n * 100).toFixed(0)}%` : '尚无复盘数据';
 }
 
+// ---------- 3b. 大盘交叉验证：每个日期记录大盘和各基金锚定指数的当日涨跌 ----------
+const MARKET_IDX = [['上证指数', '1.000001'], ['创业板指', '0.399006'], ['科创50', '1.000688'], ['纳斯达克100', '100.NDX']];
+const ANCHORS = {
+  '002910': [{ name: '科创50', secid: '1.000688' }, { board: '半导体' }],
+  '005698': [{ name: '纳斯达克100', secid: '100.NDX' }, { name: '费城半导体', secid: '100.SOX' }],
+  '024481': [{ board: 'PCB' }, { name: '创业板指', secid: '0.399006' }],
+  '015060': [{ board: '元件' }, { name: '创业板指', secid: '0.399006' }],
+  '001672': [{ name: '创业板指', secid: '0.399006' }, { name: '科创50', secid: '1.000688' }],
+};
+const klineCache = {};
+async function kline(secid) {
+  if (klineCache[secid]) return klineCache[secid];
+  const t = await get(`https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${secid}&klt=101&fqt=1&lmt=40&end=20500101&fields1=f1,f2,f3&fields2=f51,f53,f59`);
+  const map = {};
+  for (const k of JSON.parse(t)?.data?.klines || []) { const [d, , p] = k.split(','); map[d] = Number(p); }
+  return (klineCache[secid] = map);
+}
+let boardCodes = null;
+async function boardSecid(name) {
+  if (!boardCodes) {
+    boardCodes = {};
+    for (const fs_ of ['m:90+t:2', 'm:90+t:3']) {
+      try {
+        const t = await get(`https://push2.eastmoney.com/api/qt/clist/get?pn=1&pz=800&po=1&np=1&fltt=2&fid=f3&fs=${fs_}&fields=f12,f14`);
+        for (const x of JSON.parse(t)?.data?.diff || []) boardCodes[x.f14] ??= '90.' + x.f12;
+      } catch (e) { log('板块代码抓取失败：' + e.message); }
+    }
+  }
+  if (boardCodes[name]) return boardCodes[name];
+  const k = Object.keys(boardCodes).find(n => n.includes(name));
+  return k ? boardCodes[k] : null;
+}
+async function idxPct(a, date) {
+  try {
+    const secid = a.secid || await boardSecid(a.board);
+    if (!secid) return null;
+    const v = (await kline(secid))[date];
+    return Number.isFinite(v) ? { name: a.name || a.board, pct: v } : null;
+  } catch { return null; }
+}
+for (const e of Object.values(diary.entries)) {
+  if (e.date > today) continue;
+  const has = e.bench && Object.keys(e.bench.market || {}).length && funds.every(f => e.actual?.[f.code] == null || e.bench.funds?.[f.code]?.length);
+  if (has) continue;
+  const b = { market: {}, funds: {} };
+  for (const [n, id] of MARKET_IDX) { const r = await idxPct({ name: n, secid: id }, e.date); if (r) b.market[n] = r.pct; }
+  for (const f of funds) {
+    if (e.actual?.[f.code] == null) continue;
+    const list = [];
+    for (const a of ANCHORS[f.code] || []) { const r = await idxPct(a, e.date); if (r) list.push(r); }
+    if (list.length) b.funds[f.code] = list;
+  }
+  if (Object.keys(b.market).length || Object.keys(b.funds).length) e.bench = b;
+}
+
 // ---------- 4. 复盘 ----------
 let snap = null;
 const getSnap = async () => (snap ??= await snapshot());
@@ -193,7 +248,7 @@ for (const e of Object.values(diary.entries).sort((a, b) => a.date.localeCompare
 
   const rows = funds.filter(f => e.preds?.[f.code]).map(f => {
     const p = e.preds[f.code], a = e.actual[f.code];
-    return `${f.code} ${f.short}：预测 ${p.dir} [${p.low}, ${p.high}]% 信心${p.conf}；依据：${p.basis}；实际 ${a == null ? '净值未出' : pct(a)}`;
+    return `${f.code} ${f.short}：预测 ${p.dir} [${p.low}, ${p.high}]% 信心${p.conf}；依据：${p.basis}；实际 ${a == null ? '净值未出' : pct(a)}${(e.bench?.funds?.[f.code] || []).length ? '；同日锚定指数 ' + e.bench.funds[f.code].map(x => x.name + ' ' + pct(x.pct)).join('、') : ''}`;
   }).join('\n');
   e.status = 'reviewed'; e.reviewedAt = nowStr;
   try {
@@ -201,6 +256,8 @@ for (const e of Object.values(diary.entries).sort((a, b) => a.date.localeCompare
 ${rows}
 
 预测时的市场背景：${e.market || '无'}
+
+当日大盘：${Object.entries(e.bench?.market || {}).map(([n, v]) => n + ' ' + pct(v)).join('，') || '未取到'}
 
 复盘时（${nowStr}）抓到的市场数据：
 ${await getSnap()}
