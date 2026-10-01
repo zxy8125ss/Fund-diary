@@ -1,7 +1,7 @@
 {
- "lastRun": null,
- "mode": null,
+ "lastRun": "2026-10-01 21:06",
+ "mode": "evening",
  "report": [
-  "尚未运行自动更新"
+  "预测失败：缺少 GEMINI_API_KEY"
  ]
 }
