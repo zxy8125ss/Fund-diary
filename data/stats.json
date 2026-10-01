@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-01 21:35",
+ "updatedAt": "2026-10-01 21:43",
  "strategyVersion": 1,
  "predictors": {
   "rule": {
@@ -7,15 +7,19 @@
     "n": 0,
     "hit": 0,
     "rate": null,
+    "total": 0,
+    "cover": null,
     "rangeRate": null
    },
    "backtest": {
-    "n": 599,
-    "hit": 64,
-    "rate": 10.68,
-    "rangeRate": 61.94,
-    "vsBest": 51.09,
-    "p": 1
+    "n": 299,
+    "hit": 171,
+    "rate": 57.19,
+    "total": 599,
+    "cover": 49.92,
+    "rangeRate": 60.43,
+    "vsBest": 57.43,
+    "p": 0.558
    }
   },
   "ai": {
@@ -23,6 +27,8 @@
     "n": 0,
     "hit": 0,
     "rate": null,
+    "total": 0,
+    "cover": null,
     "rangeRate": null
    },
    "backtest": null
@@ -32,12 +38,16 @@
     "n": 0,
     "hit": 0,
     "rate": null,
+    "total": 0,
+    "cover": null,
     "rangeRate": null
    },
    "backtest": {
-    "n": 599,
-    "hit": 246,
-    "rate": 41.07,
+    "n": 548,
+    "hit": 263,
+    "rate": 47.99,
+    "total": 599,
+    "cover": 91.49,
     "rangeRate": null
    }
   },
@@ -46,12 +56,16 @@
     "n": 0,
     "hit": 0,
     "rate": null,
+    "total": 0,
+    "cover": null,
     "rangeRate": null
    },
    "backtest": {
     "n": 599,
-    "hit": 306,
-    "rate": 51.09,
+    "hit": 329,
+    "rate": 54.92,
+    "total": 599,
+    "cover": 100,
     "rangeRate": null
    }
   },
@@ -60,12 +74,16 @@
     "n": 0,
     "hit": 0,
     "rate": null,
+    "total": 0,
+    "cover": null,
     "rangeRate": null
    },
    "backtest": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
+    "n": 545,
+    "hit": 313,
+    "rate": 57.43,
+    "total": 599,
+    "cover": 90.98,
     "rangeRate": null
    }
   }
@@ -77,13 +95,17 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 15,
-     "rate": 12.5,
-     "rangeRate": 65.83
+     "n": 70,
+     "hit": 41,
+     "rate": 58.57,
+     "total": 120,
+     "cover": 58.33,
+     "rangeRate": 61.67
     }
    },
    "ai": {
@@ -91,6 +113,8 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": null
@@ -100,12 +124,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 49,
-     "rate": 40.83,
+     "n": 106,
+     "hit": 52,
+     "rate": 49.06,
+     "total": 120,
+     "cover": 88.33,
      "rangeRate": null
     }
    },
@@ -114,12 +142,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
      "n": 120,
-     "hit": 65,
-     "rate": 54.17,
+     "hit": 71,
+     "rate": 59.17,
+     "total": 120,
+     "cover": 100,
      "rangeRate": null
     }
    },
@@ -128,12 +160,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
+     "n": 112,
+     "hit": 67,
+     "rate": 59.82,
+     "total": 120,
+     "cover": 93.33,
      "rangeRate": null
     }
    }
@@ -144,13 +180,17 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 119,
+     "n": 28,
      "hit": 16,
-     "rate": 13.45,
-     "rangeRate": 61.34
+     "rate": 57.14,
+     "total": 119,
+     "cover": 23.53,
+     "rangeRate": 58.82
     }
    },
    "ai": {
@@ -158,6 +198,8 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": null
@@ -167,12 +209,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 119,
-     "hit": 47,
-     "rate": 39.5,
+     "n": 104,
+     "hit": 55,
+     "rate": 52.88,
+     "total": 119,
+     "cover": 87.39,
      "rangeRate": null
     }
    },
@@ -181,12 +227,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
      "n": 119,
-     "hit": 58,
-     "rate": 48.74,
+     "hit": 64,
+     "rate": 53.78,
+     "total": 119,
+     "cover": 100,
      "rangeRate": null
     }
    },
@@ -195,12 +245,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
+     "n": 97,
+     "hit": 50,
+     "rate": 51.55,
+     "total": 119,
+     "cover": 81.51,
      "rangeRate": null
     }
    }
@@ -211,13 +265,17 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 14,
-     "rate": 11.67,
-     "rangeRate": 65
+     "n": 62,
+     "hit": 34,
+     "rate": 54.84,
+     "total": 120,
+     "cover": 51.67,
+     "rangeRate": 62.5
     }
    },
    "ai": {
@@ -225,6 +283,8 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": null
@@ -234,12 +294,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 46,
-     "rate": 38.33,
+     "n": 110,
+     "hit": 50,
+     "rate": 45.45,
+     "total": 120,
+     "cover": 91.67,
      "rangeRate": null
     }
    },
@@ -248,12 +312,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
      "n": 120,
-     "hit": 62,
-     "rate": 51.67,
+     "hit": 65,
+     "rate": 54.17,
+     "total": 120,
+     "cover": 100,
      "rangeRate": null
     }
    },
@@ -262,12 +330,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
+     "n": 112,
+     "hit": 65,
+     "rate": 58.04,
+     "total": 120,
+     "cover": 93.33,
      "rangeRate": null
     }
    }
@@ -278,12 +350,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 9,
-     "rate": 7.5,
+     "n": 69,
+     "hit": 38,
+     "rate": 55.07,
+     "total": 120,
+     "cover": 57.5,
      "rangeRate": 57.5
     }
    },
@@ -292,6 +368,8 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": null
@@ -301,12 +379,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 52,
-     "rate": 43.33,
+     "n": 115,
+     "hit": 53,
+     "rate": 46.09,
+     "total": 120,
+     "cover": 95.83,
      "rangeRate": null
     }
    },
@@ -315,12 +397,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
      "n": 120,
-     "hit": 62,
-     "rate": 51.67,
+     "hit": 64,
+     "rate": 53.33,
+     "total": 120,
+     "cover": 100,
      "rangeRate": null
     }
    },
@@ -329,12 +415,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
+     "n": 112,
+     "hit": 64,
+     "rate": 57.14,
+     "total": 120,
+     "cover": 93.33,
      "rangeRate": null
     }
    }
@@ -345,13 +435,17 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 10,
-     "rate": 8.33,
-     "rangeRate": 60
+     "n": 70,
+     "hit": 42,
+     "rate": 60,
+     "total": 120,
+     "cover": 58.33,
+     "rangeRate": 61.67
     }
    },
    "ai": {
@@ -359,6 +453,8 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": null
@@ -368,12 +464,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 120,
-     "hit": 52,
-     "rate": 43.33,
+     "n": 113,
+     "hit": 53,
+     "rate": 46.9,
+     "total": 120,
+     "cover": 94.17,
      "rangeRate": null
     }
    },
@@ -382,12 +482,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
      "n": 120,
-     "hit": 59,
-     "rate": 49.17,
+     "hit": 65,
+     "rate": 54.17,
+     "total": 120,
+     "cover": 100,
      "rangeRate": null
     }
    },
@@ -396,12 +500,16 @@
      "n": 0,
      "hit": 0,
      "rate": null,
+     "total": 0,
+     "cover": null,
      "rangeRate": null
     },
     "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
+     "n": 112,
+     "hit": 67,
+     "rate": 59.82,
+     "total": 120,
+     "cover": 93.33,
      "rangeRate": null
     }
    }
@@ -410,33 +518,33 @@
  "rules": [
   {
    "id": "R1",
-   "n": 0,
-   "hit": 0,
-   "rate": null
+   "n": 256,
+   "hit": 150,
+   "rate": 58.59
   },
   {
    "id": "R2",
-   "n": 0,
-   "hit": 0,
-   "rate": null
+   "n": 166,
+   "hit": 91,
+   "rate": 54.82
   },
   {
    "id": "R3",
    "n": 68,
-   "hit": 26,
-   "rate": 38.24
+   "hit": 28,
+   "rate": 41.18
   },
   {
    "id": "R4",
    "n": 117,
-   "hit": 44,
-   "rate": 37.61
+   "hit": 47,
+   "rate": 40.17
   },
   {
    "id": "R5",
    "n": 93,
-   "hit": 44,
-   "rate": 47.31
+   "hit": 48,
+   "rate": 51.61
   },
   {
    "id": "S1",
@@ -470,27 +578,27 @@
   },
   {
    "id": "S6",
-   "n": 0,
-   "hit": 0,
-   "rate": null
+   "n": 77,
+   "hit": 47,
+   "rate": 61.04
   },
   {
    "id": "S7",
-   "n": 0,
-   "hit": 0,
-   "rate": null
+   "n": 84,
+   "hit": 37,
+   "rate": 44.05
   },
   {
    "id": "S8",
    "n": 120,
-   "hit": 49,
-   "rate": 40.83
+   "hit": 56,
+   "rate": 46.67
   },
   {
    "id": "S9",
-   "n": 84,
-   "hit": 50,
-   "rate": 59.52
+   "n": 88,
+   "hit": 51,
+   "rate": 57.95
   }
  ],
  "rolling": [],
