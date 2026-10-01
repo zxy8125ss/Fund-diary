@@ -6,6 +6,10 @@ on:
     - cron: '13 14 * * *'
     # 00:07 UTC = 北京时间 08:07，周一至周五（用隔夜美股定稿当日预测）
     - cron: '7 0 * * 1-5'
+  # Claude 推送代码或规则修改后自动跑一次（机器人提交的数据更新不会再触发，不会循环）
+  push:
+    branches: [main]
+    paths: ['scripts/**', '.github/workflows/**', 'data/strategy.json', 'data/funds.json', 'data/calendar.json']
   workflow_dispatch:
     inputs:
       mode:
