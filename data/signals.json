@@ -1,0 +1,358 @@
+[
+ {
+  "id": "R001",
+  "name": "隔夜外盘大涨跟涨（QDII看纳指，其余看费城半导体）",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "(qdii ? ndx_on : sox_on) > 1",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "R1",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R002",
+  "name": "隔夜外盘大跌跟跌",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "(qdii ? ndx_on : sox_on) < -1",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "R2",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R003",
+  "name": "近5日跌超8%，超跌反弹",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "mom5 < -8",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "R3",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R004",
+  "name": "近5日涨超8%，涨多回调",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "mom5 > 8",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "R4",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R005",
+  "name": "单日大跌超3%后反抽",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "prev < -3",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "R5",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R006",
+  "name": "天津股侠看多（跟随）",
+  "sourceType": "外部观点",
+  "scope": "*",
+  "when": "guxia >= 1",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S1",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R007",
+  "name": "天津股侠看空（跟随）",
+  "sourceType": "外部观点",
+  "scope": "*",
+  "when": "guxia <= -1",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S2",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R008",
+  "name": "天津股侠看多（反向）",
+  "sourceType": "外部观点",
+  "scope": "*",
+  "when": "guxia >= 1",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S3",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R009",
+  "name": "天津股侠看空（反向）",
+  "sourceType": "外部观点",
+  "scope": "*",
+  "when": "guxia <= -1",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S4",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R010",
+  "name": "长假后首日看涨",
+  "sourceType": "日历",
+  "scope": "*",
+  "when": "gap >= 4",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S5",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R011",
+  "name": "跑输锚定指数2%以上，次日补涨",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "dev < -2",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S6",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R012",
+  "name": "跑赢锚定指数2%以上，次日回吐",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "dev > 2",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S7",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R013",
+  "name": "周一看跌",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "wd == 1",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S8",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R014",
+  "name": "恒生科技前一日大涨跟涨",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "!qdii && hstech_prev > 1.5",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-01",
+  "legacyId": "S9",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "从 v1 规则迁移，按新状态机重新判定"
+   }
+  ]
+ },
+ {
+  "id": "R015",
+  "name": "隔夜纳指涨超1%（科技跟涨）",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "ndx_on > 1",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-06",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "新增"
+   }
+  ]
+ },
+ {
+  "id": "R016",
+  "name": "隔夜纳指跌超1%（科技跟跌）",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "ndx_on < -1",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-06",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "新增"
+   }
+  ]
+ },
+ {
+  "id": "R017",
+  "name": "锚定指数近3日涨超3%（动量延续）",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "anc_mom3 > 3",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-06",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "新增"
+   }
+  ]
+ },
+ {
+  "id": "R018",
+  "name": "锚定指数近3日跌超3%（动量延续）",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "anc_mom3 < -3",
+  "vote": -1,
+  "status": "实验中",
+  "createdAt": "2026-10-06",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "新增"
+   }
+  ]
+ },
+ {
+  "id": "R019",
+  "name": "中概互联网隔夜涨超2%",
+  "sourceType": "行情",
+  "scope": "*",
+  "when": "kweb_on > 2",
+  "vote": 1,
+  "status": "实验中",
+  "createdAt": "2026-10-06",
+  "statusHistory": [
+   {
+    "date": "2026-10-06",
+    "from": null,
+    "to": "实验中",
+    "why": "新增"
+   }
+  ]
+ }
+]

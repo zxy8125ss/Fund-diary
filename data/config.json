@@ -1,0 +1,12 @@
+{
+ "flatBand": 0.1,
+ "deadline": "09:25",
+ "researchDays": 160,
+ "holdoutDays": 40,
+ "minSamples": 20,
+ "retireAfter": 20,
+ "gate": {
+  "mae": 0.02,
+  "hit": 1
+ }
+}

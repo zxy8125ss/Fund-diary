@@ -2,18 +2,18 @@ name: 更新基金日记
 
 on:
   schedule:
-    # GitHub 使用 UTC：14:13 UTC = 北京时间 22:13（复盘 + 预测下一交易日）
+    # GitHub 使用 UTC：14:13 UTC = 北京时间 22:13（结算今天：评分、复盘、信号统计、模型门槛；再出下一交易日晚间草稿）
     - cron: '13 14 * * *'
-    # 00:07 UTC = 北京时间 08:07，周一至周五（用隔夜美股定稿当日预测）
+    # 00:07 UTC = 北京时间 08:07，周一至周五（隔夜美股收盘后出早间快照和草稿，供 9:25 前填写预测）
     - cron: '7 0 * * 1-5'
   # Claude 推送代码或规则修改后自动跑一次（机器人提交的数据更新不会再触发，不会循环）
   push:
     branches: [main]
-    paths: ['scripts/**', '.github/workflows/**', 'data/strategy.json', 'data/funds.json', 'data/calendar.json']
+    paths: ['scripts/**', '.github/workflows/**', 'data/config.json', 'data/funds.json', 'data/calendar.json']
   workflow_dispatch:
     inputs:
       mode:
-        description: 'evening=复盘+预测下一交易日；morning=开盘前定稿'
+        description: 'evening=结算+下一交易日晚间草稿；morning=早间快照与草稿'
         required: false
         default: 'evening'
         type: choice
@@ -32,6 +32,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # 需要完整提交历史来核验预测的锁定时间
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
@@ -40,7 +42,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
           MODE: ${{ github.event.inputs.mode || (github.event.schedule == '7 0 * * 1-5' && 'morning') || 'evening' }}
-        run: node scripts/update.mjs
+        run: node scripts/run.mjs
       - name: 提交更新
         run: |
           git config user.name "fund-diary-bot"
@@ -48,4 +50,4 @@ jobs:
           git add data/
           if git diff --cached --quiet; then echo "数据无变化"; exit 0; fi
           git commit -m "更新基金日记 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M')"
-          git push
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
