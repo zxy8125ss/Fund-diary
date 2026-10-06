@@ -171,11 +171,13 @@ function features(T, asOfIso, extra = {}) {
   const A = ms(asOfIso), refs = {};
   const one = (key, s) => { const x = avail(s, T, A, 1)[0]; if (x) refs[key] = { id: `${s.id}@${x.date}`, date: x.date, cutoff: s.cutoff(x.date) }; return x ? r2(x.v) : null; };
   const P_ = prevTD(T);
+  // 隔夜/假期累计：上一个 A 股交易日收盘之后发生的外盘涨跌（长假时把假期内每天累加）
+  const since = (key, s) => { const xs = avail(s, T, A, 15).filter(x => x.date >= P_); if (!xs.length) return null; const l = xs.at(-1); refs[key] = { id: `${s.id}@${l.date}`, date: l.date, cutoff: s.cutoff(l.date), from: xs[0].date, days: xs.length }; return r2((xs.reduce((m, x) => m * (1 + x.v / 100), 1) - 1) * 100); };
   const c = {
     sh_prev: one('sh_prev', S.sh), cyb_prev: one('cyb_prev', S.cyb), kc50_prev: one('kc50_prev', S.kc50),
     kc50_mom5: r2(sum(avail(S.kc50, T, A, 5).map(x => x.v))),
-    ndx_on: one('ndx_on', S.ndx), spx_on: one('spx_on', S.spx), sox_on: one('sox_on', S.sox), kweb_on: one('kweb_on', S.kweb),
-    hstech_prev: one('hstech_prev', S.hstech),
+    ndx_on: since('ndx_on', S.ndx), spx_on: since('spx_on', S.spx), sox_on: since('sox_on', S.sox), kweb_on: since('kweb_on', S.kweb),
+    hstech_prev: since('hstech_prev', S.hstech),
     gap: dayNum(T) - dayNum(P_), wd: weekday(T), guxia: extra.guxia ?? null,
   };
   const f = {};
@@ -356,7 +358,7 @@ function snapshotItems(feat, newsList, asOfIso) {
   for (const [k, ref] of Object.entries(feat.refs)) {
     const [code, sub] = k.includes('.') ? k.split('.') : [null, null];
     const value = code ? feat.f[code][sub] : feat.c[k];
-    const name = code ? `${FUND[code].short}${sub === 'prev' ? ' 上一净值日涨跌' : ' 锚定（' + FUND[code].anchor.name + '）'}` : VAR_NAMES[k] || k;
+    const name = (code ? `${FUND[code].short}${sub === 'prev' ? ' 上一净值日涨跌' : ' 锚定（' + FUND[code].anchor.name + '）'}` : VAR_NAMES[k] || k) + (ref.days > 1 ? `（${ref.from}起 ${ref.days} 个交易日累计）` : '');
     items.push({ id: ref.id, key: k, name, value, unit: '%', dataTime: ref.date, cutoff: ref.cutoff, fetchedAt: nowISO, kind: '行情' });
   }
   for (const n of newsList.filter(n => ms(n.time) <= ms(asOfIso) && NEWS_KEYS.test(n.text)).slice(0, 25))
