@@ -1,4 +1,4 @@
-// 基金日记 v2 · 实验引擎（设计见 docs/DESIGN.md）
+// 基金日记 v2 · 实验引擎（设计见 docs/DESIGN.md · 2026-10-08 起正式运行）
 // MODE=evening：结算今天（净值→评分→复盘→信号统计→模型门槛），再为下一交易日出晚间快照与草稿
 // MODE=morning：为今天出早间快照与草稿（隔夜美股已收盘）
 import fs from 'node:fs';
