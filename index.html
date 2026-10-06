@@ -58,6 +58,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var
 .lr .why{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lr .p{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right}
 .lr .rg{font-family:var(--f-num);font-size:12.5px;color:var(--sub);text-align:right}
+.list.two .lh,.list.two .lr{grid-template-columns:minmax(0,1fr) 80px}
 .det{padding:4px 16px 14px;border-bottom:1px solid var(--line);font-size:13px;display:flex;flex-direction:column;gap:6px;background:var(--soft)}
 .kv{display:flex;flex-wrap:wrap;gap:6px 14px}
 .kv span b{font-family:var(--f-num);font-weight:600}
@@ -156,11 +157,11 @@ a{color:var(--accent)}
         '<div style="display:flex;gap:22px;align-items:baseline;flex-wrap:wrap"><span><span class="big">'+hit+'/'+n+'</span> <span class="sub small">方向猜对</span></span><span><span class="num" style="font-size:20px;font-weight:600">'+(en?(es/en).toFixed(2):"–")+'</span> <span class="sub small">平均误差（百分点）</span></span></div>'+
         (d.review&&d.review.summary?'<b style="font-size:13px">复盘</b><ol class="pts">'+lines(d.review.summary).map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>':'')+'</div>';
     }
-    h+='<div class="list"><div class="lh"><span>基金</span><span style="text-align:right">预测</span><span style="text-align:right">'+(predView==="today"?"规则参考":"实际")+'</span></div>';
+    h+='<div class="list'+(predView==="today"?' two':'')+'"><div class="lh"><span>基金</span><span style="text-align:right">预测</span>'+(predView==="today"?'':'<span style="text-align:right">实际</span>')+'</div>';
     D.funds.forEach(f=>{
       const c=f.code,v=main(c),r=d.preds.rule&&d.preds.rule[c],ai=d.preds.ai&&d.preds.ai[c],a=d.actual&&d.actual[c];
       const why=(ai&&ai.points&&ai.points[0])||"—";
-      const right=predView==="today"?'<span class="rg">'+fmt(V(r))+'</span>':'<span class="rg"><span class="'+vCls(a)+'" style="font-weight:600">'+fmt(a)+'</span> '+(hitOf(v,a)==null?'':hitOf(v,a)?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</span>';
+      const right=predView==="today"?'':'<span class="rg"><span class="'+vCls(a)+'" style="font-weight:600">'+fmt(a)+'</span> '+(hitOf(v,a)==null?'':hitOf(v,a)?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</span>';
       const key=d.date+c;
       h+='<button class="lr" data-k="'+key+'" aria-expanded="'+!!open[key]+'"><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span class="nm">'+esc(f.short)+'</span><span class="why">'+esc(why)+'</span></span><span class="p '+vCls(v)+'">'+fmt(v)+'</span>'+right+'</button>';
       if(open[key]){
