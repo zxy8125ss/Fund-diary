@@ -487,7 +487,7 @@ ${newsCache.join('\n') || '无'}
 
 历史证据（回测+实盘，每条信号触发后的命中率与95%区间）：
 ${stats.rules.filter(x => x.n >= 20).map(x => { const r = strategy.rules.find(y => y.id === x.id); return `${r.name}：${x.rate}%（${x.lo}~${x.hi}，${x.n}次，${x.verdict}）`; }).join('\n')}
-上面判为"反向/无效"的规律不能当作依据；"不确定"的只能作辅助。
+命中率低于50%的规律，实际更常反着走，不能按原方向当依据（例如"超跌反弹"若低于50%，就不能说超跌会反弹）；"不确定"的只能作辅助。要点里引用任何规律，都要写出它的历史命中率。
 
 要求：用你自己的分析思路，不要转述别人的观点。
 1. 先判断科技仓整体（五只平均）：tech.points 给 3~5 条分析要点，每条 {"k":"维度","t":"判断，30字内，引用具体数值或快讯"}，维度从 外盘、板块动量、资金与情绪、消息面、历史规律 中选；tech.conclusion 一句话结论（30字内）；tech.p_up 涨的概率。
@@ -514,7 +514,7 @@ async function makePrediction(T, phaseNote, keepEvening) {
   const gx = old?.guxia || null;
   if (gx?.stance != null) feat.c.guxia = gx.stance;
   const preds = buildPreds(strategy, feat, bt.cal);
-  const day = { date: T, phase: 'live', format: 2, evidenceV: 1, status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, lockedAt: phaseNote.includes('定稿') ? nowStr : null, features: feat, preds, actual: old?.actual || {}, guxia: gx };
+  const day = { date: T, phase: 'live', format: 2, evidenceV: 2, status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, lockedAt: phaseNote.includes('定稿') ? nowStr : null, features: feat, preds, actual: old?.actual || {}, guxia: gx };
   if (keepEvening && old?.preds && old.format === 2) day.predsEvening = old.preds;
   try {
     const note = phaseNote.includes('定稿') ? '这是开盘前定稿，隔夜美股已收盘。' : (isTD(today) ? '' : '今天A股休市，注意休市期间外盘累计表现。');
@@ -531,7 +531,7 @@ try {
     const e = rec.days[T];
     const isEve = addDays(today, 1) === T || isTD(today);
     if (e?.status === 'reviewed') log(`${T} 已复盘`);
-    else if (!e || e.format !== 2 || !e.tech?.points || e.evidenceV !== 1 || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
+    else if (!e || e.format !== 2 || !e.tech?.points || e.evidenceV !== 2 || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
       const P = tdays.filter(d => d < T).at(-1) || today;
       let gx = null;
       try { gx = await guxia(P); log(`天津股侠：${gx.stance ?? '无观点'} ${gx.summary}`); } catch (err) { log('天津股侠抓取失败：' + err.message); }
