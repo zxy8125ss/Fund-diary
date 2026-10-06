@@ -1,0 +1,373 @@
+{
+ "updatedAt": "2026-10-06T19:37:22+08:00",
+ "days": 0,
+ "predictors": {
+  "user": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "ai": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "model": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_us": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_prev": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_zero": {
+   "n": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  }
+ },
+ "vsBench": {
+  "user": {
+   "bench_us": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   }
+  },
+  "ai": {
+   "bench_us": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   }
+  },
+  "model": {
+   "bench_us": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "maeGain": null,
+    "hitGain": null,
+    "maeImprovePct": null
+   }
+  }
+ },
+ "byFund": {
+  "002910": {
+   "user": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_us": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "005698": {
+   "user": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_us": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "024481": {
+   "user": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_us": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "015060": {
+   "user": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_us": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "001672": {
+   "user": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_us": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "n": 0,
+    "rate": null,
+    "mae": null
+   }
+  }
+ },
+ "reasonQuality": {
+  "clean": {
+   "n": 0,
+   "rate": null,
+   "mae": null
+  },
+  "flagged": {
+   "n": 0,
+   "rate": null,
+   "mae": null
+  }
+ },
+ "versions": {},
+ "reliable": [
+  {
+   "id": "R001",
+   "name": "隔夜外盘大涨跟涨（QDII看纳指，其余看费城半导体）",
+   "n": 391,
+   "rate": 63.17,
+   "lo": 58.28,
+   "hi": 67.8,
+   "status": "待验证"
+  },
+  {
+   "id": "R015",
+   "name": "隔夜纳指涨超1%（科技跟涨）",
+   "n": 222,
+   "rate": 61.71,
+   "lo": 55.17,
+   "hi": 67.86,
+   "status": "待验证"
+  },
+  {
+   "id": "R016",
+   "name": "隔夜纳指跌超1%（科技跟跌）",
+   "n": 194,
+   "rate": 60.31,
+   "lo": 53.29,
+   "hi": 66.93,
+   "status": "有效"
+  },
+  {
+   "id": "R005",
+   "name": "单日大跌超3%后反抽",
+   "n": 123,
+   "rate": 61.79,
+   "lo": 52.97,
+   "hi": 69.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R017",
+   "name": "锚定指数近3日涨超3%（动量延续）",
+   "n": 229,
+   "rate": 58.52,
+   "lo": 52.04,
+   "hi": 64.7,
+   "status": "待验证"
+  }
+ ],
+ "deceptive": [
+  {
+   "id": "R013",
+   "name": "周一看跌",
+   "n": 191,
+   "rate": 43.46,
+   "lo": 36.62,
+   "hi": 50.55,
+   "status": "待验证"
+  },
+  {
+   "id": "R004",
+   "name": "近5日涨超8%，涨多回调",
+   "n": 130,
+   "rate": 42.31,
+   "lo": 34.16,
+   "hi": 50.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R018",
+   "name": "锚定指数近3日跌超3%（动量延续）",
+   "n": 148,
+   "rate": 44.59,
+   "lo": 36.82,
+   "hi": 52.64,
+   "status": "待验证"
+  },
+  {
+   "id": "R014",
+   "name": "恒生科技前一日大涨跟涨",
+   "n": 134,
+   "rate": 46.27,
+   "lo": 38.05,
+   "hi": 54.7,
+   "status": "失效"
+  },
+  {
+   "id": "R012",
+   "name": "跑赢锚定指数2%以上，次日回吐",
+   "n": 111,
+   "rate": 45.95,
+   "lo": 36.97,
+   "hi": 55.2,
+   "status": "待验证"
+  }
+ ]
+}
