@@ -371,7 +371,7 @@ ${text}`, '股侠立场');
   return { stance: Number.isFinite(s) ? s : null, summary: String(out.summary || ''), posts: +out.posts || 0, at: nowStr };
 }
 
-const featText = feat => `公共因子：${Object.entries(feat.c).map(([k, v]) => `${k}=${v ?? '无'}`).join('，')}\n` +
+const featText = feat => `公共因子：${Object.entries(feat.c).filter(([k]) => k !== 'guxia').map(([k, v]) => `${k}=${v ?? '无'}`).join('，')}\n` +
   funds.map(f => `${f.code} ${f.short}${f.qdii ? '(QDII)' : ''}：${Object.entries(feat.f[f.code]).map(([k, v]) => `${k}=${v ?? '无'}`).join('，')}`).join('\n');
 const VAR_DOC = `因子说明（单位%）：sh_prev/cyb_prev/kc50_prev=上一交易日上证/创业板/科创50涨跌；kc50_mom5=科创50近5日累计；ndx_on/sox_on=预测日开盘前最近一个美股交易日纳指100/费城半导体涨跌；hstech_prev=最近一个港股交易日恒生科技涨跌；gap=距上一交易日的自然日天数（≥4为长假后）；wd=星期几(1-5)；guxia=天津股侠立场(-2~2，可能为空)；prev=该基金上一净值日涨跌；mom5=该基金近5日累计；anc=锚定指数上一交易日涨跌（易方达→半导体板块，财通→PCB，华夏节能→元件，华夏全球→纳指100，国寿→创业板指）；dev=prev-anc；vol20=近20日波动率；qdii=是否QDII（true/false）。注意QDII在T日的净值对应海外T日收盘，开盘前无法知道。`;
 
@@ -403,7 +403,6 @@ ${table}
 当日因子：
 ${featText(d.features)}
 ${VAR_DOC}
-${d.guxia ? `天津股侠当时观点：${d.guxia.summary}（stance ${d.guxia.stance}）` : ''}
 
 累计成绩：
 ${PREDICTORS.map(p => { const L = stats.predictors[p].live, B = stats.predictors[p].backtest; return `${p}：实盘 Brier ${L.brier ?? '–'}，命中 ${L.rate ?? '–'}%（${L.n}次）${B ? `；回测 Brier ${B.brier ?? '–'}，命中 ${B.rate ?? '–'}%（${B.n}次）` : ''}`; }).join('\n')}
@@ -480,25 +479,29 @@ ${VAR_DOC}
 规则模型 v${strategy.version} 的判断：${CODES.map(c => `${FUND[c].short} P涨${Math.round(rulePreds[c].p * 100)}%(得分${rulePreds[c].score})`).join('，')}
 成绩：AI 实盘 Brier ${stats.predictors.ai.live.brier ?? '–'}、命中 ${stats.predictors.ai.live.rate ?? '–'}%（${stats.predictors.ai.live.n}次）；规则 回测 Brier ${stats.predictors.rule.backtest?.brier ?? '–'}、命中 ${stats.predictors.rule.backtest?.rate ?? '–'}%；"跟随外盘"回测 Brier ${stats.predictors.base_us.backtest?.brier ?? '–'}、命中 ${stats.predictors.base_us.backtest?.rate ?? '–'}%；抛硬币 Brier 0.250。
 你的实盘校准：${(stats.calibration.live || []).filter(b => b.n).map(b => `说${b.label}时实际涨${b.upRate}%（${b.n}次）`).join('；') || '暂无'}
-${feat.c.guxia != null ? `天津股侠最新立场 ${feat.c.guxia}` : ''}
 近期复盘：
 ${recent}
 
 相关快讯：
 ${newsCache.join('\n') || '无'}
 
-要求：可以同意也可以推翻规则模型；basis 50字内，必须引用具体因子数值或快讯；信号不清就给接近50。区间 low/high 单位%，宽度参考 vol20。另给 tech_p_up：科技仓整体（五只平均）涨的概率，和 tech_basis（40字内）。
-只输出 JSON：{"market":"2句市场背景","tech_p_up":55,"tech_basis":"...","preds":{"代码":{"p_up":60,"low":-1,"high":2,"basis":"..."}}}`, `AI 预测 ${T}`);
+要求：用你自己的分析思路，不要转述别人的观点。
+1. 先判断科技仓整体（五只平均）：tech.points 给 3~5 条分析要点，每条 {"k":"维度","t":"判断，30字内，引用具体数值或快讯"}，维度从 外盘、板块动量、资金与情绪、消息面、历史规律 中选；tech.conclusion 一句话结论（30字内）；tech.p_up 涨的概率。
+2. 再给每只基金：points 2~3 条要点（每条30字内，说清它和整体的差别），p_up，区间 low/high（单位%，宽度参考 vol20）。
+可以同意也可以推翻规则模型；信号不清就给接近50，并在要点里写明哪里矛盾。
+只输出 JSON：{"market":"2句市场背景","tech":{"p_up":55,"points":[{"k":"外盘","t":"..."}],"conclusion":"..."},"preds":{"代码":{"p_up":60,"low":-1,"high":2,"points":["...","..."]}}}`, `AI 预测 ${T}`);
   const preds = {};
   for (const c of CODES) {
     const p = out.preds?.[c]; if (!p) continue;
     let lo = +p.low, hi = +p.high; if (!Number.isFinite(lo) || !Number.isFinite(hi)) continue; if (lo > hi) [lo, hi] = [hi, lo];
     const pu = +p.p_up; if (!Number.isFinite(pu)) continue;
     const pp = r3(Math.min(0.95, Math.max(0.05, pu / 100)));
-    preds[c] = { p: pp, dir: dirOfP(pp), low: r2(Math.max(-12, lo)), high: r2(Math.min(12, hi)), basis: String(p.basis || '') };
+    const pts = (Array.isArray(p.points) ? p.points : [p.basis]).filter(Boolean).slice(0, 3).map(x => String(x).slice(0, 60));
+    preds[c] = { p: pp, dir: dirOfP(pp), low: r2(Math.max(-12, lo)), high: r2(Math.min(12, hi)), points: pts, basis: pts.join('；') };
   }
-  const tp = +out.tech_p_up;
-  return { market: String(out.market || ''), preds, tech: Number.isFinite(tp) ? { p: r3(Math.min(0.95, Math.max(0.05, tp / 100))), basis: String(out.tech_basis || '') } : null };
+  const tp = +out.tech?.p_up;
+  const tpts = (out.tech?.points || []).filter(x => x && x.t).slice(0, 5).map(x => ({ k: String(x.k || '').slice(0, 8), t: String(x.t).slice(0, 80) }));
+  return { market: String(out.market || ''), preds, tech: Number.isFinite(tp) ? { p: r3(Math.min(0.95, Math.max(0.05, tp / 100))), points: tpts, conclusion: String(out.tech?.conclusion || '').slice(0, 80) } : null };
 }
 
 async function makePrediction(T, phaseNote, keepEvening) {
@@ -524,7 +527,7 @@ try {
     const e = rec.days[T];
     const isEve = addDays(today, 1) === T || isTD(today);
     if (e?.status === 'reviewed') log(`${T} 已复盘`);
-    else if (!e || e.format !== 2 || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
+    else if (!e || e.format !== 2 || !e.tech?.points || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
       const P = tdays.filter(d => d < T).at(-1) || today;
       let gx = null;
       try { gx = await guxia(P); log(`天津股侠：${gx.stance ?? '无观点'} ${gx.summary}`); } catch (err) { log('天津股侠抓取失败：' + err.message); }

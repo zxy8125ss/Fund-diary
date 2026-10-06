@@ -94,6 +94,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var
 .dark .sub{color:var(--card);opacity:.75}
 details.fold summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;font-weight:600;font-size:14px}
 details.fold summary::-webkit-details-marker{display:none}
+.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.6}
+.pts b{font-weight:600;margin-right:6px}
+.pts2{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;line-height:1.55}
+.concl{font-size:14px;font-weight:600;border-top:1px solid var(--line);padding-top:8px}
 .empty{color:var(--sub);text-align:center;padding:22px 12px;background:var(--card);border-radius:14px;font-size:14px}
 .foot{font-size:11.5px;color:var(--sub);line-height:1.6;padding:0 4px}
 a{color:var(--accent)}
@@ -146,7 +150,8 @@ a{color:var(--accent)}
       h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">科技仓整体</b><span class="sub small">五只基金同向性很强</span></div>'+
         '<div style="display:flex;align-items:baseline;gap:8px"><span class="big '+pCls(techP)+'">'+pTxt(techP)+'</span><span class="sub small">上涨概率</span></div>'+
         '<div class="bar" aria-hidden="true"><i style="width:'+(techP==null?50:Math.round(techP*100))+'%"></i></div>'+
-        '<span style="font-size:13px;line-height:1.6">'+esc((d.tech&&d.tech.basis)||d.market||"")+'</span>'+(d.tech&&d.tech.basis&&d.market?'<span class="sub small" style="line-height:1.6">'+esc(d.market)+'</span>':'')+'</div>';
+        (d.tech&&d.tech.points&&d.tech.points.length?'<ol class="pts">'+d.tech.points.map(x=>'<li><b>'+esc(x.k)+'</b>'+esc(x.t)+'</li>').join('')+'</ol>':'<span style="font-size:13px;line-height:1.6">'+esc((d.tech&&d.tech.basis)||d.market||"")+'</span>')+
+        (d.tech&&d.tech.conclusion?'<div class="concl">结论：'+esc(d.tech.conclusion)+'</div>':'')+'</div>';
     }else{
       let n=0,hit=0,bs=0;codes.forEach(c=>{const p=mixP(c),a=d.actual&&d.actual[c];if(p==null||a==null||a===0)return;bs+=(p-(a>0?1:0))**2;n++;const x=hitOf(p,a);if(x)hit++});
       h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">当日成绩</b><span class="sub small">综合预测</span></div>'+
@@ -159,7 +164,7 @@ a{color:var(--accent)}
     D.funds.forEach(f=>{
       const c=f.code,p=mixP(c),r=d.preds.rule&&d.preds.rule[c],ai=d.preds.ai&&d.preds.ai[c],a=d.actual&&d.actual[c];
       const act=(r&&r.fired||[]).filter(id=>{const x=D.strat.rules.find(y=>y.id===id);return x&&x.status==="active"});
-      const why=act.length?act.map(rname).join("；"):(ai&&ai.basis)||"无明显信号";
+      const why=(ai&&ai.points&&ai.points[0])||(act.length?act.map(rname).join("；"):(ai&&ai.basis)||"无明显信号");
       const rg=ai&&ai.low!=null?fmt(ai.low).replace("%","")+" ~ "+fmt(ai.high):(r?fmt(r.low).replace("%","")+" ~ "+fmt(r.high):"–");
       const right=predView==="today"?'<span class="rg">'+rg+'</span>':'<span class="rg"><span class="'+aCls(a)+'" style="font-weight:600">'+fmt(a)+'</span> '+(hitOf(p,a)==null?'':hitOf(p,a)?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</span>';
       const key=d.date+c;
@@ -169,13 +174,12 @@ a{color:var(--accent)}
         h+='<div class="det"><div class="kv"><span>规则 <b class="'+pCls(P(r))+'">'+pTxt(P(r))+'</b></span><span>AI <b class="'+pCls(P(ai))+'">'+pTxt(P(ai))+'</b></span><span>跟随外盘 <b>'+pTxt(P(d.preds.base_us&&d.preds.base_us[c]))+'</b></span>'+(d.predsEvening&&d.predsEvening.mix?'<span>晚间版 <b>'+pTxt(P(d.predsEvening.mix[c]))+'</b></span>':'')+'</div>'+
           '<div class="kv sub"><span>上一日 '+fmt(ff.prev)+'</span><span>近5日 '+fmt(ff.mom5)+'</span><span>锚定指数 '+fmt(ff.anc)+'</span><span>波动 '+(ff.vol20!=null?ff.vol20.toFixed(2)+'%':'–')+'</span></div>'+
           (r&&r.fired&&r.fired.length?'<div class="sub">触发：'+r.fired.map(id=>{const x=D.strat.rules.find(y=>y.id===id);return esc(id+(x&&x.status==="shadow"?"(观察)":"")+" "+(x?x.name:""))}).join("；")+'</div>':'')+
-          (ai&&ai.basis?'<div>AI：'+esc(ai.basis)+'</div>':'')+'</div>';
+          (ai&&ai.points&&ai.points.length?'<ul class="pts2">'+ai.points.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>':(ai&&ai.basis?'<div>'+esc(ai.basis)+'</div>':''))+'</div>';
       }
     });
     h+='</div>';
     const roll=D.stats&&D.stats.rolling||[];const L=roll.slice(-20);
     h+='<div class="card strip"><span>实盘累计（综合）</span><span class="num">'+(roll.length?('命中 '+(roll.at(-1).mix??"–")+'% · Brier '+(roll.at(-1).mix_brier??"–")):'节后开始积累')+'</span></div>';
-    if(d.guxia)h+='<div class="card" style="gap:4px"><b style="font-size:13px">天津股侠（观察中）</b><span class="sub small" style="line-height:1.6">立场 '+(d.guxia.stance==null?'无':d.guxia.stance>0?'偏多':d.guxia.stance<0?'偏空':'中性')+'：'+esc(d.guxia.summary||"")+'</span></div>';
     $("v-pred").innerHTML=h+holdings();
     bindPred();
   }
