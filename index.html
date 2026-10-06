@@ -4,306 +4,281 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>基金日记</title>
-<meta name="theme-color" content="#2a4b8d">
+<meta name="theme-color" content="#F3F5F9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="基金日记">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <style>
-/* 布局：实验记录本。顶部结论 → 标签页（明日预测 / 记录表 / 准确率 / 预测逻辑 / 持仓）。A股惯例：红涨绿跌 */
+/* 布局：手机优先的三标签 app——预测（养基宝式清单）/ 成绩（记分卡）/ 实验室（信号卡）。A股惯例红涨绿跌 */
 :root{
-  --bg:#f5f6f8; --paper:#ffffff; --ink:#1b2230; --muted:#677084; --line:#dde1e8;
-  --accent:#2a4b8d; --accent-soft:#e8eef9;
-  --up:#d23a2f; --up-soft:#fbe9e7; --down:#1f8a4c; --down-soft:#e5f4ec; --flat:#8a6d1f; --flat-soft:#f6f0dc;
-  --hit:#2a4b8d; --miss:#b8bfcc;
-  --f-display:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
-  --f-body:-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
-  --f-num:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --bg:#F3F5F9; --card:#FFFFFF; --ink:#1A2233; --sub:#5A6478; --line:#E6EAF0; --soft:#EEF1F6;
+  --accent:#2F55D4; --accent-soft:#E8EEFC;
+  --up:#C8322B; --up-soft:#FBE9E7; --down:#1E7A47; --down-soft:#E3F1E8; --mid:#8A6A12;
+  --good:#1F7A70; --bad:#9A5B2E; --track:#DDE2EA;
+  --f-body:-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --f-head:"Songti SC","Noto Serif SC","STSong",serif;
+  --f-num:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#12161d; --paper:#1a1f29; --ink:#e4e8f0; --muted:#97a0b3; --line:#2c3341;
-  --accent:#8fb0ee; --accent-soft:#1f2a40;
-  --up:#ff6b5e; --up-soft:#3a1e1c; --down:#4fc07e; --down-soft:#173024; --flat:#d8b75a; --flat-soft:#332b17;
-  --hit:#8fb0ee; --miss:#4a5263; color-scheme:dark}}
+  --bg:#10141B; --card:#1A2029; --ink:#E6EAF2; --sub:#9AA3B5; --line:#2A3240; --soft:#222A36;
+  --accent:#8FAAF5; --accent-soft:#1F2A44;
+  --up:#FF6E62; --up-soft:#3A1F1D; --down:#4FC07E; --down-soft:#173024; --mid:#D9B65A;
+  --good:#4FC1B4; --bad:#D99A6A; --track:#2E3746; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#12161d; --paper:#1a1f29; --ink:#e4e8f0; --muted:#97a0b3; --line:#2c3341;
-  --accent:#8fb0ee; --accent-soft:#1f2a40;
-  --up:#ff6b5e; --up-soft:#3a1e1c; --down:#4fc07e; --down-soft:#173024; --flat:#d8b75a; --flat-soft:#332b17;
-  --hit:#8fb0ee; --miss:#4a5263; color-scheme:dark}
-html{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
-body{margin:0;-webkit-text-size-adjust:100%;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
-.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
-h1{font-family:var(--f-display);font-size:1.7rem;margin:0;letter-spacing:.02em}
-h2{font-family:var(--f-display);font-size:1.15rem;margin:0}
-h3{font-size:.95rem;margin:0}
-p{margin:0}
-.sub{color:var(--muted)}
+  --bg:#10141B; --card:#1A2029; --ink:#E6EAF2; --sub:#9AA3B5; --line:#2A3240; --soft:#222A36;
+  --accent:#8FAAF5; --accent-soft:#1F2A44;
+  --up:#FF6E62; --up-soft:#3A1F1D; --down:#4FC07E; --down-soft:#173024; --mid:#D9B65A;
+  --good:#4FC1B4; --bad:#D99A6A; --track:#2E3746; color-scheme:dark}
+html{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:560px;margin:0 auto;padding:16px 14px calc(84px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
-.label{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
-.muted{color:var(--muted)}
-.status{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
-.btn{font:inherit;font-size:.82rem;color:var(--accent);background:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;cursor:pointer;text-decoration:none}
-.btn:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.verdict{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.kpi{background:var(--paper);padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.kpi b{font-family:var(--f-num);font-size:1.25rem;font-weight:500}
-@media (max-width:600px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.tabs{display:flex;gap:4px;border-bottom:2px solid var(--ink);overflow-x:auto}
-.tab{font:inherit;background:none;border:none;padding:8px 12px;color:var(--muted);cursor:pointer;white-space:nowrap;border-radius:6px 6px 0 0}
-.tab[aria-selected="true"]{color:var(--paper);background:var(--ink)}
-section{display:flex;flex-direction:column;gap:12px}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.ctx{background:var(--accent-soft);border-radius:6px;padding:10px 12px;font-size:.9rem}
-.tbl-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;font-size:.86rem}
-th{text-align:left;font-weight:500;color:var(--muted);font-size:.75rem;letter-spacing:.04em;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--paper);position:sticky;top:0}
-td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-tr:last-child td{border-bottom:none}
-td.wrap{min-width:220px;color:var(--muted);font-size:.84rem}
-.chip{display:inline-block;padding:0 7px;border-radius:999px;font-size:.78rem;font-weight:500;white-space:nowrap}
-.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
-.chip.up{background:var(--up-soft)} .chip.down{background:var(--down-soft)} .chip.flat{background:var(--flat-soft)}
-.chip.st{background:var(--accent-soft);color:var(--accent)}
-.chip.sh{background:transparent;border:1px dashed var(--muted);color:var(--muted)}
-.hitm{color:var(--hit);font-weight:700} .missm{color:var(--miss);font-weight:700}
-.cell{display:flex;flex-direction:column;gap:1px;white-space:nowrap;font-size:.8rem}
-tr.row{cursor:pointer}
-tr.row:hover td{background:var(--accent-soft)}
-tr.detail td{background:var(--bg);font-size:.86rem}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.seg button{font:inherit;font-size:.82rem;background:none;border:none;padding:3px 12px;color:var(--muted);cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.rate-good{color:var(--hit);font-weight:600} .rate-bad{color:var(--muted)}
-.chart{width:100%;height:auto;display:block}
-.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
-.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:4px;border-radius:2px}
-.list{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
-.list li{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.9rem}
-.funds{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.fund{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.fund .row2{display:flex;justify-content:space-between;gap:8px;font-size:.88rem}
-.fund ul{margin:4px 0 0;padding-left:18px;color:var(--muted);font-size:.84rem}
-.empty{color:var(--muted);padding:18px;text-align:center;background:var(--paper);border:1px dashed var(--line);border-radius:8px}
-code{font-family:var(--f-num);font-size:.8rem;background:var(--bg);padding:1px 4px;border-radius:4px;white-space:nowrap}
-footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:12px}
+.sub{color:var(--sub)} .small{font-size:12px} .tiny{font-size:11px}
+.up{color:var(--up)} .down{color:var(--down)} .mid{color:var(--mid)}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.top h1{font-family:var(--f-head);font-size:24px;margin:0;line-height:1.2}
+.pill{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.seg{display:flex;background:var(--soft);border-radius:10px;padding:3px}
+.seg button{flex:1;border:none;background:transparent;padding:7px 0;border-radius:8px;font-size:14px;color:var(--sub);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.big{font-family:var(--f-num);font-size:34px;font-weight:600;line-height:1}
+.bar{height:8px;border-radius:4px;background:var(--down-soft);overflow:hidden;display:flex}
+.bar i{display:block;background:var(--up)}
+.list{background:var(--card);border-radius:14px;overflow:hidden}
+.lh,.lr{display:grid;grid-template-columns:minmax(0,1fr) 62px 100px;gap:8px;padding:11px 16px;align-items:center}
+.lh{font-size:12px;color:var(--sub);border-bottom:1px solid var(--line);padding-block:8px}
+.lr{border-bottom:1px solid var(--line);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left}
+.lr:last-child{border-bottom:none}
+.lr .nm{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .why{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .p{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right}
+.lr .rg{font-family:var(--f-num);font-size:12.5px;color:var(--sub);text-align:right}
+.det{padding:4px 16px 14px;border-bottom:1px solid var(--line);font-size:13px;display:flex;flex-direction:column;gap:6px;background:var(--soft)}
+.kv{display:flex;flex-wrap:wrap;gap:6px 14px}
+.kv span b{font-family:var(--f-num);font-weight:600}
+.strip{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+.tabbar div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tabbar button{border:none;background:none;padding:8px 0;font-size:13px;color:var(--sub);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px}
+.tabbar button[aria-selected="true"]{color:var(--accent);font-weight:600}
+.tabbar svg{width:22px;height:22px}
+.verdict{font-size:17px;font-weight:700;line-height:1.4}
+.rowbar{display:grid;grid-template-columns:92px minmax(0,1fr) 62px;gap:10px;align-items:center;font-size:13px}
+.track{position:relative;height:12px;background:var(--track);border-radius:6px}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+.track .half{position:absolute;left:50%;top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-weight:500;color:var(--sub);font-size:12px;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--f-num)}
+.tbl tr:last-child td{border-bottom:none}
+.hit{color:var(--accent);font-weight:700} .miss{color:var(--sub);font-weight:700}
+.sig{background:var(--card);border-radius:14px;padding:11px 14px;display:flex;flex-direction:column;gap:7px}
+.sig .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sig .h b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.c-act{background:var(--ink);color:var(--card)} .c-sh{border:1px solid var(--sub);color:var(--sub)}
+.v-good{color:var(--good)} .v-bad{color:var(--bad)}
+.ci{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;align-items:center}
+.ci .t{position:relative;height:14px}
+.ci .t .base{position:absolute;left:0;right:0;top:6px;height:2px;background:var(--track)}
+.ci .t .fifty{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--sub)}
+.ci .t .rng{position:absolute;top:4px;height:6px;border-radius:3px}
+.ci .t .dot{position:absolute;top:1px;width:12px;height:12px;margin-left:-6px;border-radius:6px}
+.dark{background:var(--ink);color:var(--card)}
+.dark .sub{color:var(--card);opacity:.75}
+details.fold summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;font-weight:600;font-size:14px}
+details.fold summary::-webkit-details-marker{display:none}
+.empty{color:var(--sub);text-align:center;padding:22px 12px;background:var(--card);border-radius:14px;font-size:14px}
+.foot{font-size:11.5px;color:var(--sub);line-height:1.6;padding:0 4px}
+a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header style="display:flex;flex-direction:column;gap:8px">
-    <h1>基金日记</h1>
-    <p class="sub">能不能预测基金的单日涨跌？规则模型、AI 和几种笨办法每天同场预测，用记录说话。</p>
-    <div class="status"><span id="st-run">读取中…</span><button class="btn" id="reload" type="button">刷新</button><a class="btn" id="run-now" href="#" target="_blank" rel="noopener">手动更新</a><a class="btn" href="data/records.csv" target="_blank" rel="noopener">下载记录表 CSV</a></div>
-  </header>
-
-  <div class="verdict">
-    <h2 id="verdict-title">目前结论</h2>
-    <p id="verdict-text" class="muted">正在读取数据…</p>
-    <div class="kpis">
-      <div class="kpi"><span class="label">规则模型 · 实盘</span><b id="k-rule">–</b><span class="label" id="k-rule-n"></span></div>
-      <div class="kpi"><span class="label">AI 判断 · 实盘</span><b id="k-ai">–</b><span class="label" id="k-ai-n"></span></div>
-      <div class="kpi"><span class="label">最好的笨办法 · 实盘</span><b id="k-base">–</b><span class="label" id="k-base-n"></span></div>
-      <div class="kpi"><span class="label">规则模型 · 回测</span><b id="k-bt">–</b><span class="label" id="k-bt-n"></span></div>
-    </div>
-  </div>
-
-  <nav class="tabs" role="tablist">
-    <button class="tab" role="tab" data-tab="next" aria-selected="true">明日预测</button>
-    <button class="tab" role="tab" data-tab="log">记录表</button>
-    <button class="tab" role="tab" data-tab="acc">准确率</button>
-    <button class="tab" role="tab" data-tab="logic">预测逻辑</button>
-    <button class="tab" role="tab" data-tab="hold">持仓</button>
-  </nav>
-
-  <section id="tab-next"></section>
-  <section id="tab-log" hidden></section>
-  <section id="tab-acc" hidden></section>
-  <section id="tab-logic" hidden></section>
-  <section id="tab-hold" hidden></section>
-
-  <footer>数据由 GitHub Actions 自动更新：每晚 22:13 复盘并预测下一交易日，交易日 8:07 用隔夜美股定稿（9:25 后不再修改）。命中＝方向一致，实际涨跌按正负判断；预测为「平」表示不出手，不计入命中率，另计出手率。预测仅作实验记录，不构成投资建议。</footer>
-</div>
+<main class="app">
+  <section id="v-pred"></section>
+  <section id="v-score" hidden></section>
+  <section id="v-lab" hidden></section>
+  <p class="foot" id="foot"></p>
+</main>
+<nav class="tabbar" role="tablist" aria-label="主导航"><div>
+  <button role="tab" data-v="pred" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l4-5 3 3 5-7"/></svg>预测</button>
+  <button role="tab" data-v="score" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>成绩</button>
+  <button role="tab" data-v="lab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>实验室</button>
+</div></nav>
 
 <script>
 (function(){
   const $=id=>document.getElementById(id);
   const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const fmt=v=>v==null||isNaN(v)?"–":(v>0?"+":"")+Number(v).toFixed(2)+"%";
-  const cls=v=>v>0.3?"up":v<-0.3?"down":"flat";
-  const DIR={up:["涨","up","↑"],down:["跌","down","↓"],flat:["平","flat","→"]};
-  const dirOf=v=>v>0?"up":v<0?"down":"flat";
-  const NAMES={rule:"规则模型",ai:"AI 判断",base_prev:"笨办法：昨日延续",base_up:"笨办法：全猜涨",base_us:"笨办法：跟随外盘"};
-  const FEAT_NAMES={sh_prev:"上证昨日",cyb_prev:"创业板昨日",kc50_prev:"科创50昨日",kc50_mom5:"科创50近5日",ndx_on:"隔夜纳指100",sox_on:"隔夜费城半导体",hstech_prev:"恒生科技",gap:"距上一交易日(天)",wd:"星期",guxia:"天津股侠立场"};
-  let D={funds:[],rec:{days:{}},bt:{days:{}},stats:null,strat:null,status:{}};
-  let logMode="live";
+  const P=x=>x&&x.p!=null?x.p:null;
+  const pTxt=p=>p==null?"–":Math.round(p*100)+"%";
+  const pCls=p=>p==null?"sub":p>0.52?"up":p<0.48?"down":"mid";
+  const aCls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
+  const hitOf=(p,a)=>p==null||a==null||a===0||p===0.5?null:((p>0.5)===(a>0));
+  const WD="日一二三四五六";
+  const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return (t.getUTCMonth()+1)+"月"+t.getUTCDate()+"日 周"+WD[t.getUTCDay()]};
+  const NAMES={mix:"综合",rule:"规则模型",ai:"AI 判断",base_us:"跟随外盘",base_up:"全猜涨",base_prev:"昨日延续",base_coin:"抛硬币"};
+  let D=null, predView="today", scoreView="live", open={};
 
-  const chip=d=>{const x=DIR[d]||DIR.flat;return '<span class="chip '+x[1]+'">'+x[0]+'</span>'};
-  const rate=(s,good)=>s&&s.n?'<span class="num '+(good?'rate-good':'')+'">'+s.rate.toFixed(1)+'%</span> <span class="label num">'+s.hit+'/'+s.n+(s.cover!=null&&s.cover<100?' · 出手'+Math.round(s.cover)+'%':'')+'</span>':'<span class="muted">–</span>';
-  const fname=c=>{const f=D.funds.find(x=>x.code===c);return f?f.short:c};
-  const codes=()=>D.funds.map(f=>f.code);
-
-  // ---------- 结论 ----------
-  function renderVerdict(){
-    const s=D.stats; if(!s){return}
-    const P=s.predictors, L=k=>P[k]&&P[k].live;
-    const bases=["base_prev","base_up","base_us"].map(k=>({k,s:L(k)})).filter(x=>x.s&&x.s.n);
-    const best=bases.sort((a,b)=>b.s.rate-a.s.rate)[0];
-    $("k-rule").textContent=L("rule").n?L("rule").rate.toFixed(1)+"%":"–"; $("k-rule-n").textContent=L("rule").n+" 次出手"+(L("rule").cover!=null?" · 出手率 "+Math.round(L("rule").cover)+"%":"");
-    $("k-ai").textContent=L("ai").n?L("ai").rate.toFixed(1)+"%":"–"; $("k-ai-n").textContent=L("ai").n+" 次出手"+(L("ai").cover!=null?" · 出手率 "+Math.round(L("ai").cover)+"%":"");
-    $("k-base").textContent=best?best.s.rate.toFixed(1)+"%":"–"; $("k-base-n").textContent=best?NAMES[best.k].replace("笨办法：",""):"";
-    const bt=P.rule.backtest; $("k-bt").textContent=bt&&bt.n?bt.rate.toFixed(1)+"%":"–"; $("k-bt-n").textContent=bt&&bt.n?bt.n+" 次出手 · 出手率 "+Math.round(bt.cover)+"% · 笨办法最好 "+(bt.vsBest??"–")+"%":"";
-    const n=L("rule").total||0;
-    let t;
-    if(n<50) t="实盘样本只有 "+n+" 次（每个交易日 5 次），不足以下结论，先积累。回测里规则模型命中 "+(bt&&bt.n?bt.rate.toFixed(1):"–")+"%，最好的笨办法 "+(bt&&bt.vsBest!=null?bt.vsBest:"–")+"%"+(bt&&bt.p!=null?"，差距是运气的概率约 "+(bt.p*100).toFixed(0)+"%。":"。");
-    else{
-      const r=L("rule"),a=L("ai");
-      const win=x=>x&&x.n&&x.p!=null&&x.p<0.05;
-      t="实盘 "+n+" 次：规则 "+r.rate.toFixed(1)+"%，AI "+(a.n?a.rate.toFixed(1)+"%":"–")+"，最好的笨办法 "+(best?best.s.rate.toFixed(1)+"%":"–")+"。"+
-        (win(r)||win(a)?"已有预测方显著跑赢笨办法（p<0.05），说明可能存在可预测性。":"还没有预测方显著跑赢笨办法，目前看不出可预测性。");
+  // ---------- 预测 ----------
+  function renderPred(){
+    const days=Object.values(D.rec.days).filter(d=>d.format===2);
+    const pend=days.filter(d=>d.status==="pending").sort((a,b)=>a.date.localeCompare(b.date))[0];
+    const last=days.filter(d=>d.status==="reviewed").sort((a,b)=>b.date.localeCompare(a.date))[0];
+    const d=predView==="today"?pend:last;
+    let h='<div class="top"><div><div class="sub small">'+(d?esc(dlabel(d.date))+(d.features&&d.features.c.gap>=4?' · 节后首日':''):'')+'</div><h1>'+(predView==="today"?"今日预测":"昨日结果")+'</h1></div>';
+    if(d&&predView==="today")h+='<span class="pill">'+(d.lockedAt?'已锁定 '+esc(String(d.lockedAt).slice(11,16)):'晚间草稿 · 8:07 定稿')+'</span>';
+    h+='</div><div class="seg"><button data-pv="today" aria-pressed="'+(predView==="today")+'">今日预测</button><button data-pv="last" aria-pressed="'+(predView==="last")+'">昨日结果</button></div>';
+    if(!d){h+='<div class="empty">'+(predView==="today"?"暂无待验证的预测，下一个交易日前一晚 22:13 自动生成。":"还没有复盘过的交易日，节后首日收盘后出第一份结果。")+'</div>';$("v-pred").innerHTML=h+holdings();bindPred();return}
+    const codes=D.funds.map(f=>f.code);
+    const mixP=c=>P(d.preds.mix&&d.preds.mix[c]);
+    // 科技仓整体
+    const techP=d.tech&&d.tech.p!=null?d.tech.p:(()=>{const xs=codes.map(mixP).filter(x=>x!=null);return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null})();
+    if(predView==="today"){
+      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">科技仓整体</b><span class="sub small">五只基金同向性很强</span></div>'+
+        '<div style="display:flex;align-items:baseline;gap:8px"><span class="big '+pCls(techP)+'">'+pTxt(techP)+'</span><span class="sub small">上涨概率</span></div>'+
+        '<div class="bar" aria-hidden="true"><i style="width:'+(techP==null?50:Math.round(techP*100))+'%"></i></div>'+
+        '<span style="font-size:13px;line-height:1.6">'+esc((d.tech&&d.tech.basis)||d.market||"")+'</span>'+(d.tech&&d.tech.basis&&d.market?'<span class="sub small" style="line-height:1.6">'+esc(d.market)+'</span>':'')+'</div>';
+    }else{
+      let n=0,hit=0,bs=0;codes.forEach(c=>{const p=mixP(c),a=d.actual&&d.actual[c];if(p==null||a==null||a===0)return;bs+=(p-(a>0?1:0))**2;n++;const x=hitOf(p,a);if(x)hit++});
+      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">当日成绩</b><span class="sub small">综合预测</span></div>'+
+        '<div style="display:flex;gap:22px;align-items:baseline"><span><span class="big">'+hit+'/'+n+'</span> <span class="sub small">方向命中</span></span><span><span class="num" style="font-size:20px;font-weight:600">'+(n?(bs/n).toFixed(3):"–")+'</span> <span class="sub small">Brier（抛硬币 0.250）</span></span></div>'+
+        (d.review&&d.review.summary?'<span style="font-size:13px;line-height:1.6">'+esc(d.review.summary)+'</span>':'')+'</div>';
     }
-    $("verdict-text").textContent=t;
-  }
-
-  // ---------- 明日预测 ----------
-  function renderNext(){
-    const pend=Object.values(D.rec.days).filter(d=>d.phase==="live"&&d.status==="pending").sort((a,b)=>a.date.localeCompare(b.date));
-    const d=pend[0];
-    if(!d){$("tab-next").innerHTML='<div class="empty">暂无待验证的预测。下一个交易日前一晚 22:13 自动生成。</div>';return}
-    const st=D.strat; const rname=id=>{const r=st&&st.rules.find(x=>x.id===id);return r?r.id+(r.status==="shadow"?"(观察)":"")+" "+r.name:id};
-    let h='<div class="panel"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h2>'+esc(d.date)+' 预测</h2><span class="label">'+esc(d.madeAt||"")+' · 规则 v'+esc(d.strategyVersion)+'</span></div>';
-    if(d.market)h+='<div class="ctx">'+esc(d.market)+'</div>';
-    if(d.guxia)h+='<p class="label">天津股侠：'+(d.guxia.stance==null?"无观点":"立场 "+d.guxia.stance)+'　'+esc(d.guxia.summary||"")+'</p>';
-    if(d.features){h+='<p class="label">'+Object.entries(d.features.c).filter(([k,v])=>v!=null).map(([k,v])=>esc(FEAT_NAMES[k]||k)+' '+(["gap","wd","guxia"].includes(k)?v:fmt(v))).join("　")+'</p>'}
-    h+='</div><div class="tbl-wrap"><table><thead><tr><th>基金</th><th>规则模型</th><th>AI 判断</th><th>笨办法</th><th>关键因子</th><th>依据</th></tr></thead><tbody>';
-    codes().forEach(c=>{
-      const p=d.preds||{}, r=p.rule&&p.rule[c], a=p.ai&&p.ai[c], f=d.features&&d.features.f[c];
-      h+='<tr><td>'+esc(fname(c))+'<div class="label num">'+c+'</div></td>';
-      h+='<td>'+(r?chip(r.dir)+' <span class="label num">得分 '+r.score+'</span><div class="label num">'+fmt(r.low)+' ~ '+fmt(r.high)+'</div>':'–')+'</td>';
-      h+='<td>'+(a?chip(a.dir)+' <span class="label">'+esc(a.conf)+'</span><div class="label num">'+fmt(a.low)+' ~ '+fmt(a.high)+'</div>':'–')+'</td>';
-      h+='<td class="cell"><span>昨日延续 '+(p.base_prev?chip(p.base_prev[c]):"–")+'</span><span>跟随外盘 '+(p.base_us?chip(p.base_us[c]):"–")+'</span></td>';
-      h+='<td class="cell num">'+(f?'<span>上一日 '+fmt(f.prev)+'</span><span>近5日 '+fmt(f.mom5)+'</span><span>锚定 '+fmt(f.anc)+'</span>':'–')+'</td>';
-      h+='<td class="wrap">'+(r&&r.fired.length?'<div>触发：'+r.fired.map(id=>esc(rname(id))).join('；')+'</div>':'<div>规则：无触发</div>')+(a?'<div>AI：'+esc(a.basis)+'</div>':'')+'</td></tr>';
+    // 清单
+    h+='<div class="list"><div class="lh"><span>基金</span><span style="text-align:right">涨的概率</span><span style="text-align:right">'+(predView==="today"?"预计区间":"实际")+'</span></div>';
+    const rname=id=>{const r=D.strat.rules.find(x=>x.id===id);return r?r.name:id};
+    D.funds.forEach(f=>{
+      const c=f.code,p=mixP(c),r=d.preds.rule&&d.preds.rule[c],ai=d.preds.ai&&d.preds.ai[c],a=d.actual&&d.actual[c];
+      const act=(r&&r.fired||[]).filter(id=>{const x=D.strat.rules.find(y=>y.id===id);return x&&x.status==="active"});
+      const why=act.length?act.map(rname).join("；"):(ai&&ai.basis)||"无明显信号";
+      const rg=ai&&ai.low!=null?fmt(ai.low).replace("%","")+" ~ "+fmt(ai.high):(r?fmt(r.low).replace("%","")+" ~ "+fmt(r.high):"–");
+      const right=predView==="today"?'<span class="rg">'+rg+'</span>':'<span class="rg"><span class="'+aCls(a)+'" style="font-weight:600">'+fmt(a)+'</span> '+(hitOf(p,a)==null?'':hitOf(p,a)?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</span>';
+      const key=d.date+c;
+      h+='<button class="lr" data-k="'+key+'" aria-expanded="'+!!open[key]+'"><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span class="nm">'+esc(f.short)+'</span><span class="why">'+esc(why)+'</span></span><span class="p '+pCls(p)+'">'+pTxt(p)+'</span>'+right+'</button>';
+      if(open[key]){
+        const ff=d.features&&d.features.f[c]||{};
+        h+='<div class="det"><div class="kv"><span>规则 <b class="'+pCls(P(r))+'">'+pTxt(P(r))+'</b></span><span>AI <b class="'+pCls(P(ai))+'">'+pTxt(P(ai))+'</b></span><span>跟随外盘 <b>'+pTxt(P(d.preds.base_us&&d.preds.base_us[c]))+'</b></span>'+(d.predsEvening&&d.predsEvening.mix?'<span>晚间版 <b>'+pTxt(P(d.predsEvening.mix[c]))+'</b></span>':'')+'</div>'+
+          '<div class="kv sub"><span>上一日 '+fmt(ff.prev)+'</span><span>近5日 '+fmt(ff.mom5)+'</span><span>锚定指数 '+fmt(ff.anc)+'</span><span>波动 '+(ff.vol20!=null?ff.vol20.toFixed(2)+'%':'–')+'</span></div>'+
+          (r&&r.fired&&r.fired.length?'<div class="sub">触发：'+r.fired.map(id=>{const x=D.strat.rules.find(y=>y.id===id);return esc(id+(x&&x.status==="shadow"?"(观察)":"")+" "+(x?x.name:""))}).join("；")+'</div>':'')+
+          (ai&&ai.basis?'<div>AI：'+esc(ai.basis)+'</div>':'')+'</div>';
+      }
     });
-    h+='</tbody></table></div>';
-    $("tab-next").innerHTML=h;
+    h+='</div>';
+    const roll=D.stats&&D.stats.rolling||[];const L=roll.slice(-20);
+    h+='<div class="card strip"><span>实盘累计（综合）</span><span class="num">'+(roll.length?('命中 '+(roll.at(-1).mix??"–")+'% · Brier '+(roll.at(-1).mix_brier??"–")):'节后开始积累')+'</span></div>';
+    if(d.guxia)h+='<div class="card" style="gap:4px"><b style="font-size:13px">天津股侠（观察中）</b><span class="sub small" style="line-height:1.6">立场 '+(d.guxia.stance==null?'无':d.guxia.stance>0?'偏多':d.guxia.stance<0?'偏空':'中性')+'：'+esc(d.guxia.summary||"")+'</span></div>';
+    $("v-pred").innerHTML=h+holdings();
+    bindPred();
+  }
+  function holdings(){
+    const t=D.funds.reduce((s,f)=>s+(+f.amount||0),0),pn=D.funds.reduce((s,f)=>s+(+f.pnl||0),0);
+    return '<details class="card fold"><summary><span>持仓 ¥'+t.toFixed(2)+'</span><span class="'+aCls(pn)+' num">'+pn.toFixed(2)+'</span></summary><table class="tbl"><thead><tr><th>基金</th><th>金额</th><th>持有收益</th></tr></thead><tbody>'+
+      D.funds.map(f=>'<tr><td style="font-family:var(--f-body)">'+esc(f.short)+'</td><td>'+Number(f.amount).toFixed(2)+'</td><td class="'+aCls(f.pnl)+'">'+Number(f.pnl).toFixed(2)+' ('+fmt(f.pnlPct)+')</td></tr>').join('')+
+      '</tbody></table><span class="sub tiny">按每日净值自动滚动，截至各基金最新净值日；加减仓后需在仓库里修改。</span></details>';
+  }
+  function bindPred(){
+    document.querySelectorAll("[data-pv]").forEach(b=>b.addEventListener("click",()=>{predView=b.dataset.pv;renderPred()}));
+    document.querySelectorAll(".lr").forEach(b=>b.addEventListener("click",()=>{open[b.dataset.k]=!open[b.dataset.k];renderPred()}));
   }
 
-  // ---------- 记录表 ----------
-  function dayScore(d,k){let n=0,h=0;codes().forEach(c=>{const a=d.actual&&d.actual[c],p=d.preds&&d.preds[k]&&d.preds[k][c];if(a==null||p==null)return;const dr=typeof p==="string"?p:p.dir;if(dr==="flat")return;n++;h+=(dr===dirOf(a))});return n?h+"/"+n:"–"}
-  function renderLog(){
-    const src=logMode==="live"?Object.values(D.rec.days).filter(d=>d.phase==="live"):Object.values(D.bt.days||{});
-    const rows=src.sort((a,b)=>b.date.localeCompare(a.date));
-    let h='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="seg"><button data-m="live" aria-pressed="'+(logMode==="live")+'">实盘</button><button data-m="bt" aria-pressed="'+(logMode==="bt")+'">回测（当前规则 v'+(D.bt.strategyVersion??"–")+'）</button></div><span class="label">每格：规则 / AI 的方向 → 实际涨跌，✓ 命中 ✗ 未中'+(logMode==="live"?'；点一行看复盘':'')+'</span></div>';
-    if(!rows.length){$("tab-log").innerHTML=h+'<div class="empty">'+(logMode==="live"?"还没有实盘记录。第一笔是节后首个交易日。":"回测数据还没生成。")+'</div>';bindSeg();return}
-    h+='<div class="tbl-wrap"><table><thead><tr><th>日期</th>'+codes().map(c=>'<th>'+esc(fname(c))+'</th>').join('')+'<th>规则</th><th>AI</th><th>跟随外盘</th>'+(logMode==="live"?'<th>股侠</th><th>版本</th>':'')+'</tr></thead><tbody>';
-    rows.forEach((d,i)=>{
-      h+='<tr class="row" data-i="'+i+'"><td class="num">'+esc(d.date.slice(5))+(d.status==="pending"?'<div class="label">待验证</div>':'')+'</td>';
-      codes().forEach(c=>{
-        const a=d.actual&&d.actual[c], p=d.preds||{};
-        const mk=k=>{const x=p[k]&&p[k][c];if(!x)return '<span class="muted">–</span>';const dr=typeof x==="string"?x:x.dir;const ar=DIR[dr]||DIR.flat;return '<span class="'+ar[1]+'">'+ar[2]+'</span>'+(a==null||dr==="flat"?'':(dr===dirOf(a)?'<span class="hitm">✓</span>':'<span class="missm">✗</span>'))};
-        h+='<td><div class="cell"><span>规 '+mk("rule")+'　AI '+mk("ai")+'</span><span class="num '+(a==null?'muted':cls(a))+'">'+fmt(a)+'</span></div></td>';
-      });
-      h+='<td class="num">'+dayScore(d,"rule")+'</td><td class="num">'+dayScore(d,"ai")+'</td><td class="num">'+dayScore(d,"base_us")+'</td>';
-      if(logMode==="live")h+='<td class="num">'+(d.guxia&&d.guxia.stance!=null?d.guxia.stance:'–')+'</td><td class="num">v'+esc(d.strategyVersion??"")+'</td>';
-      h+='</tr>';
-      if(logMode==="live")h+='<tr class="detail" data-for="'+i+'" hidden><td colspan="'+(codes().length+6)+'">'+(d.review&&d.review.summary?'<b>复盘：</b>'+esc(d.review.summary):'<span class="muted">尚未复盘</span>')+(d.market?'<div class="muted" style="margin-top:4px">预测时背景：'+esc(d.market)+'</div>':'')+'</td></tr>';
+  // ---------- 成绩 ----------
+  function renderScore(){
+    const S=D.stats; if(!S){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
+    const live=scoreView==="live", Pp=S.predictors;
+    const g=k=>Pp[k]&&(live?Pp[k].live:Pp[k].backtest);
+    const main=live?"mix":"rule", M=g(main);
+    let h='<div class="top"><div><div class="sub small">'+(live?'实盘 · 节后起每个交易日 5 次':'回测 · 最近约 120 个交易日 · 规则 v'+esc(S.strategyVersion))+'</div><h1>成绩单</h1></div></div>';
+    h+='<div class="seg"><button data-sv="live" aria-pressed="'+live+'">实盘</button><button data-sv="bt" aria-pressed="'+!live+'">回测</button></div>';
+    // 结论
+    let vt,vs;
+    if(!M||!M.bn){vt="还没有数据";vs="节后首个交易日收盘后开始记录。"}
+    else{
+      const sk=M.brier!=null?(1-M.brier/0.25)*100:null, bb=M.vsBestBrier;
+      if(M.bn<100){vt="样本太少，先不下结论";vs="已有 "+M.bn+" 次判断。Brier "+M.brier+"（抛硬币 0.250，最好的笨办法 "+(bb??"–")+"）。至少攒到 100 次再看。"}
+      else if(M.brier<(bb??0.25)-0.005&&M.p!=null&&M.p<0.05){vt="有迹象可以预测";vs=NAMES[main]+"的 Brier "+M.brier+"，好于最好的笨办法 "+bb+"；方向命中 "+M.rate+"%，是运气的概率约 "+Math.round(M.p*100)+"%。"}
+      else{vt="还不能证明可预测";vs=NAMES[main]+"的 Brier "+M.brier+"，最好的笨办法 "+(bb??"–")+"，抛硬币 0.250；方向命中 "+M.rate+"%，比笨办法高出的部分是运气的概率约 "+(M.p!=null?Math.round(M.p*100):"–")+"%。"}
+    }
+    h+='<div class="card"><span class="sub small">结论</span><span class="verdict">'+esc(vt)+'</span><span style="font-size:13px;line-height:1.6">'+esc(vs)+'</span></div>';
+    // 命中率条
+    const keys=live?["mix","rule","ai","base_us","base_up"]:["rule","base_us","base_up","base_prev"];
+    h+='<div class="card"><b style="font-size:14px">方向命中率 <span class="sub small" style="font-weight:400">虚线为 50%</span></b>';
+    keys.forEach(k=>{const s=g(k);const r=s&&s.rate;const mine=["mix","rule","ai"].includes(k);
+      h+='<div class="rowbar"><span>'+NAMES[k]+'</span><div class="track"><div class="fill" style="width:'+(r||0)+'%;background:'+(mine?'var(--accent)':'var(--sub)')+';opacity:'+(mine?1:.45)+'"></div><div class="half"></div></div><span class="num" style="text-align:right;font-weight:600">'+(r!=null?r.toFixed(1)+'%':'–')+'</span></div>'});
+    h+='<table class="tbl" style="margin-top:4px"><thead><tr><th>预测方</th><th>Brier</th><th>判断次数</th></tr></thead><tbody>'+
+      [...keys,"base_coin"].map(k=>{const s=g(k);return '<tr><td style="font-family:var(--f-body)">'+NAMES[k]+'</td><td>'+(s&&s.brier!=null?s.brier.toFixed(3):'–')+'</td><td>'+(s?s.bn:'–')+'</td></tr>'}).join('')+
+      '</tbody></table><span class="sub tiny" style="line-height:1.6">Brier＝(涨的概率−实际)² 的平均，越低越好；每次都说 50% 就是 0.250。笨办法的概率按历史数据换算。</span></div>';
+    // 校准
+    const cal=(S.calibration&&(live?S.calibration.live:S.calibration.backtest))||[];
+    h+='<div class="card"><b style="font-size:14px">校准：说 60% 的时候，真涨了 60% 吗？</b><span class="sub tiny">'+NAMES[main]+'</span><table class="tbl"><thead><tr><th>预测概率</th><th>次数</th><th>平均预测</th><th>实际涨</th></tr></thead><tbody>'+
+      cal.map(b=>{const dv=b.n?b.upRate-b.avgP:null;return '<tr><td>'+esc(b.label)+'</td><td>'+b.n+'</td><td>'+(b.avgP!=null?b.avgP.toFixed(0)+'%':'–')+'</td><td class="'+(dv==null?'':Math.abs(dv)>10?'v-bad':'')+'">'+(b.upRate!=null?b.upRate.toFixed(0)+'%':'–')+'</td></tr>'}).join('')+
+      '</tbody></table><span class="sub tiny">两列越接近越好；相差超过 10 个百分点标橙色，说明过度自信或过度保守。</span></div>';
+    // 流水账
+    if(live){
+      const rows=[];Object.values(D.rec.days).filter(d=>d.format===2&&d.status==="reviewed").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).forEach(d=>D.funds.forEach(f=>{const p=P(d.preds.mix&&d.preds.mix[f.code]),a=d.actual&&d.actual[f.code];rows.push({d:d.date,f:f.short,p,a,lock:d.lockedAt})}));
+      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">流水账</b><a class="small" href="data/records.csv" target="_blank" rel="noopener">下载全部 CSV</a></div>';
+      h+=rows.length?'<table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>涨的概率</th><th>实际</th><th></th></tr></thead><tbody>'+rows.map(r=>{const x=hitOf(r.p,r.a);return '<tr><td>'+esc(r.d.slice(5))+'</td><td style="text-align:left;font-family:var(--f-body)">'+esc(r.f)+'</td><td>'+pTxt(r.p)+'</td><td class="'+aCls(r.a)+'">'+fmt(r.a)+'</td><td>'+(x==null?'':x?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</td></tr>'}).join('')+'</tbody></table><span class="sub tiny">每条预测在开盘前锁定，带时间戳，事后不能修改。</span>':'<span class="sub small">节后首日收盘后出现第一行。</span>';
+      h+='</div>';
+    }
+    $("v-score").innerHTML=h;
+    document.querySelectorAll("[data-sv]").forEach(b=>b.addEventListener("click",()=>{scoreView=b.dataset.sv;renderScore()}));
+  }
+
+  // ---------- 实验室 ----------
+  function renderLab(){
+    const st=D.strat,S=D.stats; const sc=id=>(S&&S.rules.find(r=>r.id===id))||{n:0};
+    const lastCh=st.changelog[st.changelog.length-1];
+    const lastRev=Object.values(D.rec.days).filter(d=>d.format===2&&d.review&&d.review.summary).sort((a,b)=>b.date.localeCompare(a.date))[0];
+    let h='<div class="top"><div><div class="sub small">预测逻辑 v'+st.version+' · '+st.rules.length+' 条信号 · 每日复盘修正</div><h1>信号实验室</h1></div></div>';
+    const good=st.rules.map(r=>({r,s:sc(r.id)})).filter(x=>x.s.verdict==="有效").sort((a,b)=>b.s.lo-a.s.lo)[0];
+    const bad=st.rules.map(r=>({r,s:sc(r.id)})).filter(x=>x.s.verdict==="反向/无效"&&x.r.status==="active");
+    h+='<div class="card dark"><span class="sub small">最近一次体检</span>'+
+      (good?'<span style="font-size:15px;line-height:1.55"><b>最有用：</b>'+esc(good.r.name)+'（'+good.s.rate+'%，'+good.s.n+' 次）</span>':'')+
+      (bad.length?'<span style="font-size:15px;line-height:1.55"><b>拖后腿：</b>'+bad.map(x=>esc(x.r.name)+'（'+x.s.rate+'%）').join('；')+'</span>':'<span style="font-size:15px">正式规则里没有明显拖后腿的。</span>')+
+      (lastRev?'<span class="sub small" style="line-height:1.6">'+esc(lastRev.date.slice(5))+' 复盘：'+esc(lastRev.review.summary)+'</span>':'')+
+      (lastCh?'<span class="sub small">v'+lastCh.version+'（'+esc(lastCh.date)+'）：'+esc(lastCh.changes)+(lastCh.brierBefore!=null?'；Brier '+lastCh.brierBefore+' → '+lastCh.brierAfter:'')+'</span>':'')+'</div>';
+    h+='<div class="strip sub small" style="padding:0 4px"><span>触发后命中率 · 横线为 95% 区间</span><span>虚线 50%</span></div>';
+    const pos=v=>((Math.max(20,Math.min(90,v))-20)/70*100);
+    const ordered=[...st.rules].sort((a,b)=>{const o={"有效":0,"不确定":1,"反向/无效":2,"样本不足":3};return (o[sc(a.id).verdict]-o[sc(b.id).verdict])||(a.status==="active"?-1:1)});
+    ordered.forEach(r=>{
+      const s=sc(r.id);const thin=s.n<20;
+      const col=thin?'var(--track)':s.verdict==="有效"?'var(--good)':s.verdict==="反向/无效"?'var(--bad)':'var(--sub)';
+      h+='<div class="sig"><div class="h"><b>'+esc(r.id+" "+r.name)+'</b><span class="chip '+(r.status==="active"?'c-act':'c-sh')+'">'+(r.status==="active"?'正式':'观察')+'</span></div>'+
+        '<div class="ci"><div class="t" aria-hidden="true"><div class="base"></div><div class="fifty" style="left:'+pos(50)+'%"></div>'+
+        (s.n?'<div class="rng" style="left:'+pos(s.lo)+'%;width:'+(pos(s.hi)-pos(s.lo))+'%;background:'+col+'"></div><div class="dot" style="left:'+pos(s.rate)+'%;background:'+(thin?'var(--sub)':col)+'"></div>':'')+
+        '</div><span class="num small" style="text-align:right"><b>'+(s.n?s.rate.toFixed(1)+'%':'–')+'</b> · '+s.n+'次 · <span class="'+(s.verdict==="有效"?'v-good':s.verdict==="反向/无效"?'v-bad':'sub')+'">'+esc(s.verdict||"")+'</span></span></div>'+
+        '<span class="sub tiny">'+(r.vote>0?'看涨':'看跌')+' · 权重 '+r.weight+(r.fund!=="*"?' · 仅 '+esc((D.funds.find(f=>f.code===r.fund)||{}).short||r.fund):'')+' · <code class="num">'+esc(r.when)+'</code></span></div>';
     });
-    h+='</tbody></table></div>';
-    $("tab-log").innerHTML=h;
-    bindSeg();
-    $("tab-log").querySelectorAll("tr.row").forEach(tr=>tr.addEventListener("click",()=>{const det=$("tab-log").querySelector('tr.detail[data-for="'+tr.dataset.i+'"]');if(det)det.hidden=!det.hidden}));
-  }
-  function bindSeg(){$("tab-log").querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{logMode=b.dataset.m;renderLog()}))}
-
-  // ---------- 准确率 ----------
-  function lineChart(rows){
-    if(rows.length<2)return '<p class="muted">实盘满 2 个交易日后显示累计命中率曲线。</p>';
-    const W=640,H=200,L=36,R=10,T=10,B=24;
-    const ser=[["rule","var(--accent)"],["ai","var(--up)"],["base_us","var(--muted)"]];
-    const x=i=>L+(W-L-R)*i/(rows.length-1), y=v=>T+(H-T-B)*(1-v/100);
-    let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="累计方向命中率">';
-    [0,25,50,75,100].forEach(v=>{s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)" stroke-width="1"/><text x="'+(L-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+v+'%</text>'});
-    s+='<text x="'+L+'" y="'+(H-6)+'" font-size="10" fill="var(--muted)">'+esc(rows[0].date.slice(5))+'</text><text x="'+(W-R)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+esc(rows.at(-1).date.slice(5))+'</text>';
-    ser.forEach(([k,col])=>{const pts=rows.map((r,i)=>r[k]==null?null:[x(i),y(r[k])]).filter(Boolean);if(pts.length<2)return;s+='<polyline fill="none" stroke="'+col+'" stroke-width="2" points="'+pts.map(p=>p.join(",")).join(" ")+'"/><circle cx="'+pts.at(-1)[0]+'" cy="'+pts.at(-1)[1]+'" r="3" fill="'+col+'"/>'});
-    s+='</svg><div class="legend"><span><i style="background:var(--accent)"></i>规则模型</span><span><i style="background:var(--up)"></i>AI 判断</span><span><i style="background:var(--muted)"></i>跟随外盘（笨办法）</span></div>';
-    return s;
-  }
-  function renderAcc(){
-    const s=D.stats; if(!s){$("tab-acc").innerHTML='<div class="empty">暂无统计。</div>';return}
-    const P=s.predictors;
-    const bestLive=Math.max(...["base_prev","base_up","base_us"].map(k=>P[k].live.rate||0));
-    const bestBt=Math.max(...["base_prev","base_up","base_us"].map(k=>(P[k].backtest&&P[k].backtest.rate)||0));
-    let h='<div class="tbl-wrap"><table><thead><tr><th>预测方</th><th>实盘 方向命中</th><th>实盘 区间命中</th><th>回测 方向命中</th><th>是否显著跑赢笨办法</th></tr></thead><tbody>';
-    Object.keys(NAMES).forEach(k=>{
-      const L=P[k].live,B=P[k].backtest;
-      const sig=x=>x&&x.p!=null?(x.p<0.05?'<span class="rate-good">是（p='+x.p+'）</span>':'否（p='+x.p+'）'):'';
-      h+='<tr><td>'+NAMES[k]+'</td><td>'+rate(L,L.n&&L.rate>bestLive&&k.indexOf("base")<0)+'</td><td class="num">'+(L.rangeRate!=null?L.rangeRate.toFixed(1)+'%':'–')+'</td><td>'+(B?rate(B,B.n&&B.rate>bestBt&&k.indexOf("base")<0):'<span class="label">无法回测</span>')+'</td><td class="label">'+(k.indexOf("base")<0?[L.p!=null?'实盘 '+sig(L):'',B&&B.p!=null?'回测 '+sig(B):''].filter(Boolean).join('<br>'):'')+'</td></tr>';
-    });
-    h+='</tbody></table></div><p class="label">命中率只算出手的那些次（判「平」＝不出手）。p 值＝在"真实命中率只等于最好的笨办法"的假设下，出现这么高命中的概率；小于 0.05 才算显著。回测用的是当前规则版本，规则是看着历史数据改的，回测成绩会偏乐观，以实盘为准。</p>';
-    h+='<div class="panel"><h3>实盘累计命中率</h3>'+lineChart(s.rolling||[])+'</div>';
-    h+='<h3>分基金</h3><div class="tbl-wrap"><table><thead><tr><th>基金</th><th>规则 实盘</th><th>规则 回测</th><th>AI 实盘</th><th>跟随外盘 回测</th><th>昨日延续 回测</th></tr></thead><tbody>';
-    codes().forEach(c=>{const b=s.byFund[c];h+='<tr><td>'+esc(fname(c))+'</td><td>'+rate(b.rule.live)+'</td><td>'+rate(b.rule.backtest)+'</td><td>'+rate(b.ai.live)+'</td><td>'+rate(b.base_us.backtest)+'</td><td>'+rate(b.base_prev.backtest)+'</td></tr>'});
-    h+='</tbody></table></div>';
-    const vs=Object.entries(s.versions||{});
-    if(vs.length){h+='<h3>各规则版本的实盘成绩</h3><div class="tbl-wrap"><table><thead><tr><th>版本</th><th>实盘方向命中</th></tr></thead><tbody>'+vs.map(([v,x])=>'<tr><td>v'+esc(v)+'</td><td>'+rate({n:x.n,hit:x.hit,rate:x.n?x.hit/x.n*100:0})+'</td></tr>').join('')+'</tbody></table></div>'}
-    $("tab-acc").innerHTML=h;
+    if((st.ideas||[]).length)h+='<div class="card"><b style="font-size:14px">野路子候选</b>'+st.ideas.map(i=>'<span style="font-size:13px">· '+esc(i.text)+' <span class="sub tiny">'+esc(i.date)+'</span></span>').join('')+'<span class="sub tiny">需要新的数据源，跟 Claude 说想试哪条。</span></div>';
+    h+='<details class="card fold"><summary><span>修改记录</span><span class="sub small">'+st.changelog.length+' 次 · 被拒 '+((st.rejected||[]).length)+' 次</span></summary>'+
+      [...st.changelog].reverse().map(c=>'<div style="font-size:13px;border-top:1px solid var(--line);padding-top:8px"><b>v'+c.version+'</b> <span class="sub tiny">'+esc(c.date)+(c.brierBefore!=null?' · Brier '+c.brierBefore+' → '+c.brierAfter:'')+'</span><div>'+esc(c.changes)+'</div>'+(c.reason?'<div class="sub small">'+esc(c.reason)+'</div>':'')+'</div>').join('')+'</details>';
+    $("v-lab").innerHTML=h;
   }
 
-  // ---------- 预测逻辑 ----------
-  function renderLogic(){
-    const st=D.strat; if(!st){$("tab-logic").innerHTML='<div class="empty">暂无规则。</div>';return}
-    const sc=id=>(D.stats&&D.stats.rules.find(r=>r.id===id))||{n:0};
-    let h='<div class="panel"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h2>规则模型 v'+st.version+'</h2><span class="label">更新于 '+esc(st.updatedAt||"")+'</span></div>'+
-      '<p class="muted" style="font-size:.9rem">每条规则满足条件时投一票（看涨 +权重 / 看跌 −权重），正式规则的得分合计 ≥ '+st.params.th+' 判涨，≤ −'+st.params.th+' 判跌，其余判平。观察规则只记录成绩、不参与投票，证明有效后转正。</p>'+
-      '<ul style="margin:0;padding-left:18px;color:var(--muted);font-size:.86rem">'+(st.principles||[]).map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul></div>';
-    h+='<div class="tbl-wrap"><table><thead><tr><th>编号</th><th>状态</th><th>说明</th><th>条件</th><th>投票</th><th>权重</th><th>历史触发</th><th>触发后命中</th></tr></thead><tbody>';
-    [...st.rules].sort((a,b)=>(a.status>b.status?1:-1)||a.id.localeCompare(b.id)).forEach(r=>{
-      const s=sc(r.id);
-      h+='<tr><td class="num">'+esc(r.id)+'</td><td>'+(r.status==="active"?'<span class="chip st">正式</span>':'<span class="chip sh">观察</span>')+'</td><td>'+esc(r.name)+(r.fund!=="*"?'<div class="label">仅 '+esc(fname(r.fund))+'</div>':'')+'</td><td><code>'+esc(r.when)+'</code></td><td>'+chip(r.vote>0?"up":"down")+'</td><td class="num">'+r.weight+'</td><td class="num">'+s.n+'</td><td class="num '+(s.n>=20?(s.rate>=55?'rate-good':s.rate<45?'rate-bad':''):'')+'">'+(s.n?s.rate.toFixed(1)+'%':'–')+'</td></tr>';
-    });
-    h+='</tbody></table></div><p class="label">触发后命中：规则触发的那些天里，实际方向与它的投票一致的比例（含回测）。样本少于 20 次的不作数。</p>';
-    h+='<h3>修改记录</h3><ul class="list">'+[...st.changelog].reverse().map(c=>'<li><b>v'+c.version+'</b> <span class="label">'+esc(c.date)+(c.before!=null?' · 命中 '+c.before+'% → '+c.after+'%':'')+'</span><div>'+esc(c.changes)+'</div>'+(c.reason?'<div class="muted" style="font-size:.84rem">'+esc(c.reason)+'</div>':'')+'</li>').join('')+'</ul>';
-    if((st.rejected||[]).length)h+='<h3>被拒绝的修改</h3><ul class="list">'+[...st.rejected].reverse().map(c=>'<li><span class="label">'+esc(c.date)+' · 命中 '+c.before+'% → '+c.after+'%</span><div>'+esc(c.changes)+'</div></li>').join('')+'</ul>';
-    h+='<h3>野路子候选</h3>'+((st.ideas||[]).length?'<ul class="list">'+st.ideas.map(i=>'<li>'+esc(i.text)+' <span class="label">'+esc(i.date)+'</span></li>').join('')+'</ul><p class="label">这些想法需要新的数据源，告诉 Claude 想试哪条，接入后会作为观察规则开始记录。</p>':'<p class="muted">复盘中提出的、需要新数据才能验证的想法会列在这里。</p>');
-    $("tab-logic").innerHTML=h;
-  }
+  function renderAll(){renderPred();renderScore();renderLab();
+    $("foot").textContent=(D.status.lastRun?'上次更新 '+D.status.lastRun+' · ':'')+'每晚 22:13 复盘、修正并预测下一交易日，交易日 8:07 用隔夜美股定稿后锁定。仅作实验记录，不构成投资建议。'}
 
-  // ---------- 持仓 ----------
-  function renderHold(){
-    if(!D.funds.length){$("tab-hold").innerHTML='<div class="empty">暂无持仓。</div>';return}
-    const total=D.funds.reduce((s,f)=>s+(+f.amount||0),0), pnl=D.funds.reduce((s,f)=>s+(+f.pnl||0),0);
-    let h='<p class="muted">合计 <span class="num">¥'+total.toFixed(2)+'</span>，持有收益 <span class="num '+cls(pnl)+'">'+pnl.toFixed(2)+'</span>（按每日净值自动滚动，加减仓后需手动更新）</p><div class="funds">';
-    h+=D.funds.map(f=>'<div class="fund"><h3>'+esc(f.name)+'</h3><span class="label num">'+esc(f.code)+' · '+esc(f.type||"")+' · 净值日 '+esc(f.navDate)+'</span>'+
-      '<div class="row2"><span>持有金额</span><span class="num">¥'+Number(f.amount).toFixed(2)+'</span></div>'+
-      '<div class="row2"><span>持有收益</span><span class="num '+cls(f.pnlPct)+'">'+Number(f.pnl).toFixed(2)+'（'+fmt(f.pnlPct)+'）</span></div>'+
-      '<ul>'+(f.drivers||[]).map(d=>'<li>'+esc(d)+'</li>').join('')+'</ul></div>').join('');
-    $("tab-hold").innerHTML=h+'</div>';
-  }
+  function show(v){document.querySelectorAll(".tabbar button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));["pred","score","lab"].forEach(k=>$("v-"+k).hidden=k!==v);window.scrollTo(0,0);try{localStorage.setItem("fd-v",v)}catch(e){}}
+  document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
+  try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
 
-  function renderAll(){renderVerdict();renderNext();renderLog();renderAcc();renderLogic();renderHold()}
-
-  // ---------- 标签页 ----------
-  function show(t){document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));["next","log","acc","logic","hold"].forEach(k=>$("tab-"+k).hidden=k!==t);try{localStorage.setItem("fd-tab",t)}catch(e){}}
-  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
-  try{const t=localStorage.getItem("fd-tab");if(t)show(t)}catch(e){}
-
-  // ---------- 数据 ----------
-  const REPO=location.hostname.endsWith('github.io')?location.hostname.split('.')[0]+'/'+location.pathname.split('/')[1]:'';
-  if(REPO)$("run-now").href="https://github.com/"+REPO+"/actions";else $("run-now").hidden=true;
   async function load(){
     try{
       const q='?t='+Date.now();
       const j=n=>fetch('data/'+n+'.json'+q,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.json()});
-      const [f,rec,bt,stats,strat,status]=await Promise.all([j('funds'),j('records'),j('backtest').catch(()=>({days:{}})),j('stats').catch(()=>null),j('strategy'),j('status').catch(()=>({}))]);
-      D={funds:[...f].sort((a,b)=>(a.order||0)-(b.order||0)),rec,bt,stats,strat,status};
-      $("st-run").textContent=status.lastRun?('上次更新 '+status.lastRun+(status.mode==='morning'?'（开盘前）':'（晚间）')):'尚未自动更新';
+      const [funds,rec,stats,strat,status]=await Promise.all([j('funds'),j('records'),j('stats').catch(()=>null),j('strategy'),j('status').catch(()=>({}))]);
+      D={funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),rec,stats,strat,status};
       renderAll();
-    }catch(e){$("st-run").textContent='数据读取失败：'+e.message}
+    }catch(e){$("v-pred").innerHTML='<div class="empty">数据读取失败：'+esc(e.message)+'，下拉或稍后再打开。</div>'}
   }
-  $("reload").addEventListener('click',load);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
   load();
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});

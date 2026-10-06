@@ -177,87 +177,147 @@ function fires(rule, feat, code) {
   try { return !!compile(rule.when)(...VARS.map(k => k === 'qdii' ? v.qdii : (v[k] == null ? NaN : v[k])), Math); } catch { return false; }
 }
 const DIR_OF = v => v > 0.3 ? 'up' : v < -0.3 ? 'down' : 'flat';   // 只用于把因子转成笨办法的方向
-const ACT = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';             // 实际方向：按正负
-function rulePredict(strat, feat, code) {
+const ACT = v => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';   // 实际方向：按正负
+const Y = v => v > 0 ? 1 : v < 0 ? 0 : null;
+const clampP = p => Math.min(0.9, Math.max(0.1, p));
+const sigm = z => 1 / (1 + Math.exp(-z));
+const r3 = v => v == null || !Number.isFinite(v) ? null : Math.round(v * 1000) / 1000;
+// 单因子逻辑回归：把规则得分、隔夜外盘涨跌等换算成"涨的概率"，在回测数据上拟合（带轻度收缩，防止过度自信）
+function fitLogit(rows) {
+  const n = rows.length; if (n < 30) return { a: 0, b: 0, mu: 0, sd: 1, n };
+  const mu = rows.reduce((s, r) => s + r[0], 0) / n;
+  const sd = Math.sqrt(rows.reduce((s, r) => s + (r[0] - mu) ** 2, 0) / n) || 1;
+  let a = 0, b = 0;
+  for (let it = 0; it < 500; it++) {
+    let ga = 0, gb = 0;
+    for (const [x, y] of rows) { const z = (x - mu) / sd, e = sigm(a + b * z) - y; ga += e; gb += e * z; }
+    a -= 0.5 * ga / n; b -= 0.5 * (gb / n + 0.02 * b);
+  }
+  return { a: r3(a), b: r3(b), mu: r3(mu), sd: r3(sd), n };
+}
+const applyLogit = (m, x) => m == null || x == null || !Number.isFinite(x) ? null : clampP(sigm(m.a + m.b * (x - m.mu) / m.sd));
+const dirOfP = p => p == null ? null : p > 0.5 ? 'up' : p < 0.5 ? 'down' : null;
+function ruleScore(strat, feat, code) {
   let score = 0; const fired = [];
   for (const r of strat.rules) if (fires(r, feat, code)) { fired.push(r.id); if (r.status === 'active') score += r.vote * r.weight; }
-  const th = strat.params?.th ?? 0.75;
-  const dir = score >= th ? 'up' : score <= -th ? 'down' : 'flat';
-  const sg = feat.f[code].vol20 || 2;
-  const center = dir === 'up' ? 0.5 * sg : dir === 'down' ? -0.5 * sg : 0;
-  return { dir, low: r2(center - 0.9 * sg), high: r2(center + 0.9 * sg), score: r2(score), conf: Math.abs(score) >= 2 ? '高' : Math.abs(score) >= 1 ? '中' : '低', fired };
+  return { score: r2(score), fired };
 }
-function baselines(feat, code) {
-  const ff = feat.f[code]; const us = FUND[code].qdii ? feat.c.ndx_on : feat.c.sox_on;
-  return { base_prev: ff.prev == null ? null : DIR_OF(ff.prev), base_up: 'up', base_us: us == null ? null : DIR_OF(us) };
+const usMove = (feat, code) => FUND[code].qdii ? feat.c.ndx_on : feat.c.sox_on;
+function withRange(p, sg) {
+  const center = (p - 0.5) * 2 * sg * 0.6;
+  return { low: r2(center - 0.9 * sg), high: r2(center + 0.9 * sg) };
 }
-function buildPreds(strat, feat) {
-  const p = { rule: {}, base_prev: {}, base_up: {}, base_us: {} };
-  for (const c of CODES) { p.rule[c] = rulePredict(strat, feat, c); const b = baselines(feat, c); for (const k in b) p[k][c] = b[k]; }
-  return p;
+function buildPreds(strat, feat, cal) {
+  const P = { rule: {}, base_coin: {}, base_up: {}, base_prev: {}, base_us: {} };
+  for (const c of CODES) {
+    const ff = feat.f[c], sg = ff.vol20 || 2, rs = ruleScore(strat, feat, c);
+    const pr = cal ? applyLogit(cal.rule, rs.score) : clampP(0.5 + rs.score * 0.08);
+    P.rule[c] = { p: r3(pr), dir: dirOfP(pr), score: rs.score, fired: rs.fired, ...withRange(pr, sg) };
+    P.base_coin[c] = { p: 0.5, dir: null };
+    const pu = cal ? clampP(cal.upRate) : 0.55; P.base_up[c] = { p: r3(pu), dir: dirOfP(pu) };
+    const pp = cal ? applyLogit(cal.prev, ff.prev) : null; P.base_prev[c] = pp == null ? null : { p: r3(pp), dir: dirOfP(pp) };
+    const pus = cal ? applyLogit(cal.us, usMove(feat, c)) : null; P.base_us[c] = pus == null ? null : { p: r3(pus), dir: dirOfP(pus) };
+  }
+  return P;
 }
 
-// ---------- 4. 回测（用当前规则版本，覆盖最近约 120 个交易日） ----------
+// ---------- 4. 回测（当前规则版本，最近约 120 个交易日；概率换算也在这里拟合） ----------
 function backtest(strat) {
-  const days = {};
+  const items = [];
   for (const T of tdays.slice(-120)) {
-    if (T < tdays[25]) continue;  // 留足计算因子的历史
+    if (T < tdays[25]) continue;
     const actual = {}; for (const c of CODES) if (NAV[c][T] != null) actual[c] = NAV[c][T];
     if (!Object.keys(actual).length) continue;
-    const feat = features(T);
-    days[T] = { date: T, phase: 'backtest', features: feat, preds: buildPreds(strat, feat), actual };
+    items.push({ T, feat: features(T), actual });
   }
+  const rows = { rule: [], prev: [], us: [] }; let ups = 0, tot = 0;
+  for (const it of items) for (const c of CODES) {
+    const y = Y(it.actual[c]); if (y == null) continue;
+    tot++; ups += y;
+    rows.rule.push([ruleScore(strat, it.feat, c).score, y]);
+    if (it.feat.f[c].prev != null) rows.prev.push([it.feat.f[c].prev, y]);
+    const u = usMove(it.feat, c); if (u != null) rows.us.push([u, y]);
+  }
+  const cal = { rule: fitLogit(rows.rule), prev: fitLogit(rows.prev), us: fitLogit(rows.us), upRate: tot ? r3(ups / tot) : 0.5, fittedOn: tot };
+  const days = {};
+  for (const it of items) days[it.T] = { date: it.T, phase: 'backtest', features: it.feat, preds: buildPreds(strat, it.feat, cal), actual: it.actual };
+  Object.defineProperty(days, 'cal', { value: cal, enumerable: false });
   return days;
 }
 
 // ---------- 5. 统计 ----------
-const PREDICTORS = ['rule', 'ai', 'base_prev', 'base_up', 'base_us'];
+const PREDICTORS = ['mix', 'rule', 'ai', 'base_coin', 'base_up', 'base_prev', 'base_us'];
+const BASES = ['base_up', 'base_prev', 'base_us'];
 function lnC(n, k) { let s = 0; for (let i = 1; i <= k; i++) s += Math.log((n - k + i) / i); return s; }
 function pUpper(n, k, p0) { if (!n) return null; let s = 0; for (let i = k; i <= n; i++) s += Math.exp(lnC(n, i) + i * Math.log(p0) + (n - i) * Math.log(1 - p0)); return Math.min(1, s); }
+const predP = x => x == null ? null : typeof x === 'object' ? (x.p ?? null) : null;
 function tally(dayList, predictor, codeFilter) {
-  let n = 0, hit = 0, rn = 0, rhit = 0, tot = 0;
+  let n = 0, hit = 0, bn = 0, bs = 0, rn = 0, rhit = 0;
   for (const d of dayList) for (const c of CODES) {
     if (codeFilter && c !== codeFilter) continue;
-    const a = d.actual?.[c]; const p = d.preds?.[predictor]?.[c];
-    if (a == null || p == null) continue;
-    const dir = typeof p === 'string' ? p : p.dir;
-    tot++;
-    if (typeof p === 'object' && p.low != null) { rn++; rhit += a >= p.low && a <= p.high; }
-    if (dir === 'flat') continue;   // 判平＝不出手
-    n++; hit += dir === ACT(a);
+    const a = d.actual?.[c], y = Y(a), x = d.preds?.[predictor]?.[c], p = predP(x);
+    if (y == null || p == null) continue;
+    bn++; bs += (p - y) ** 2;
+    if (x.low != null) { rn++; rhit += a >= x.low && a <= x.high; }
+    const dir = dirOfP(p); if (!dir) continue;
+    n++; hit += (dir === 'up') === (y === 1);
   }
-  return { n, hit, rate: n ? r2(hit / n * 100) : null, total: tot, cover: tot ? r2(n / tot * 100) : null, rangeRate: rn ? r2(rhit / rn * 100) : null };
+  return { n, hit, rate: n ? r2(hit / n * 100) : null, brier: bn ? r3(bs / bn) : null, bn, rangeRate: rn ? r2(rhit / rn * 100) : null };
 }
+function calibration(dayList, predictor) {
+  const bins = [[0, 0.4, '<40%'], [0.4, 0.5, '40–50%'], [0.5, 0.6, '50–60%'], [0.6, 0.7, '60–70%'], [0.7, 1.01, '≥70%']];
+  return bins.map(([lo, hi, label]) => {
+    let n = 0, sp = 0, up = 0;
+    for (const d of dayList) for (const c of CODES) {
+      const y = Y(d.actual?.[c]), p = predP(d.preds?.[predictor]?.[c]);
+      if (y == null || p == null || p < lo || p >= hi || p === 0.5) continue;
+      n++; sp += p; up += y;
+    }
+    return { label, n, avgP: n ? r2(sp / n * 100) : null, upRate: n ? r2(up / n * 100) : null };
+  });
+}
+function ci(hit, n) { if (!n) return [null, null]; const p = hit / n, se = Math.sqrt(p * (1 - p) / n); return [r2((p - 1.96 * se) * 100), r2((p + 1.96 * se) * 100)]; }
 function ruleScorecard(strat, dayList) {
   return strat.rules.map(r => {
     let n = 0, hit = 0;
     for (const d of dayList) for (const c of CODES) {
-      const a = d.actual?.[c]; if (a == null || !d.features) continue;
+      const y = Y(d.actual?.[c]); if (y == null || !d.features) continue;
       if (!fires(r, d.features, c)) continue;
-      n++; hit += (r.vote > 0 ? a > 0 : a < 0);
+      n++; hit += r.vote > 0 ? y : 1 - y;
     }
-    return { id: r.id, n, hit, rate: n ? r2(hit / n * 100) : null };
+    const [lo, hi] = ci(hit, n);
+    const verdict = n < 20 ? '样本不足' : lo > 50 ? '有效' : hi < 50 ? '反向/无效' : '不确定';
+    return { id: r.id, n, hit, rate: n ? r2(hit / n * 100) : null, lo, hi, verdict };
   });
 }
-function computeStats(bt) {
-  const live = Object.values(rec.days).filter(d => d.phase === 'live');
-  const btDays = Object.values(bt);
-  const out = { updatedAt: nowStr, strategyVersion: strategy.version, predictors: {}, byFund: {}, rules: [], rolling: [], versions: {} };
-  for (const p of PREDICTORS) out.predictors[p] = { live: tally(live, p), backtest: p === 'ai' ? null : tally(btDays, p) };
-  // p 值：命中是否显著高于同期最好的笨办法
-  for (const p of ['rule', 'ai']) for (const ph of ['live', 'backtest']) {
-    const s = out.predictors[p][ph]; if (!s?.n) continue;
-    const best = Math.max(...['base_prev', 'base_up', 'base_us'].map(b => out.predictors[b][ph]?.rate || 0));
-    const p0 = Math.min(0.95, Math.max(0.05, best / 100));
-    s.vsBest = r2(best); s.p = Math.round(pUpper(s.n, s.hit, p0) * 1000) / 1000;
+function addMix(d) {
+  if (!d.preds?.rule) return;
+  d.preds.mix = {};
+  for (const c of CODES) {
+    const a = predP(d.preds.rule[c]), b = predP(d.preds.ai?.[c]);
+    const p = a != null && b != null ? (a + b) / 2 : (a ?? b);
+    if (p != null) d.preds.mix[c] = { p: r3(p), dir: dirOfP(p) };
   }
-  for (const c of CODES) out.byFund[c] = Object.fromEntries(PREDICTORS.map(p => [p, { live: tally(live, p, c), backtest: p === 'ai' ? null : tally(btDays, p, c) }]));
+}
+function computeStats(bt) {
+  const live = Object.values(rec.days).filter(d => d.phase === 'live' && d.format === 2);
+  const btDays = Object.values(bt);
+  const out = { updatedAt: nowStr, strategyVersion: strategy.version, calib: bt.cal, predictors: {}, byFund: {}, rules: [], rolling: [], versions: {}, calibration: {} };
+  for (const p of PREDICTORS) out.predictors[p] = { live: tally(live, p), backtest: ['ai', 'mix'].includes(p) ? null : tally(btDays, p) };
+  for (const p of ['mix', 'rule', 'ai']) for (const ph of ['live', 'backtest']) {
+    const s = out.predictors[p][ph]; if (!s?.n) continue;
+    const best = Math.max(...BASES.map(b => out.predictors[b][ph]?.rate || 0));
+    const bestBrier = Math.min(0.25, ...BASES.map(b => out.predictors[b][ph]?.brier ?? 0.25));
+    s.vsBest = r2(best); s.vsBestBrier = bestBrier; s.p = Math.round(pUpper(s.n, s.hit, Math.min(0.95, Math.max(0.05, best / 100))) * 1000) / 1000;
+  }
+  out.calibration = { live: calibration(live, 'mix'), backtest: calibration(btDays, 'rule') };
+  for (const c of CODES) out.byFund[c] = Object.fromEntries(PREDICTORS.map(p => [p, { live: tally(live, p, c), backtest: ['ai', 'mix'].includes(p) ? null : tally(btDays, p, c) }]));
   out.rules = ruleScorecard(strategy, [...btDays, ...live]);
   const ld = live.filter(d => d.status === 'reviewed').sort((a, b) => a.date.localeCompare(b.date));
-  const acc = Object.fromEntries(PREDICTORS.map(p => [p, { n: 0, h: 0 }]));
+  const acc = Object.fromEntries(PREDICTORS.map(p => [p, { n: 0, h: 0, bs: 0, bn: 0 }]));
   for (const d of ld) {
     const row = { date: d.date };
-    for (const p of PREDICTORS) { const t = tally([d], p); acc[p].n += t.n; acc[p].h += t.hit; row[p] = acc[p].n ? r2(acc[p].h / acc[p].n * 100) : null; }
+    for (const p of PREDICTORS) { const t = tally([d], p); const A = acc[p]; A.n += t.n; A.h += t.hit; if (t.bn) { A.bs += t.brier * t.bn; A.bn += t.bn; } row[p] = A.n ? r2(A.h / A.n * 100) : null; row[p + '_brier'] = A.bn ? r3(A.bs / A.bn) : null; }
     out.rolling.push(row);
     const v = d.strategyVersion; out.versions[v] ||= { n: 0, hit: 0 }; const t = tally([d], 'rule'); out.versions[v].n += t.n; out.versions[v].hit += t.hit;
   }
@@ -322,19 +382,20 @@ for (const d of Object.values(rec.days)) {
   d.actual ||= {};
   for (const c of CODES) if (d.actual[c] == null && NAV[c][d.date] != null) d.actual[c] = NAV[c][d.date];
 }
-const toReview = Object.values(rec.days).filter(d => d.phase === 'live' && d.status === 'pending' && d.date <= today && domestic.every(c => d.actual[c] != null));
+const toReview = Object.values(rec.days).filter(d => d.phase === 'live' && d.format === 2 && d.status === 'pending' && d.date <= today && domestic.every(c => d.actual[c] != null));
 let stats = computeStats(bt);
 
 for (const d of toReview) {
-  d.status = 'reviewed'; d.reviewedAt = nowStr;
+  d.status = 'reviewed'; d.reviewedAt = nowStr; d.lockedAt ||= d.madeAt;
   const table = funds.map(f => {
     const a = d.actual[f.code]; const pr = d.preds;
-    return `${f.short}：实际 ${pct(a)}｜规则 ${pr.rule?.[f.code]?.dir}(得分${pr.rule?.[f.code]?.score}，触发${(pr.rule?.[f.code]?.fired || []).join('/') || '无'})｜AI ${pr.ai?.[f.code]?.dir ?? '无'}｜昨日延续 ${pr.base_prev?.[f.code]}｜跟随外盘 ${pr.base_us?.[f.code]}`;
+    const P = k => { const x = pr[k]?.[f.code]; return x?.p == null ? '无' : Math.round(x.p * 100) + '%'; };
+    return `${f.short}：实际 ${pct(a)}｜综合 P涨${P('mix')}｜规则 P涨${P('rule')}(得分${pr.rule?.[f.code]?.score}，触发${(pr.rule?.[f.code]?.fired || []).join('/') || '无'})｜AI P涨${P('ai')}｜跟随外盘 P涨${P('base_us')}`;
   }).join('\n');
-  const score = r => { const s = stats.rules.find(x => x.id === r.id); return `${r.id}${r.status === 'shadow' ? '(观察)' : ''}［${r.fund}］${r.name}：when ${r.when} → ${r.vote > 0 ? '看涨' : '看跌'} 权重${r.weight}｜历史触发${s?.n ?? 0}次，命中${s?.rate ?? '–'}%`; };
+  const score = r => { const s = stats.rules.find(x => x.id === r.id); return `${r.id}${r.status === 'shadow' ? '(观察)' : ''}［${r.fund}］${r.name}：when ${r.when} → ${r.vote > 0 ? '看涨' : '看跌'} 权重${r.weight}｜历史触发${s?.n ?? 0}次，命中${s?.rate ?? '–'}%（95%区间 ${s?.lo ?? '–'}~${s?.hi ?? '–'}，${s?.verdict ?? ''}）`; };
   try {
     const out = await gemini(`你是量化研究员，在做"基金单日涨跌能否预测"的实验，用简体中文。今天复盘 ${d.date}。
-判定：实际涨跌按正负算涨或跌；预测flat表示不出手（不计入命中率，但出手率太低也说明没本事）。
+评分：每个预测方给出涨的概率P涨；用Brier分数（(P涨-实际)²的平均，越低越好，抛硬币=0.250）和方向命中率（P涨>50%算看涨）衡量。
 
 当日各预测方 vs 实际：
 ${table}
@@ -344,10 +405,10 @@ ${featText(d.features)}
 ${VAR_DOC}
 ${d.guxia ? `天津股侠当时观点：${d.guxia.summary}（stance ${d.guxia.stance}）` : ''}
 
-累计成绩（方向命中率）：
-${PREDICTORS.map(p => `${p}：实盘 ${stats.predictors[p].live.rate ?? '–'}%（${stats.predictors[p].live.n}次）${stats.predictors[p].backtest ? `，回测 ${stats.predictors[p].backtest.rate}%（${stats.predictors[p].backtest.n}次）` : ''}`).join('\n')}
+累计成绩：
+${PREDICTORS.map(p => { const L = stats.predictors[p].live, B = stats.predictors[p].backtest; return `${p}：实盘 Brier ${L.brier ?? '–'}，命中 ${L.rate ?? '–'}%（${L.n}次）${B ? `；回测 Brier ${B.brier ?? '–'}，命中 ${B.rate ?? '–'}%（${B.n}次）` : ''}`; }).join('\n')}
 
-当前规则（v${strategy.version}，阈值 th=${strategy.params.th}：得分≥th看涨，≤-th看跌，否则平）：
+当前规则（v${strategy.version}：正式规则投票得分，再按回测拟合换算成P涨）：
 ${strategy.rules.map(score).join('\n')}
 
 近期修改记录：
@@ -379,19 +440,20 @@ ${strategy.changelog.slice(-5).map(c => `v${c.version} ${c.date}：${c.changes}`
         if (droppedActive > 2) throw new Error(`一次删除 ${droppedActive} 条正式规则，过多`);
         const cand = { ...strategy, params: { ...strategy.params, th: Math.max(0.25, Math.min(3, +pp.th || strategy.params.th)) }, rules };
         const liveDays = Object.values(rec.days).filter(x => x.phase === 'live' && x.features);
-        const oldRate = tally([...Object.values(bt), ...liveDays], 'rule').rate ?? 0;
+        const oldT = tally([...Object.values(bt), ...liveDays], 'rule');
         const candBt = backtest(cand);
-        const candLive = liveDays.map(x => ({ ...x, preds: { rule: Object.fromEntries(CODES.map(c => [c, rulePredict(cand, x.features, c)])) } }));
-        const newRate = tally([...Object.values(candBt), ...candLive], 'rule').rate ?? 0;
-        const entry = { date: today, changes: String(pp.changes || ''), reason: String(pp.reason || ''), before: oldRate, after: newRate };
-        if (newRate >= oldRate - 0.5) {
+        const candLive = liveDays.map(x => ({ ...x, preds: { rule: buildPreds(cand, x.features, candBt.cal).rule } }));
+        const newT = tally([...Object.values(candBt), ...candLive], 'rule');
+        const oldRate = oldT.rate ?? 0, newRate = newT.rate ?? 0;
+        const entry = { date: today, changes: String(pp.changes || ''), reason: String(pp.reason || ''), before: oldRate, after: newRate, brierBefore: oldT.brier, brierAfter: newT.brier };
+        if ((newT.brier ?? 1) <= (oldT.brier ?? 1) + 0.001 && newRate >= oldRate - 1) {
           strategy = { ...cand, version: strategy.version + 1, updatedAt: nowStr };
           strategy.changelog.push({ version: strategy.version, ...entry });
           bt = candBt;
-          log(`规则更新到 v${strategy.version}（命中 ${oldRate}% → ${newRate}%）`);
+          log(`规则更新到 v${strategy.version}（Brier ${oldT.brier} → ${newT.brier}，命中 ${oldRate}% → ${newRate}%）`);
         } else {
           strategy.rejected = [...(strategy.rejected || []).slice(-19), entry];
-          log(`规则修改被拒：命中 ${oldRate}% → ${newRate}%`);
+          log(`规则修改被拒：Brier ${oldT.brier} → ${newT.brier}，命中 ${oldRate}% → ${newRate}%`);
         }
       } catch (e) { log('规则修改无效：' + e.message); }
     }
@@ -406,7 +468,7 @@ async function aiPredict(T, feat, rulePreds, note) {
   newsCache ??= await news();
   const recent = Object.values(rec.days).filter(d => d.review?.summary && d.phase === 'live').sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(d => `${d.date}：${d.review.summary}`).join('\n') || '无';
   const out = await gemini(`你在做"基金单日涨跌能否预测"的实验，用简体中文。现在是北京时间 ${nowStr}，请独立判断五只基金在 ${T} 的净值涨跌。${note}
-判定：实际按正负算涨跌；flat表示不出手，不计入命中率。只在有把握时出手。
+你要给出每只基金『涨的概率』p_up（5~95的整数）。评分用Brier分数：说得越笃定、错了扣分越重；没把握就给接近50。实际按正负算涨跌。
 
 基金：
 ${funds.map(f => `${f.code} ${f.name}：${f.drivers.join('；')}`).join('\n')}
@@ -415,8 +477,9 @@ ${funds.map(f => `${f.code} ${f.name}：${f.drivers.join('；')}`).join('\n')}
 ${featText(feat)}
 ${VAR_DOC}
 
-规则模型 v${strategy.version} 的判断：${CODES.map(c => `${FUND[c].short} ${rulePreds[c].dir}(得分${rulePreds[c].score})`).join('，')}
-成绩（方向命中率）：AI 实盘 ${stats.predictors.ai.live.rate ?? '–'}%（${stats.predictors.ai.live.n}次）；规则 实盘 ${stats.predictors.rule.live.rate ?? '–'}%，回测 ${stats.predictors.rule.backtest?.rate ?? '–'}%；笨办法"昨日延续"回测 ${stats.predictors.base_prev.backtest?.rate ?? '–'}%，"跟随外盘"回测 ${stats.predictors.base_us.backtest?.rate ?? '–'}%，"全猜涨"回测 ${stats.predictors.base_up.backtest?.rate ?? '–'}%。
+规则模型 v${strategy.version} 的判断：${CODES.map(c => `${FUND[c].short} P涨${Math.round(rulePreds[c].p * 100)}%(得分${rulePreds[c].score})`).join('，')}
+成绩：AI 实盘 Brier ${stats.predictors.ai.live.brier ?? '–'}、命中 ${stats.predictors.ai.live.rate ?? '–'}%（${stats.predictors.ai.live.n}次）；规则 回测 Brier ${stats.predictors.rule.backtest?.brier ?? '–'}、命中 ${stats.predictors.rule.backtest?.rate ?? '–'}%；"跟随外盘"回测 Brier ${stats.predictors.base_us.backtest?.brier ?? '–'}、命中 ${stats.predictors.base_us.backtest?.rate ?? '–'}%；抛硬币 Brier 0.250。
+你的实盘校准：${(stats.calibration.live || []).filter(b => b.n).map(b => `说${b.label}时实际涨${b.upRate}%（${b.n}次）`).join('；') || '暂无'}
 ${feat.c.guxia != null ? `天津股侠最新立场 ${feat.c.guxia}` : ''}
 近期复盘：
 ${recent}
@@ -424,15 +487,18 @@ ${recent}
 相关快讯：
 ${newsCache.join('\n') || '无'}
 
-要求：可以同意也可以推翻规则模型；basis 60字内，必须引用具体因子数值或快讯；信号不清就给 flat 和低信心。区间 low/high 单位%，宽度参考 vol20。
-只输出 JSON：{"market":"2句市场背景","preds":{"代码":{"dir":"up","low":-1,"high":2,"conf":"低/中/高","basis":"..."}}}`, `AI 预测 ${T}`);
+要求：可以同意也可以推翻规则模型；basis 50字内，必须引用具体因子数值或快讯；信号不清就给接近50。区间 low/high 单位%，宽度参考 vol20。另给 tech_p_up：科技仓整体（五只平均）涨的概率，和 tech_basis（40字内）。
+只输出 JSON：{"market":"2句市场背景","tech_p_up":55,"tech_basis":"...","preds":{"代码":{"p_up":60,"low":-1,"high":2,"basis":"..."}}}`, `AI 预测 ${T}`);
   const preds = {};
   for (const c of CODES) {
     const p = out.preds?.[c]; if (!p) continue;
     let lo = +p.low, hi = +p.high; if (!Number.isFinite(lo) || !Number.isFinite(hi)) continue; if (lo > hi) [lo, hi] = [hi, lo];
-    preds[c] = { dir: ['up', 'down', 'flat'].includes(p.dir) ? p.dir : 'flat', low: r2(Math.max(-12, lo)), high: r2(Math.min(12, hi)), conf: ['低', '中', '高'].includes(p.conf) ? p.conf : '低', basis: String(p.basis || '') };
+    const pu = +p.p_up; if (!Number.isFinite(pu)) continue;
+    const pp = r3(Math.min(0.95, Math.max(0.05, pu / 100)));
+    preds[c] = { p: pp, dir: dirOfP(pp), low: r2(Math.max(-12, lo)), high: r2(Math.min(12, hi)), basis: String(p.basis || '') };
   }
-  return { market: String(out.market || ''), preds };
+  const tp = +out.tech_p_up;
+  return { market: String(out.market || ''), preds, tech: Number.isFinite(tp) ? { p: r3(Math.min(0.95, Math.max(0.05, tp / 100))), basis: String(out.tech_basis || '') } : null };
 }
 
 async function makePrediction(T, phaseNote, keepEvening) {
@@ -440,13 +506,14 @@ async function makePrediction(T, phaseNote, keepEvening) {
   const old = rec.days[T];
   const gx = old?.guxia || null;
   if (gx?.stance != null) feat.c.guxia = gx.stance;
-  const preds = buildPreds(strategy, feat);
-  const day = { date: T, phase: 'live', status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, features: feat, preds, actual: old?.actual || {}, guxia: gx };
-  if (keepEvening && old?.preds) day.predsEvening = old.preds;
+  const preds = buildPreds(strategy, feat, bt.cal);
+  const day = { date: T, phase: 'live', format: 2, status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, lockedAt: phaseNote.includes('定稿') ? nowStr : null, features: feat, preds, actual: old?.actual || {}, guxia: gx };
+  if (keepEvening && old?.preds && old.format === 2) day.predsEvening = old.preds;
   try {
     const note = phaseNote.includes('定稿') ? '这是开盘前定稿，隔夜美股已收盘。' : (isTD(today) ? '' : '今天A股休市，注意休市期间外盘累计表现。');
-    const ai = await aiPredict(T, feat, preds.rule, note); day.preds.ai = ai.preds; day.market = ai.market;
-  } catch (e) { log('AI 预测失败：' + e.message); if (old?.preds?.ai) day.preds.ai = old.preds.ai; }
+    const ai = await aiPredict(T, feat, preds.rule, note); day.preds.ai = ai.preds; day.market = ai.market; day.tech = ai.tech;
+  } catch (e) { log('AI 预测失败：' + e.message); if (old?.format === 2 && old?.preds?.ai) { day.preds.ai = old.preds.ai; day.tech = old.tech; day.market = old.market; } }
+  addMix(day);
   rec.days[T] = day;
   log(`已生成 ${T} 预测（规则 v${strategy.version}${day.preds.ai ? ' + AI' : ''}）`);
 }
@@ -457,7 +524,7 @@ try {
     const e = rec.days[T];
     const isEve = addDays(today, 1) === T || isTD(today);
     if (e?.status === 'reviewed') log(`${T} 已复盘`);
-    else if (!e || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
+    else if (!e || e.format !== 2 || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
       const P = tdays.filter(d => d < T).at(-1) || today;
       let gx = null;
       try { gx = await guxia(P); log(`天津股侠：${gx.stance ?? '无观点'} ${gx.summary}`); } catch (err) { log('天津股侠抓取失败：' + err.message); }
@@ -468,7 +535,7 @@ try {
     const e = rec.days[today];
     if (!isTD(today)) log('今天休市');
     else if (hourBJ > 9.4) log('已过 9:25，不再修改当日预测');
-    else if (e?.status === 'pending') await makePrediction(today, '（开盘前定稿）', true);
+    else if (e?.status === 'pending' && !e.lockedAt) await makePrediction(today, '（开盘前定稿）', true);
     else log('没有待定稿的预测');
   }
 } catch (e) { log('预测失败：' + e.message); }
@@ -477,14 +544,16 @@ try {
 stats = computeStats(bt);
 write('funds.json', funds);
 write('records.json', rec);
-write('backtest.json', { strategyVersion: strategy.version, generatedAt: nowStr, days: bt });
+write('backtest.json', { strategyVersion: strategy.version, generatedAt: nowStr, calib: bt.cal, days: bt });
 write('strategy.json', strategy);
 write('stats.json', stats);
-const csv = ['日期,阶段,规则版本,基金代码,基金,规则方向,规则得分,规则区间低,规则区间高,AI方向,AI区间低,AI区间高,AI信心,昨日延续,全猜涨,跟随外盘,股侠立场,实际涨跌,规则命中,AI命中'];
-for (const d of [...Object.values(bt), ...Object.values(rec.days).filter(x => x.phase === 'live')].sort((a, b) => a.date.localeCompare(b.date))) {
+const csv = ['日期,阶段,规则版本,基金代码,基金,综合P涨,规则P涨,规则得分,触发规则,AI P涨,AI区间低,AI区间高,跟随外盘P涨,全猜涨P涨,股侠立场,锁定时间,实际涨跌,综合命中,规则命中,AI命中'];
+const P100 = x => x?.p == null ? '' : Math.round(x.p * 100);
+const HIT = (x, a) => x?.p == null || a == null || !dirOfP(x.p) || Y(a) == null ? '' : +((dirOfP(x.p) === 'up') === (Y(a) === 1));
+for (const d of [...Object.values(bt), ...Object.values(rec.days).filter(x => x.phase === 'live' && x.format === 2)].sort((a, b) => a.date.localeCompare(b.date))) {
   for (const f of funds) {
-    const p = d.preds || {}, a = d.actual?.[f.code], rl = p.rule?.[f.code], ai = p.ai?.[f.code];
-    csv.push([d.date, d.phase === 'live' ? '实盘' : '回测', d.strategyVersion ?? strategy.version, f.code, f.short, rl?.dir ?? '', rl?.score ?? '', rl?.low ?? '', rl?.high ?? '', ai?.dir ?? '', ai?.low ?? '', ai?.high ?? '', ai?.conf ?? '', p.base_prev?.[f.code] ?? '', p.base_up?.[f.code] ?? '', p.base_us?.[f.code] ?? '', d.guxia?.stance ?? '', a ?? '', a == null || !rl || rl.dir === 'flat' ? '' : +(rl.dir === ACT(a)), a == null || !ai || ai.dir === 'flat' ? '' : +(ai.dir === ACT(a))].join(','));
+    const p = d.preds || {}, a = d.actual?.[f.code], c = f.code;
+    csv.push([d.date, d.phase === 'live' ? '实盘' : '回测', d.strategyVersion ?? strategy.version, c, f.short, P100(p.mix?.[c]), P100(p.rule?.[c]), p.rule?.[c]?.score ?? '', (p.rule?.[c]?.fired || []).join('/'), P100(p.ai?.[c]), p.ai?.[c]?.low ?? '', p.ai?.[c]?.high ?? '', P100(p.base_us?.[c]), P100(p.base_up?.[c]), d.guxia?.stance ?? '', d.lockedAt || '', a ?? '', HIT(p.mix?.[c], a), HIT(p.rule?.[c], a), HIT(p.ai?.[c], a)].join(','));
   }
 }
 write('records.csv', '﻿' + csv.join('\n') + '\n');
