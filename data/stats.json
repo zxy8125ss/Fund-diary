@@ -1,127 +1,46 @@
 {
- "updatedAt": "2026-10-06 18:04",
+ "updatedAt": "2026-10-06 18:50",
  "strategyVersion": 1,
  "calib": {
   "rule": {
-   "a": 0.202,
-   "b": 0.132,
-   "mu": 0.186,
-   "sd": 0.815,
-   "n": 598
-  },
-  "prev": {
-   "a": 0.202,
-   "b": -0.102,
-   "mu": 0.327,
-   "sd": 3.477,
-   "n": 598
+   "a": 0.163,
+   "b": 0.58,
+   "n": 599
   },
   "us": {
-   "a": 0.204,
-   "b": 0.257,
-   "mu": 0.364,
-   "sd": 3.108,
-   "n": 598
-  },
-  "upRate": 0.55,
-  "fittedOn": 598
+   "a": 0.205,
+   "b": 0.18,
+   "n": 599
+  }
  },
  "predictors": {
-  "mix": {
-   "live": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
-   },
-   "backtest": null
-  },
-  "rule": {
-   "live": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
-   },
-   "backtest": {
-    "n": 598,
-    "hit": 319,
-    "rate": 53.34,
-    "brier": 0.246,
-    "bn": 598,
-    "rangeRate": 62.88,
-    "vsBest": 56.78,
-    "vsBestBrier": 0.243,
-    "p": 0.959
-   }
-  },
   "ai": {
    "live": {
     "n": 0,
     "hit": 0,
     "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
+    "mae": null,
+    "en": 0
    },
    "backtest": null
   },
-  "base_coin": {
+  "rule": {
    "live": {
     "n": 0,
     "hit": 0,
     "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
-   },
-   "backtest": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
-    "brier": 0.25,
-    "bn": 598,
-    "rangeRate": null
-   }
-  },
-  "base_up": {
-   "live": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
+    "mae": null,
+    "en": 0
    },
    "backtest": {
     "n": 598,
-    "hit": 329,
-    "rate": 55.02,
-    "brier": 0.247,
-    "bn": 598,
-    "rangeRate": null
-   }
-  },
-  "base_prev": {
-   "live": {
-    "n": 0,
-    "hit": 0,
-    "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
-   },
-   "backtest": {
-    "n": 598,
-    "hit": 328,
-    "rate": 54.85,
-    "brier": 0.247,
-    "bn": 598,
-    "rangeRate": null
+    "hit": 340,
+    "rate": 56.86,
+    "mae": 2.58,
+    "en": 599,
+    "vsBest": 57.55,
+    "vsBestMae": 2.56,
+    "p": 0.65
    }
   },
   "base_us": {
@@ -129,30 +48,59 @@
     "n": 0,
     "hit": 0,
     "rate": null,
-    "brier": null,
-    "bn": 0,
-    "rangeRate": null
+    "mae": null,
+    "en": 0
    },
    "backtest": {
-    "n": 590,
-    "hit": 335,
-    "rate": 56.78,
-    "brier": 0.243,
-    "bn": 598,
-    "rangeRate": null
+    "n": 596,
+    "hit": 343,
+    "rate": 57.55,
+    "mae": 2.56,
+    "en": 599
+   }
+  },
+  "base_prev": {
+   "live": {
+    "n": 0,
+    "hit": 0,
+    "rate": null,
+    "mae": null,
+    "en": 0
+   },
+   "backtest": {
+    "n": 597,
+    "hit": 289,
+    "rate": 48.41,
+    "mae": 3.76,
+    "en": 599
+   }
+  },
+  "base_zero": {
+   "live": {
+    "n": 0,
+    "hit": 0,
+    "rate": null,
+    "mae": null,
+    "en": 0
+   },
+   "backtest": {
+    "n": 0,
+    "hit": 0,
+    "rate": null,
+    "mae": 2.6,
+    "en": 599
    }
   }
  },
  "byFund": {
   "002910": {
-   "mix": {
+   "ai": {
     "live": {
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": null
    },
@@ -161,82 +109,15 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 119,
-     "hit": 69,
-     "rate": 57.98,
-     "brier": 0.24,
-     "bn": 119,
-     "rangeRate": 68.07
-    }
-   },
-   "ai": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": null
-   },
-   "base_coin": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": 0.25,
-     "bn": 119,
-     "rangeRate": null
-    }
-   },
-   "base_up": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 119,
-     "hit": 71,
-     "rate": 59.66,
-     "brier": 0.243,
-     "bn": 119,
-     "rangeRate": null
-    }
-   },
-   "base_prev": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 119,
-     "hit": 69,
-     "rate": 57.98,
-     "brier": 0.244,
-     "bn": 119,
-     "rangeRate": null
+     "hit": 68,
+     "rate": 57.14,
+     "mae": 1.85,
+     "en": 120
     }
    },
    "base_us": {
@@ -244,29 +125,58 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
-     "n": 117,
-     "hit": 72,
-     "rate": 61.54,
-     "brier": 0.237,
-     "bn": 119,
-     "rangeRate": null
+     "n": 119,
+     "hit": 69,
+     "rate": 57.98,
+     "mae": 1.83,
+     "en": 120
+    }
+   },
+   "base_prev": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 118,
+     "hit": 57,
+     "rate": 48.31,
+     "mae": 2.64,
+     "en": 120
+    }
+   },
+   "base_zero": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": 1.9,
+     "en": 120
     }
    }
   },
   "005698": {
-   "mix": {
+   "ai": {
     "live": {
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": null
    },
@@ -275,82 +185,15 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 119,
-     "hit": 63,
-     "rate": 52.94,
-     "brier": 0.247,
-     "bn": 119,
-     "rangeRate": 63.03
-    }
-   },
-   "ai": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": null
-   },
-   "base_coin": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": 0.25,
-     "bn": 119,
-     "rangeRate": null
-    }
-   },
-   "base_up": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 119,
-     "hit": 64,
-     "rate": 53.78,
-     "brier": 0.249,
-     "bn": 119,
-     "rangeRate": null
-    }
-   },
-   "base_prev": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 119,
-     "hit": 64,
-     "rate": 53.78,
-     "brier": 0.25,
-     "bn": 119,
-     "rangeRate": null
+     "hit": 72,
+     "rate": 60.5,
+     "mae": 2.45,
+     "en": 119
     }
    },
    "base_us": {
@@ -358,29 +201,58 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 117,
+     "hit": 70,
+     "rate": 59.83,
+     "mae": 2.45,
+     "en": 119
+    }
+   },
+   "base_prev": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 119,
-     "hit": 62,
-     "rate": 52.1,
-     "brier": 0.248,
-     "bn": 119,
-     "rangeRate": null
+     "hit": 65,
+     "rate": 54.62,
+     "mae": 3.64,
+     "en": 119
+    }
+   },
+   "base_zero": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": 2.46,
+     "en": 119
     }
    }
   },
   "024481": {
-   "mix": {
+   "ai": {
     "live": {
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": null
    },
@@ -389,82 +261,15 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 120,
-     "hit": 63,
-     "rate": 52.5,
-     "brier": 0.248,
-     "bn": 120,
-     "rangeRate": 66.67
-    }
-   },
-   "ai": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": null
-   },
-   "base_coin": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": 0.25,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_up": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 65,
-     "rate": 54.17,
-     "brier": 0.248,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_prev": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 65,
-     "rate": 54.17,
-     "brier": 0.246,
-     "bn": 120,
-     "rangeRate": null
+     "hit": 67,
+     "rate": 55.83,
+     "mae": 3.03,
+     "en": 120
     }
    },
    "base_us": {
@@ -472,29 +277,58 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
-     "n": 118,
-     "hit": 66,
-     "rate": 55.93,
-     "brier": 0.244,
-     "bn": 120,
-     "rangeRate": null
+     "n": 120,
+     "hit": 67,
+     "rate": 55.83,
+     "mae": 3,
+     "en": 120
+    }
+   },
+   "base_prev": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 120,
+     "hit": 55,
+     "rate": 45.83,
+     "mae": 4.55,
+     "en": 120
+    }
+   },
+   "base_zero": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": 3.05,
+     "en": 120
     }
    }
   },
   "015060": {
-   "mix": {
+   "ai": {
     "live": {
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": null
    },
@@ -503,82 +337,15 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 59,
-     "rate": 49.17,
-     "brier": 0.25,
-     "bn": 120,
-     "rangeRate": 57.5
-    }
-   },
-   "ai": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": null
-   },
-   "base_coin": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": 0.25,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_up": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 64,
-     "rate": 53.33,
-     "brier": 0.249,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_prev": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 120,
      "hit": 65,
      "rate": 54.17,
-     "brier": 0.248,
-     "bn": 120,
-     "rangeRate": null
+     "mae": 3.03,
+     "en": 120
     }
    },
    "base_us": {
@@ -586,29 +353,58 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
-     "n": 118,
-     "hit": 67,
-     "rate": 56.78,
-     "brier": 0.243,
-     "bn": 120,
-     "rangeRate": null
+     "n": 120,
+     "hit": 68,
+     "rate": 56.67,
+     "mae": 2.99,
+     "en": 120
+    }
+   },
+   "base_prev": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 120,
+     "hit": 55,
+     "rate": 45.83,
+     "mae": 4.27,
+     "en": 120
+    }
+   },
+   "base_zero": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": 3.04,
+     "en": 120
     }
    }
   },
   "001672": {
-   "mix": {
+   "ai": {
     "live": {
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": null
    },
@@ -617,82 +413,15 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
      "n": 120,
-     "hit": 65,
-     "rate": 54.17,
-     "brier": 0.245,
-     "bn": 120,
-     "rangeRate": 59.17
-    }
-   },
-   "ai": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": null
-   },
-   "base_coin": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": 0.25,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_up": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 65,
-     "rate": 54.17,
-     "brier": 0.248,
-     "bn": 120,
-     "rangeRate": null
-    }
-   },
-   "base_prev": {
-    "live": {
-     "n": 0,
-     "hit": 0,
-     "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
-    },
-    "backtest": {
-     "n": 120,
-     "hit": 65,
-     "rate": 54.17,
-     "brier": 0.246,
-     "bn": 120,
-     "rangeRate": null
+     "hit": 68,
+     "rate": 56.67,
+     "mae": 2.54,
+     "en": 120
     }
    },
    "base_us": {
@@ -700,17 +429,47 @@
      "n": 0,
      "hit": 0,
      "rate": null,
-     "brier": null,
-     "bn": 0,
-     "rangeRate": null
+     "mae": null,
+     "en": 0
     },
     "backtest": {
-     "n": 118,
-     "hit": 68,
-     "rate": 57.63,
-     "brier": 0.244,
-     "bn": 120,
-     "rangeRate": null
+     "n": 120,
+     "hit": 69,
+     "rate": 57.5,
+     "mae": 2.53,
+     "en": 120
+    }
+   },
+   "base_prev": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 120,
+     "hit": 57,
+     "rate": 47.5,
+     "mae": 3.69,
+     "en": 120
+    }
+   },
+   "base_zero": {
+    "live": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": null,
+     "en": 0
+    },
+    "backtest": {
+     "n": 0,
+     "hit": 0,
+     "rate": null,
+     "mae": 2.58,
+     "en": 120
     }
    }
   }
@@ -845,69 +604,45 @@
  ],
  "rolling": [],
  "versions": {},
- "calibration": {
+ "boldness": {
   "live": [
    {
-    "label": "<40%",
+    "label": "小于0.5%",
     "n": 0,
-    "avgP": null,
-    "upRate": null
+    "rate": null,
+    "mae": null
    },
    {
-    "label": "40–50%",
+    "label": "0.5%–1.5%",
     "n": 0,
-    "avgP": null,
-    "upRate": null
+    "rate": null,
+    "mae": null
    },
    {
-    "label": "50–60%",
+    "label": "1.5%以上",
     "n": 0,
-    "avgP": null,
-    "upRate": null
-   },
-   {
-    "label": "60–70%",
-    "n": 0,
-    "avgP": null,
-    "upRate": null
-   },
-   {
-    "label": "≥70%",
-    "n": 0,
-    "avgP": null,
-    "upRate": null
+    "rate": null,
+    "mae": null
    }
   ],
   "backtest": [
    {
-    "label": "<40%",
+    "label": "小于0.5%",
+    "n": 377,
+    "rate": 57.29,
+    "mae": 2.57
+   },
+   {
+    "label": "0.5%–1.5%",
+    "n": 221,
+    "rate": 56.11,
+    "mae": 2.62
+   },
+   {
+    "label": "1.5%以上",
     "n": 0,
-    "avgP": null,
-    "upRate": null
-   },
-   {
-    "label": "40–50%",
-    "n": 24,
-    "avgP": 48.2,
-    "upRate": 70.83
-   },
-   {
-    "label": "50–60%",
-    "n": 542,
-    "avgP": 54.99,
-    "upRate": 54.24
-   },
-   {
-    "label": "60–70%",
-    "n": 32,
-    "avgP": 60.62,
-    "upRate": 56.25
-   },
-   {
-    "label": "≥70%",
-    "n": 0,
-    "avgP": null,
-    "upRate": null
+    "rate": null,
+    "mae": null
    }
   ]
  }
