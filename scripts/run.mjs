@@ -401,7 +401,7 @@ async function aiDraft(T, feat, items, trig, sys) {
   const fundsTxt = funds.map(f => {
     const t = trig.funds[f.code] || [];
     const valid = t.filter(x => x.status === '有效').map(x => sigLine(x.signal)), other = t.filter(x => x.status !== '有效').map(x => sigLine(x.signal));
-    return `${f.code} ${f.name}（${f.type}${f.qdii ? '；QDII，T日净值对应海外T日收盘' : ''}）\n  特征：${f.drivers.join('；')}\n  近20日波动 ${feat.f[f.code].vol20 ?? '–'}%，上一日 ${pct(feat.f[f.code].prev)}，近5日 ${pct(feat.f[f.code].mom5)}，锚定 ${pct(feat.f[f.code].anc)}，锚定近3日 ${pct(feat.f[f.code].anc_mom3)}\n  今天触发且历史有效（可作依据）：${valid.join('；') || '无'}\n  今天触发但未被证明有效（不能作依据）：${other.join('；') || '无'}\n  规则模型 ${model.version}：${pct(sys.model[f.code].value)}；跟随外盘基准：${pct(sys.bench_us[f.code].value)}`;
+    return `${f.code} ${f.name}（${f.type}${f.qdii ? '；QDII，T日净值对应海外T日收盘' : ''}）\n  特征：${f.drivers.join('；')}\n  近20日波动 ${feat.f[f.code].vol20 ?? '–'}%，上一日 ${pct(feat.f[f.code].prev)}，近5日 ${pct(feat.f[f.code].mom5)}，锚定 ${pct(feat.f[f.code].anc)}，锚定近3日 ${pct(feat.f[f.code].anc_mom3)}\n  今天触发且历史有效（可作依据）：${valid.join('；') || '无'}\n  今天触发但未被证明有效（不能作依据）：${other.join('；') || '无'}`;
   }).join('\n');
   const out = await gemini(`你是这五只基金的持有人，以投资人身份预测 ${T} 各基金的净值涨跌幅。现在是北京时间 ${nowISO}，只能使用下面列出的、此刻已经可以获得的数据。
 评分：方向（涨>+${EPS}%，跌<-${EPS}%，其余为平）和绝对误差。每只基金只给一个数值，不给区间和概率。
@@ -417,6 +417,7 @@ ${fundsTxt}
 - 没触发的规律不能说"触发了"；未被证明有效的规律不能当理由。
 - 每条理由尽量引用数据编号（dataRefs）。主观判断要写明是主观判断。
 - 依据互相矛盾时写明，并把数值往0收。
+- 独立判断，不要照抄任何模型的数值；五只基金的差别要有理由。
 
 只输出 JSON：{"overall":{"value":0.5,"reasons":[{"text":"40字内","signals":[],"dataRefs":[]}],"conclusion":"一句话"},"funds":{"代码":{"value":0.8,"reasons":[{"text":"40字内","signals":["R001"],"dataRefs":["..."]}],"conclusion":"一句话"}}}`, `AI 草稿 ${T}`);
   const fx = {};
@@ -589,9 +590,9 @@ function computeStats() {
   for (const r of results) { const v = r.meta.model?.batch ? (readJ(P('predictions', r.date, `model-${r.meta.model.batch}.json`), {}).modelVersion) : null; if (!v) continue; const o = (out.versions[v] ||= { n: 0, hit: 0, e: 0 }); for (const s of Object.values(r.scores.model || {})) { o.n++; o.hit += s.hit; o.e += s.absErr; } }
   for (const o of Object.values(out.versions)) { o.rate = o.n ? r2(o.hit / o.n * 100) : null; o.mae = o.n ? r3(o.e / o.n) : null; delete o.e; }
   // 打脸榜（研究集 + 留出集合并，样本 ≥ 门槛）
-  const pool = signals.filter(s => s.status !== '淘汰').map(s => { const n = s.research.n + s.holdout.n, h = s.research.hit + s.holdout.hit, [lo, hi] = wilson(h, n); return { id: s.id, name: s.name, n, rate: n ? r2(h / n * 100) : null, lo, hi, status: s.status }; }).filter(x => x.n >= CFG.minSamples);
-  out.reliable = [...pool].sort((a, b) => b.lo - a.lo).slice(0, 5);
-  out.deceptive = [...pool].sort((a, b) => a.hi - b.hi).slice(0, 5);
+  const pool = signals.filter(s => s.status !== '淘汰' && s.research).map(s => { const n = s.research.n + s.holdout.n, h = s.research.hit + s.holdout.hit, [lo, hi] = wilson(h, n); return { id: s.id, name: s.name, n, rate: n ? r2(h / n * 100) : null, lo, hi, base: s.research.base, status: s.status }; }).filter(x => x.n >= CFG.minSamples);
+  out.reliable = pool.filter(x => x.lo > x.base).sort((a, b) => (b.lo - b.base) - (a.lo - a.base)).slice(0, 5);   // 区间下限都高于基准
+  out.deceptive = pool.filter(x => x.rate < x.base).sort((a, b) => (a.rate - a.base) - (b.rate - b.base)).slice(0, 5);   // 命中率低于基准，越低越靠前
   return out;
 }
 

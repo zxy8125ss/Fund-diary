@@ -11,267 +11,432 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <style>
-/* 布局：手机优先的三标签 app——预测（养基宝式清单）/ 成绩（记分卡）/ 实验室（信号卡）。A股惯例红涨绿跌 */
+/* 手机优先的实验记录本：预测（填写、锁定、详情）/ 成绩（是否胜过基准）/ 实验室（信号与版本）。A股惯例红涨绿跌 */
 :root{
   --bg:#F3F5F9; --card:#FFFFFF; --ink:#1A2233; --sub:#5A6478; --line:#E6EAF0; --soft:#EEF1F6;
   --accent:#2F55D4; --accent-soft:#E8EEFC;
-  --up:#C8322B; --up-soft:#FBE9E7; --down:#1E7A47; --down-soft:#E3F1E8; --mid:#8A6A12;
-  --good:#1F7A70; --bad:#9A5B2E; --track:#DDE2EA;
+  --up:#C8322B; --down:#1E7A47; --mid:#7A6A2A;
+  --ok:#1F7A70; --ok-soft:#E2F3F0; --warn:#9A6A12; --warn-soft:#FBF1DC; --bad:#A33A2E; --bad-soft:#FBE6E3; --track:#DDE2EA;
   --f-body:-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
   --f-head:"Songti SC","Noto Serif SC","STSong",serif;
   --f-num:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#10141B; --card:#1A2029; --ink:#E6EAF2; --sub:#9AA3B5; --line:#2A3240; --soft:#222A36;
-  --accent:#8FAAF5; --accent-soft:#1F2A44;
-  --up:#FF6E62; --up-soft:#3A1F1D; --down:#4FC07E; --down-soft:#173024; --mid:#D9B65A;
-  --good:#4FC1B4; --bad:#D99A6A; --track:#2E3746; color-scheme:dark}}
+  --accent:#8FAAF5; --accent-soft:#1F2A44; --up:#FF6E62; --down:#4FC07E; --mid:#D9B65A;
+  --ok:#4FC1B4; --ok-soft:#173330; --warn:#E0B65A; --warn-soft:#352C17; --bad:#FF8A7A; --bad-soft:#3A1F1D; --track:#2E3746; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#10141B; --card:#1A2029; --ink:#E6EAF2; --sub:#9AA3B5; --line:#2A3240; --soft:#222A36;
-  --accent:#8FAAF5; --accent-soft:#1F2A44;
-  --up:#FF6E62; --up-soft:#3A1F1D; --down:#4FC07E; --down-soft:#173024; --mid:#D9B65A;
-  --good:#4FC1B4; --bad:#D99A6A; --track:#2E3746; color-scheme:dark}
+  --accent:#8FAAF5; --accent-soft:#1F2A44; --up:#FF6E62; --down:#4FC07E; --mid:#D9B65A;
+  --ok:#4FC1B4; --ok-soft:#173330; --warn:#E0B65A; --warn-soft:#352C17; --bad:#FF8A7A; --bad-soft:#3A1F1D; --track:#2E3746; color-scheme:dark}
 html{padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
-button{font:inherit;color:inherit}
-button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.app{max-width:560px;margin:0 auto;padding:16px 14px calc(84px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+button,input,textarea,select{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:560px;margin:0 auto;padding:14px 14px calc(84px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
-.sub{color:var(--sub)} .small{font-size:12px} .tiny{font-size:11px}
+.sub{color:var(--sub)} .small{font-size:12.5px} .tiny{font-size:11.5px}
 .up{color:var(--up)} .down{color:var(--down)} .mid{color:var(--mid)}
+h1{font-family:var(--f-head);font-size:22px;margin:0;line-height:1.25;white-space:nowrap}
+.datenav h1{font-family:var(--f-num);font-size:19px}
+h2{font-size:15px;margin:0;font-weight:600}
 .top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-.top h1{font-family:var(--f-head);font-size:24px;margin:0;line-height:1.2}
-.pill{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.datenav{display:flex;align-items:center;gap:4px}
+.icon{border:none;background:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;color:var(--sub)}
+.icon:hover{background:var(--soft)} .icon svg{width:20px;height:20px}
+.pill{font-size:12px;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.p-lock{background:var(--accent-soft);color:var(--accent)} .p-open{background:var(--warn-soft);color:var(--warn)} .p-miss{background:var(--soft);color:var(--sub)}
 .card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.seg{display:flex;background:var(--soft);border-radius:10px;padding:3px}
-.seg button{flex:1;border:none;background:transparent;padding:7px 0;border-radius:8px;font-size:14px;color:var(--sub);cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.big{font-family:var(--f-num);font-size:34px;font-weight:600;line-height:1}
-.bar{height:8px;border-radius:4px;background:var(--down-soft);overflow:hidden;display:flex}
-.bar i{display:block;background:var(--up)}
+.big{font-family:var(--f-num);font-size:36px;font-weight:600;line-height:1.05}
 .list{background:var(--card);border-radius:14px;overflow:hidden}
-.lh,.lr{display:grid;grid-template-columns:minmax(0,1fr) 62px 100px;gap:8px;padding:11px 16px;align-items:center}
-.lh{font-size:12px;color:var(--sub);border-bottom:1px solid var(--line);padding-block:8px}
-.lr{border-bottom:1px solid var(--line);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left}
-.lr:last-child{border-bottom:none}
-.lr .nm{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lr .why{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lr .p{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right}
-.lr .rg{font-family:var(--f-num);font-size:12.5px;color:var(--sub);text-align:right}
-.list.two .lh,.list.two .lr{grid-template-columns:minmax(0,1fr) 80px}
-.det{padding:4px 16px 14px;border-bottom:1px solid var(--line);font-size:13px;display:flex;flex-direction:column;gap:6px;background:var(--soft)}
-.kv{display:flex;flex-wrap:wrap;gap:6px 14px}
-.kv span b{font-family:var(--f-num);font-weight:600}
-.strip{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:13px 16px;border:none;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;cursor:pointer;min-height:52px}
+.row:last-child{border-bottom:none}
+.row .nm{font-size:15.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .v{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right;min-width:72px}
+.row .a{font-family:var(--f-num);font-size:13px;text-align:right;min-width:64px}
+.chev{color:var(--sub)}
+.btn{border:none;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;min-height:44px}
+.btn-p{background:var(--accent);color:#fff} .btn-g{background:var(--soft);color:var(--ink)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hit{color:var(--accent);font-weight:700} .miss{color:var(--sub);font-weight:700}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-weight:500;color:var(--sub);font-size:12px;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:8px 4px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--f-num);vertical-align:top}
+.tbl td.t{font-family:var(--f-body)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr.me td{font-weight:600}
+.scroll{overflow-x:auto}
+.tag{font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
+.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-bad{background:var(--bad-soft);color:var(--bad)} .t-n{background:var(--soft);color:var(--sub)}
+ol.pts,ul.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.6}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px}
+.kv dt{color:var(--sub)} .kv dd{margin:0}
+.verdict{font-size:18px;font-weight:700;line-height:1.4}
+.empty{color:var(--sub);text-align:center;padding:22px 12px;background:var(--card);border-radius:14px;font-size:14px;line-height:1.6}
 .tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
 .tabbar div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-.tabbar button{border:none;background:none;padding:8px 0;font-size:13px;color:var(--sub);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px}
+.tabbar button{border:none;background:none;padding:6px 0;font-size:12.5px;color:var(--sub);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:48px}
 .tabbar button[aria-selected="true"]{color:var(--accent);font-weight:600}
 .tabbar svg{width:22px;height:22px}
-.verdict{font-size:17px;font-weight:700;line-height:1.4}
-.rowbar{display:grid;grid-template-columns:92px minmax(0,1fr) 62px;gap:10px;align-items:center;font-size:13px}
-.track{position:relative;height:12px;background:var(--track);border-radius:6px}
-.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
-.track .half{position:absolute;left:50%;top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink)}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{font-weight:500;color:var(--sub);font-size:12px;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
-.tbl th:first-child,.tbl td:first-child{text-align:left}
-.tbl td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--f-num)}
-.tbl tr:last-child td{border-bottom:none}
-.hit{color:var(--accent);font-weight:700} .miss{color:var(--sub);font-weight:700}
-.sig{background:var(--card);border-radius:14px;padding:11px 14px;display:flex;flex-direction:column;gap:7px}
-.sig .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.sig .h b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chip{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
-.c-act{background:var(--ink);color:var(--card)} .c-sh{border:1px solid var(--sub);color:var(--sub)}
-.v-good{color:var(--good)} .v-bad{color:var(--bad)}
-.ci{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;align-items:center}
-.ci .t{position:relative;height:14px}
-.ci .t .base{position:absolute;left:0;right:0;top:6px;height:2px;background:var(--track)}
-.ci .t .fifty{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--sub)}
-.ci .t .rng{position:absolute;top:4px;height:6px;border-radius:3px}
-.ci .t .dot{position:absolute;top:1px;width:12px;height:12px;margin-left:-6px;border-radius:6px}
-.dark{background:var(--ink);color:var(--card)}
-.dark .sub{color:var(--card);opacity:.75}
-details.fold summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;font-weight:600;font-size:14px}
-details.fold summary::-webkit-details-marker{display:none}
-.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.6}
-.pts b{font-weight:600;margin-right:6px}
-.pts2{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;line-height:1.55}
-.concl{font-size:14px;font-weight:600;border-top:1px solid var(--line);padding-top:8px}
-.empty{color:var(--sub);text-align:center;padding:22px 12px;background:var(--card);border-radius:14px;font-size:14px}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:10;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet .app{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.sheethead{position:sticky;top:0;background:var(--bg);display:flex;align-items:center;gap:6px;padding:8px 0;z-index:2}
+.sheethead h2{flex:1;font-size:16px}
+.fund-in{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.fund-in:first-child{border-top:none;padding-top:0}
+.vin{display:flex;align-items:center;gap:8px}
+.vin input{width:110px;font-family:var(--f-num);font-size:18px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);text-align:right}
+textarea,input[type=text],input[type=password]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:14px}
+textarea{min-height:40px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:12.5px;cursor:pointer;min-height:32px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.reason{display:flex;flex-direction:column;gap:6px;background:var(--soft);border-radius:10px;padding:8px}
+.rhead{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.link{border:none;background:none;color:var(--accent);cursor:pointer;padding:4px 0;font-size:13px}
 .foot{font-size:11.5px;color:var(--sub);line-height:1.6;padding:0 4px}
-a{color:var(--accent)}
+.bar{position:relative;height:10px;background:var(--track);border-radius:5px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--accent)}
+.bar b{position:absolute;top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;max-width:90vw}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<main class="app">
-  <section id="v-pred"></section>
+<main class="app" id="main">
+  <section id="v-pred"><div class="empty">读取中…</div></section>
   <section id="v-score" hidden></section>
   <section id="v-lab" hidden></section>
   <p class="foot" id="foot"></p>
 </main>
+<div class="sheet" id="sheet" hidden></div>
 <nav class="tabbar" role="tablist" aria-label="主导航"><div>
   <button role="tab" data-v="pred" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l4-5 3 3 5-7"/></svg>预测</button>
-  <button role="tab" data-v="score" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>成绩</button>
+  <button role="tab" data-v="score" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10"/><path d="M12 20V4"/><path d="M18 20v-7"/></svg>成绩</button>
   <button role="tab" data-v="lab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>实验室</button>
 </div></nav>
 
 <script>
 (function(){
+  const REPO_OWNER="zxy8125ss", REPO_NAME="Fund-diary";
   const $=id=>document.getElementById(id);
   const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const fmt=v=>v==null||isNaN(v)?"–":(v>0?"+":"")+Number(v).toFixed(2)+"%";
-  const V=x=>x&&x.v!=null?x.v:null;
-  const vCls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
-  const hitOf=(v,a)=>v==null||a==null||!v||!a?null:((v>0)===(a>0));
-  const lines=t=>String(t||"").split(/\n+/).map(x=>x.replace(/^\s*\d+[.、．)]\s*/,"").trim()).filter(Boolean);
+  const cls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
   const WD="日一二三四五六";
-  const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return (t.getUTCMonth()+1)+"月"+t.getUTCDate()+"日 周"+WD[t.getUTCDay()]};
-  const NAMES={ai:"我的预测",rule:"规则模型",base_us:"跟随外盘",base_prev:"昨日延续",base_zero:"全猜不涨不跌"};
-  let D=null, predView="today", scoreView="live", open={};
-  const LF=3;
+  const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return String(t.getUTCMonth()+1).padStart(2,"0")+"."+String(t.getUTCDate()).padStart(2,"0")+" 周"+WD[t.getUTCDay()]};
+  const hm=iso=>iso?String(iso).slice(11,16):"";
+  const NAMES={user:"我的预测",ai:"AI 草稿",model:"规则模型",bench_us:"跟随外盘",bench_prev:"昨日延续",bench_zero:"永远 0%"};
+  const BATCH={morning:"早间",evening:"晚间",early:"提前"};
+  const VERDICT={"有效依据":"t-ok","今天未触发":"t-warn","历史不成立":"t-bad","预测前已成立":"t-ok","事后信息":"t-bad","疑似事后信息":"t-bad","数据不在快照中":"t-n","核心变量":"t-ok","对结论影响小":"t-warn","装饰":"t-warn","无法判断":"t-n"};
+  const STATUS_TAG={"有效":"t-ok","待验证":"t-warn","实验中":"t-n","失效":"t-bad","淘汰":"t-bad"};
+  const bjNow=()=>new Date(Date.now()+8*3600e3);
+  const todayBJ=()=>bjNow().toISOString().slice(0,10);
+  let G=null, cur=null, dayCache={};
+  let tok=null; try{tok=localStorage.getItem("fd-token")}catch(e){}
+
+  async function j(p){try{const r=await fetch(p+(p.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"});if(!r.ok)return null;return await r.json()}catch(e){return null}}
+  function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+
+  // ---------- 数据 ----------
+  async function loadDay(T){
+    if(dayCache[T])return dayCache[T];
+    const info=G.index.days[T]||{batches:[]};
+    const b=["morning","evening","early"].find(x=>info.batches.includes(x));
+    const d={T,batch:b,info};
+    const tasks={snap:b&&j(`data/snapshots/${T}/${b}.json`),trig:b&&j(`data/triggers/${T}/${b}.json`),ai:b&&j(`data/predictions/${T}/ai-${b}.json`),model:b&&j(`data/predictions/${T}/model-${b}.json`),bench_us:b&&j(`data/predictions/${T}/bench_us-${b}.json`),bench_prev:b&&j(`data/predictions/${T}/bench_prev-${b}.json`),user:j(`data/predictions/${T}/user.json`),result:info.result?j(`data/results/${T}.json`):null,review:info.review?j(`data/reviews/${T}.json`):null};
+    for(const[k,p]of Object.entries(tasks))d[k]=p?await p:null;
+    if(!d.user&&localUser[T])d.user=localUser[T];
+    return dayCache[T]=d;
+  }
+  const localUser={};
+  function sig(id){return G.signals.find(s=>s.id===id)}
+  function visibleTrig(d,code){return (d.trig&&d.trig.funds[code]||[]).filter(t=>{const s=sig(t.signal);return !(s&&s.sourceType==="外部观点"&&t.status!=="有效")})}
+  function sigRate(s){if(!s||!s.research)return "";const n=(s.research.n||0)+(s.holdout?s.holdout.n:0),h=(s.research.hit||0)+(s.holdout?s.holdout.hit:0);return n?`历史 ${(h/n*100).toFixed(1)}%（${n} 次，基准 ${s.research.base??"–"}%）`:"暂无历史样本"}
+  function checkReason(d,code,r,lockIso){
+    const sv=(r.signals||[]).map(id=>{const t=(d.trig&&d.trig.funds[code]||[]).find(x=>x.signal===id);return {id,verdict:!t?"今天未触发":t.status!=="有效"?"历史不成立":"有效依据"}});
+    const dv=(r.dataRefs||[]).map(id=>{const it=d.snap&&d.snap.items.find(i=>i.id===id);return {id,verdict:!it?"数据不在快照中":Date.parse(it.cutoff)<=Date.parse(lockIso)?"预测前已成立":"事后信息"}});
+    return {signals:sv,data:dv};
+  }
+  function deadlineOf(T){return T+"T"+G.config.deadline+":00+08:00"}
+  function lockState(d){
+    if(d.user)return {k:"lock",text:"已锁定 🔒 "+hm(d.user.lockedAt)};
+    if(Date.now()>Date.parse(deadlineOf(d.T)))return {k:"miss",text:"已截止 · 未提交"};
+    return {k:"open",text:"待填写 · "+G.config.deadline+" 截止"};
+  }
 
   // ---------- 预测 ----------
-  function renderPred(){
-    const days=Object.values(D.rec.days).filter(d=>d.format===LF);
-    const pend=days.filter(d=>d.status==="pending").sort((a,b)=>a.date.localeCompare(b.date))[0];
-    const last=days.filter(d=>d.status==="reviewed").sort((a,b)=>b.date.localeCompare(a.date))[0];
-    const d=predView==="today"?pend:last;
-    let h='<div class="top"><div><div class="sub small">'+(d?esc(dlabel(d.date))+(d.features&&d.features.c.gap>=4?' · 节后首日':''):'')+'</div><h1>'+(predView==="today"?"今日预测":"昨日结果")+'</h1></div>';
-    if(d&&predView==="today")h+='<span class="pill">'+(d.lockedAt?'已锁定 '+esc(String(d.lockedAt).slice(11,16)):'晚间初判 · 8:07 定稿')+'</span>';
-    h+='</div><div class="seg"><button data-pv="today" aria-pressed="'+(predView==="today")+'">今日预测</button><button data-pv="last" aria-pressed="'+(predView==="last")+'">昨日结果</button></div>';
-    if(!d){h+='<div class="empty">'+(predView==="today"?"暂无待验证的预测，下一个交易日前一晚 22:13 自动生成。":"还没有复盘过的交易日，节后首日收盘后出第一份结果。")+'</div>';$("v-pred").innerHTML=h+holdings();bindPred();return}
-    const main=c=>V(d.preds.ai&&d.preds.ai[c])??V(d.preds.rule&&d.preds.rule[c]);
-    if(predView==="today"){
-      const tv=d.tech&&d.tech.v;
-      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">科技仓整体</b><span class="sub small">五只基金同向性很强</span></div>'+
-        '<div style="display:flex;align-items:baseline;gap:8px"><span class="big '+vCls(tv)+'">'+fmt(tv)+'</span><span class="sub small">预测涨跌</span></div>'+
-        (d.tech&&d.tech.points&&d.tech.points.length?'<b style="font-size:13px">思路与依据</b><ol class="pts">'+d.tech.points.map(x=>'<li><b>'+esc(x.k)+'</b>'+esc(x.t)+'</li>').join('')+'</ol>':'')+
-        (d.tech&&d.tech.conclusion?'<div class="concl">结论：'+esc(d.tech.conclusion)+'</div>':'')+
-        (d.market?'<span class="sub small" style="line-height:1.6">市场背景：'+esc(d.market)+'</span>':'')+'</div>';
-    }else{
-      let n=0,hit=0,es=0,en=0;D.funds.forEach(f=>{const v=main(f.code),a=d.actual&&d.actual[f.code];if(v==null||a==null)return;en++;es+=Math.abs(v-a);const x=hitOf(v,a);if(x!=null){n++;if(x)hit++}});
-      h+='<div class="card"><b style="font-size:14px">当日成绩</b>'+
-        '<div style="display:flex;gap:22px;align-items:baseline;flex-wrap:wrap"><span><span class="big">'+hit+'/'+n+'</span> <span class="sub small">方向猜对</span></span><span><span class="num" style="font-size:20px;font-weight:600">'+(en?(es/en).toFixed(2):"–")+'</span> <span class="sub small">平均误差（百分点）</span></span></div>'+
-        (d.review&&d.review.summary?'<b style="font-size:13px">复盘</b><ol class="pts">'+lines(d.review.summary).map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>':'')+'</div>';
-    }
-    h+='<div class="list'+(predView==="today"?' two':'')+'"><div class="lh"><span>基金</span><span style="text-align:right">预测</span>'+(predView==="today"?'':'<span style="text-align:right">实际</span>')+'</div>';
-    D.funds.forEach(f=>{
-      const c=f.code,v=main(c),r=d.preds.rule&&d.preds.rule[c],ai=d.preds.ai&&d.preds.ai[c],a=d.actual&&d.actual[c];
-      const why=(ai&&ai.points&&ai.points[0])||"—";
-      const right=predView==="today"?'':'<span class="rg"><span class="'+vCls(a)+'" style="font-weight:600">'+fmt(a)+'</span> '+(hitOf(v,a)==null?'':hitOf(v,a)?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</span>';
-      const key=d.date+c;
-      h+='<button class="lr" data-k="'+key+'" aria-expanded="'+!!open[key]+'"><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span class="nm">'+esc(f.short)+'</span><span class="why">'+esc(why)+'</span></span><span class="p '+vCls(v)+'">'+fmt(v)+'</span>'+right+'</button>';
-      if(open[key]){
-        const ff=d.features&&d.features.f[c]||{};
-        h+='<div class="det">'+(ai&&ai.points&&ai.points.length?'<ol class="pts">'+ai.points.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>':'')+
-          '<div class="kv sub"><span>上一日 '+fmt(ff.prev)+'</span><span>近5日 '+fmt(ff.mom5)+'</span><span>锚定指数 '+fmt(ff.anc)+'</span><span>日波动 '+(ff.vol20!=null?ff.vol20.toFixed(2)+'%':'–')+'</span></div>'+
-          '<div class="kv sub"><span>规则模型 '+fmt(V(r))+'</span><span>跟随外盘 '+fmt(V(d.preds.base_us&&d.preds.base_us[c]))+'</span>'+(d.predsEvening&&d.predsEvening.ai&&d.predsEvening.ai[c]?'<span>晚间初判 '+fmt(V(d.predsEvening.ai[c]))+'</span>':'')+(predView!=="today"&&v!=null&&a!=null?'<span>误差 '+Math.abs(v-a).toFixed(2)+'</span>':'')+'</div></div>';
-      }
-    });
+  function pickDay(){
+    const days=Object.keys(G.index.days).sort();
+    const t=todayBJ();
+    return days.find(x=>x>=t&&!G.index.days[x].result)||days.filter(x=>!G.index.days[x].result).at(-1)||days.at(-1)||null;
+  }
+  async function renderPred(){
+    const days=Object.keys(G.index.days).sort();
+    if(!cur)cur=pickDay();
+    if(!cur){$("v-pred").innerHTML='<div class="empty">还没有预测日。下一个交易日前一晚 22:13 系统会准备好数据。</div>';return}
+    const d=await loadDay(cur), ls=lockState(d), i=days.indexOf(cur);
+    let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+ls.k+'">'+esc(ls.text)+'</span></div>';
+    const u=d.user, res=d.result;
+    const ov=u?u.overall&&u.overall.value:null;
+    const act=res?avgActual(res):null;
+    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>科技仓</h2>'+(res?'<span class="sub small">实际 <b class="num '+cls(act)+'">'+fmt(act)+'</b></span>':'')+'</div>';
+    if(u){h+='<span class="big '+cls(ov)+'">'+fmt(ov)+'</span>'+(u.overall&&u.overall.conclusion?'<span style="font-size:14px">'+esc(u.overall.conclusion)+'</span>':'')}
+    else if(ls.k==="open"){h+='<span class="sub" style="font-size:14px;line-height:1.6">今天的预测还没填。参考数据、今天触发的规律和 AI 草稿后，给每只基金一个数值，'+esc(G.config.deadline)+' 前提交，提交即锁定。</span><button class="btn btn-p" id="go-form">填写今日预测</button>'}
+    else h+='<span class="sub" style="font-size:14px">这一天没有提交预测，只统计基准和 AI 草稿的成绩。</span>';
     h+='</div>';
-    const roll=D.stats&&D.stats.rolling||[];
-    h+='<div class="card strip"><span>实盘累计</span><span class="num">'+(roll.length?('方向 '+(roll.at(-1).ai??"–")+'% · 误差 '+(roll.at(-1).ai_mae??"–")):'节后开始积累')+'</span></div>';
-    $("v-pred").innerHTML=h+holdings();
-    bindPred();
+    h+='<div class="list">';
+    for(const f of G.funds){
+      const v=u&&u.funds[f.code]?u.funds[f.code].value:null, a=res?res.actual[f.code]:null, sc=res&&res.scores.user&&res.scores.user[f.code];
+      const ref=!u&&d.ai&&d.ai.funds[f.code]?d.ai.funds[f.code].value:null;
+      h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span>'+
+        (u?'<span class="v '+cls(v)+'">'+fmt(v)+'</span>':'<span class="v sub" style="font-size:14px;font-weight:500">'+(ref!=null?'草稿 '+fmt(ref):'–')+'</span>')+
+        '<span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):''):'<span class="chev">›</span>')+'</span></button>';
+    }
+    h+='</div>';
+    if(!tok&&ls.k==="open")h+='<p class="foot">第一次填写前，需要在「设置」里粘贴 GitHub 令牌，用来把预测锁定到仓库里。</p>';
+    h+='<div style="display:flex;justify-content:flex-end"><button class="link" id="go-settings">设置</button></div>';
+    $("v-pred").innerHTML=h;
+    $("v-pred").querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const k=days.indexOf(cur)+(+b.dataset.nav);if(days[k]){cur=days[k];renderPred()}}));
+    $("v-pred").querySelectorAll("[data-fund]").forEach(b=>b.addEventListener("click",()=>openFund(d,b.dataset.fund)));
+    const gf=$("go-form");if(gf)gf.addEventListener("click",()=>openForm(d));
+    $("go-settings").addEventListener("click",openSettings);
   }
-  function holdings(){
-    const t=D.funds.reduce((s,f)=>s+(+f.amount||0),0),pn=D.funds.reduce((s,f)=>s+(+f.pnl||0),0);
-    return '<details class="card fold"><summary><span>持仓 ¥'+t.toFixed(2)+'</span><span class="'+vCls(pn)+' num">'+pn.toFixed(2)+'</span></summary><table class="tbl"><thead><tr><th>基金</th><th>金额</th><th>持有收益</th></tr></thead><tbody>'+
-      D.funds.map(f=>'<tr><td style="font-family:var(--f-body)">'+esc(f.short)+'</td><td>'+Number(f.amount).toFixed(2)+'</td><td class="'+vCls(f.pnl)+'">'+Number(f.pnl).toFixed(2)+' ('+fmt(f.pnlPct)+')</td></tr>').join('')+
-      '</tbody></table><span class="sub tiny">按每日净值自动滚动；加减仓后需在仓库里修改。</span></details>';
+  function avgActual(res){const xs=G.funds.map(f=>res.actual[f.code]).filter(v=>v!=null);return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null}
+
+  // ---------- 单只基金详情 ----------
+  async function openFund(d,code){
+    const f=G.funds.find(x=>x.code===code), u=d.user&&d.user.funds[code], res=d.result, sc=res&&res.scores.user&&res.scores.user[code];
+    const checks=(res&&res.userChecks&&res.userChecks[code])||(u&&d.user?(u.reasons||[]).map(r=>checkReason(d,code,r,d.user.lockedAt)):[]);
+    let h=sheetHead(f.short);
+    h+='<div class="card"><dl class="kv"><dt>预测值</dt><dd class="num '+cls(u&&u.value)+'" style="font-size:20px;font-weight:600">'+fmt(u&&u.value)+'</dd>'+
+      '<dt>实际值</dt><dd class="num '+cls(res&&res.actual[code])+'">'+(res?fmt(res.actual[code]):'收盘后公布')+'</dd>'+
+      (sc?'<dt>结果</dt><dd>'+(sc.hit?'<span class="hit">方向对 ✓</span>':'<span class="miss">方向错 ✗</span>')+'　误差 <span class="num">'+sc.absErr.toFixed(2)+'</span></dd>':'')+
+      (d.user?'<dt>锁定</dt><dd class="num">'+esc(String(d.user.lockedAt).replace("T"," ").slice(0,16))+'</dd>':'')+'</dl>'+
+      (u&&u.conclusion?'<div style="font-weight:600">结论：'+esc(u.conclusion)+'</div>':'')+'</div>';
+    if(u&&(u.reasons||[]).length){
+      h+='<div class="card"><h2>预测理由</h2><ol class="pts">'+u.reasons.map((r,i)=>{const c=checks[i]||{signals:[],data:[]};
+        return '<li>'+esc(r.text)+'<div class="chips" style="margin-top:4px">'+c.signals.map(x=>'<span class="tag '+(VERDICT[x.verdict]||'t-n')+'">'+esc(x.id+" "+x.verdict)+'</span>').join('')+c.data.map(x=>'<span class="tag '+(VERDICT[x.verdict]||'t-n')+'">'+esc(dataName(d,x.id)+" · "+x.verdict)+'</span>').join('')+'</div></li>'}).join('')+'</ol></div>';
+    }
+    // 市场依据
+    const items=d.snap?d.snap.items.filter(i=>!i.hidden&&i.kind==="行情"&&(!i.key.includes(".")||i.key.startsWith(code))):[];
+    if(items.length)h+='<div class="card"><h2>市场依据 <span class="sub small" style="font-weight:400">'+esc(BATCH[d.batch]||"")+'快照，均为预测前已可获得</span></h2><table class="tbl"><tbody>'+items.map(i=>'<tr><td class="t">'+esc(i.name)+'</td><td class="'+cls(i.value)+'">'+fmt(i.value)+'</td><td class="sub tiny">'+esc(i.dataTime)+'</td></tr>').join('')+'</tbody></table></div>';
+    // 触发的历史规律
+    const trig=visibleTrig(d,code);
+    h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigRate(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table><span class="sub tiny">只有「有效」的规律可以作为预测依据。</span>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
+    // 对照
+    const cmp=[["ai",d.ai],["model",d.model],["bench_us",d.bench_us],["bench_prev",d.bench_prev]];
+    h+='<div class="card"><h2>对照组</h2><table class="tbl"><tbody>'+cmp.map(([k,p])=>{const x=p&&p.funds[code];const s2=res&&res.scores[k]&&res.scores[k][code];return '<tr><td class="t">'+NAMES[k]+'</td><td class="'+cls(x&&x.value)+'">'+fmt(x&&x.value)+'</td><td>'+(s2?(s2.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+' <span class="sub">'+s2.absErr.toFixed(2)+'</span>':'')+'</td></tr>'}).join('')+'</tbody></table>'+
+      (d.ai&&d.ai.funds[code]&&d.ai.funds[code].reasons.length?'<details><summary class="small sub">AI 草稿的理由</summary><ol class="pts" style="margin-top:6px;font-size:13px">'+d.ai.funds[code].reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol></details>':'')+'</div>';
+    // 复盘
+    if(d.review){
+      const rv=d.review, hs=(rv.hindsight||[]).filter(x=>x.fund===code), ab=(rv.ablation||[]).filter(x=>x.fund===code);
+      h+='<div class="card"><h2>复盘'+(rv.subject==="ai"?' <span class="sub small" style="font-weight:400">（当天未提交，复盘的是 AI 草稿）</span>':'')+'</h2>'+
+        list("判断正确",rv.right)+list("判断错误",rv.wrong)+
+        (rv.bestSignal&&rv.bestSignal.why?'<div class="small"><b>贡献最大：</b>'+esc((rv.bestSignal.id?rv.bestSignal.id+" ":"")+rv.bestSignal.why)+'</div>':'')+
+        (rv.misleading&&rv.misleading.why?'<div class="small"><b>误导判断：</b>'+esc((rv.misleading.id?rv.misleading.id+" ":"")+rv.misleading.why)+'</div>':'')+
+        list("下次怎么改",rv.nextTime)+
+        (hs.length?'<div class="small"><b>我是不是在找事后理由？</b>'+hs.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.evidence||x.why||"")+'</span></div>').join('')+'</div>':'')+
+        (ab.length?'<div class="small"><b>删掉这条理由，结论还一样吗？</b>'+ab.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.detail||x.why||"")+'</span></div>').join('')+'</div>':'')+'</div>';
+    }
+    // 修正意见
+    if(d.user){
+      const am=await amendments(d.T);const mine=am.filter(a=>!a.fund||a.fund===code);
+      h+='<div class="card"><h2>修正意见</h2><span class="sub tiny">原始预测永久保留；修正意见只用于复盘，不参与评分。</span>'+
+        (mine.length?'<ul class="pts">'+mine.map(a=>'<li>'+esc(a.text)+' <span class="sub tiny">'+esc(String(a.createdAt).replace("T"," ").slice(5,16))+'</span></li>').join('')+'</ul>':'')+
+        '<label class="small" for="am-text">追加一条</label><textarea id="am-text" placeholder="例如：开盘后发现……"></textarea><button class="btn btn-g" id="am-save">追加修正意见</button></div>';
+    }
+    showSheet(h);
+    const sv=$("am-save");if(sv)sv.addEventListener("click",async()=>{const t=$("am-text").value.trim();if(!t)return;if(!tok){openSettings();return}
+      sv.disabled=true;const ok=await putFile(`data/amendments/${d.T}/${Date.now()}.json`,{date:d.T,fund:code,createdAt:bjNow().toISOString().slice(0,19)+"+08:00",text:t,affectsScore:false},`修正意见 ${d.T} ${f.short}`);
+      sv.disabled=false;if(ok){toast("已追加");amCache[d.T]=null;openFund(d,code)}});
   }
-  function bindPred(){
-    document.querySelectorAll("[data-pv]").forEach(b=>b.addEventListener("click",()=>{predView=b.dataset.pv;renderPred()}));
-    document.querySelectorAll(".lr").forEach(b=>b.addEventListener("click",()=>{open[b.dataset.k]=!open[b.dataset.k];renderPred()}));
+  const list=(t,xs)=>xs&&xs.length?'<div class="small"><b>'+t+'</b><ul class="pts" style="font-size:13.5px">'+xs.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'';
+  function dataName(d,id){const it=d.snap&&d.snap.items.find(i=>i.id===id);return it?it.name:id}
+  const amCache={};
+  async function amendments(T){
+    if(amCache[T])return amCache[T];
+    try{const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/amendments/${T}`,{headers:tok?{authorization:"Bearer "+tok}:{}});if(!r.ok)return amCache[T]=[];
+      const files=await r.json();const out=[];for(const f of files.slice(-20)){const x=await j(`data/amendments/${T}/${f.name}`);if(x)out.push(x)}return amCache[T]=out}catch(e){return []}
+  }
+  function sheetHead(t){return '<div class="app"><div class="sheethead"><button class="icon" id="sheet-x" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h2>'+esc(t)+'</h2></div>'}
+  function showSheet(h){const s=$("sheet");s.innerHTML=h+'</div>';s.hidden=false;s.scrollTop=0;$("sheet-x").addEventListener("click",closeSheet)}
+  function closeSheet(){$("sheet").hidden=true;$("sheet").innerHTML=""}
+
+  // ---------- 填写预测 ----------
+  let draft=null;
+  function openForm(d){
+    try{draft=JSON.parse(localStorage.getItem("fd-draft-"+d.T)||"null")}catch(e){draft=null}
+    if(!draft)draft={overall:{value:"",conclusion:""},funds:Object.fromEntries(G.funds.map(f=>[f.code,{value:"",reasons:[{text:"",signals:[],dataRefs:[]}],conclusion:""}]))};
+    renderForm(d);
+  }
+  function saveDraft(d){try{localStorage.setItem("fd-draft-"+d.T,JSON.stringify(draft))}catch(e){}}
+  function renderForm(d){
+    let h=sheetHead("填写 "+d.T.slice(5)+" 预测");
+    h+='<div class="card"><span class="sub small" style="line-height:1.6">每只基金一个数值（单位 %，如 0.80 或 -1.20）。理由可以关联「今天触发的规律」和「快照里的数据」，提交时会自动检查依据。'+G.config.deadline+' 截止，提交后不能修改。</span>'+
+      (d.ai?'<button class="btn btn-g" id="use-ai">带入 AI 草稿（之后可以改）</button>':'')+'</div>';
+    h+='<div class="card"><h2>科技仓整体</h2><div class="vin"><input id="ov-v" inputmode="decimal" aria-label="科技仓预测涨跌幅" value="'+esc(draft.overall.value)+'"><span class="sub">%</span></div><input type="text" id="ov-c" placeholder="一句话结论" value="'+esc(draft.overall.conclusion)+'"></div>';
+    h+='<div class="card">';
+    for(const f of G.funds){
+      const x=draft.funds[f.code], trig=visibleTrig(d,f.code);
+      h+='<div class="fund-in"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2>'+esc(f.short)+'</h2><div class="vin"><input data-v="'+f.code+'" inputmode="decimal" aria-label="'+esc(f.short)+' 预测涨跌幅" value="'+esc(x.value)+'"><span class="sub">%</span></div></div>';
+      x.reasons.forEach((r,i)=>{
+        h+='<div class="reason"><div class="rhead"><span class="small sub">理由 '+(i+1)+'</span>'+(x.reasons.length>1?'<button class="link" data-del="'+f.code+':'+i+'">删除</button>':'')+'</div><textarea data-rt="'+f.code+':'+i+'" placeholder="判断 + 市场依据">'+esc(r.text)+'</textarea>'+
+          (trig.length?'<div class="chips">'+trig.map(t=>'<button class="chip" data-sig="'+f.code+':'+i+':'+t.signal+'" aria-pressed="'+r.signals.includes(t.signal)+'">'+esc(t.signal)+' <span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></button>').join('')+'</div>':'')+
+          (d.snap?'<select data-ref="'+f.code+':'+i+'" aria-label="关联数据"><option value="">＋ 关联快照数据…</option>'+d.snap.items.filter(it=>!it.hidden).map(it=>'<option value="'+esc(it.id)+'">'+esc(it.name+(it.value!=null?" "+fmt(it.value):"")+(it.text?"："+it.text.slice(0,24):""))+'</option>').join('')+'</select>'+(r.dataRefs.length?'<div class="chips">'+r.dataRefs.map(id=>'<button class="chip" aria-pressed="true" data-unref="'+f.code+':'+i+':'+esc(id)+'">'+esc(dataName(d,id))+' ×</button>').join('')+'</div>':''):'')+'</div>';
+      });
+      h+='<button class="link" data-add="'+f.code+'">＋ 再加一条理由</button><input type="text" data-c="'+f.code+'" placeholder="结论" value="'+esc(x.conclusion)+'"></div>';
+    }
+    h+='</div><button class="btn btn-p" id="to-check">检查依据并提交</button>';
+    showSheet(h);
+    const S=$("sheet"), sync=()=>saveDraft(d);
+    S.querySelector("#ov-v").addEventListener("input",e=>{draft.overall.value=e.target.value;sync()});
+    S.querySelector("#ov-c").addEventListener("input",e=>{draft.overall.conclusion=e.target.value;sync()});
+    S.querySelectorAll("[data-v]").forEach(el=>el.addEventListener("input",()=>{draft.funds[el.dataset.v].value=el.value;sync()}));
+    S.querySelectorAll("[data-c]").forEach(el=>el.addEventListener("input",()=>{draft.funds[el.dataset.c].conclusion=el.value;sync()}));
+    S.querySelectorAll("[data-rt]").forEach(el=>el.addEventListener("input",()=>{const[c,i]=el.dataset.rt.split(":");draft.funds[c].reasons[i].text=el.value;sync()}));
+    S.querySelectorAll("[data-sig]").forEach(el=>el.addEventListener("click",()=>{const[c,i,id]=el.dataset.sig.split(":");const a=draft.funds[c].reasons[i].signals;const k=a.indexOf(id);k<0?a.push(id):a.splice(k,1);sync();renderForm(d)}));
+    S.querySelectorAll("[data-ref]").forEach(el=>el.addEventListener("change",()=>{if(!el.value)return;const[c,i]=el.dataset.ref.split(":");const a=draft.funds[c].reasons[i].dataRefs;if(!a.includes(el.value))a.push(el.value);sync();renderForm(d)}));
+    S.querySelectorAll("[data-unref]").forEach(el=>el.addEventListener("click",()=>{const[c,i,...rest]=el.dataset.unref.split(":");const id=rest.join(":");const a=draft.funds[c].reasons[i].dataRefs;a.splice(a.indexOf(id),1);sync();renderForm(d)}));
+    S.querySelectorAll("[data-add]").forEach(el=>el.addEventListener("click",()=>{draft.funds[el.dataset.add].reasons.push({text:"",signals:[],dataRefs:[]});sync();renderForm(d)}));
+    S.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",()=>{const[c,i]=el.dataset.del.split(":");draft.funds[c].reasons.splice(+i,1);sync();renderForm(d)}));
+    const ua=$("use-ai");if(ua)ua.addEventListener("click",()=>{
+      draft.overall={value:d.ai.overall&&d.ai.overall.value!=null?String(d.ai.overall.value):"",conclusion:(d.ai.overall&&d.ai.overall.conclusion)||""};
+      for(const f of G.funds){const a=d.ai.funds[f.code];if(a)draft.funds[f.code]={value:String(a.value),reasons:a.reasons.length?a.reasons.map(r=>({text:r.text,signals:[...r.signals],dataRefs:[...r.dataRefs]})):[{text:"",signals:[],dataRefs:[]}],conclusion:a.conclusion||""}}
+      sync();renderForm(d);toast("已带入 AI 草稿，请逐条确认或修改")});
+    $("to-check").addEventListener("click",()=>reviewBeforeSubmit(d));
+  }
+  function parseV(s){const v=parseFloat(String(s).replace("%","").replace("＋","+").replace("－","-"));return Number.isFinite(v)?Math.round(v*100)/100:null}
+  function reviewBeforeSubmit(d){
+    const errs=[];const nowIso=bjNow().toISOString().slice(0,19)+"+08:00";
+    const out={date:d.T,predictor:"user",createdAt:nowIso,lockedAt:nowIso,snapshot:d.batch?d.T+"/"+d.batch:null,dataCutoff:d.snap?d.snap.asOf:null,modelVersion:G.model?G.model.version:null,
+      overall:{value:parseV(draft.overall.value),conclusion:draft.overall.conclusion.trim()},funds:{}};
+    for(const f of G.funds){const x=draft.funds[f.code],v=parseV(x.value);if(v==null)errs.push(f.short+" 没填数值");
+      out.funds[f.code]={value:v,reasons:x.reasons.filter(r=>r.text.trim()).map(r=>({text:r.text.trim(),signals:r.signals,dataRefs:r.dataRefs})),conclusion:x.conclusion.trim()}}
+    if(out.overall.value==null)errs.push("科技仓整体没填数值");
+    if(Date.now()>Date.parse(deadlineOf(d.T)))errs.push("已过 "+G.config.deadline+" 截止时间，提交会记为迟交，不计入正式成绩");
+    let h=sheetHead("提交前检查");
+    if(errs.length)h+='<div class="card">'+errs.map(e=>'<div class="t-bad tag" style="white-space:normal">'+esc(e)+'</div>').join('')+'</div>';
+    let flagged=0;
+    h+='<div class="card"><h2>依据检查</h2><span class="sub tiny">✅ 历史有效且今天触发　⚠️ 今天未触发　❌ 历史不成立 / 事后信息。有问题的依据也能提交，但会被记录，以后统计这类预测准不准。</span>';
+    for(const f of G.funds){const x=out.funds[f.code];
+      h+='<div class="small" style="border-top:1px solid var(--line);padding-top:8px"><b>'+esc(f.short)+'</b> <span class="num '+cls(x.value)+'">'+fmt(x.value)+'</span>'+
+        (x.reasons.length?'<ol class="pts" style="font-size:13px">'+x.reasons.map(r=>{const c=checkReason(d,f.code,r,nowIso);if(c.signals.some(s=>s.verdict!=="有效依据")||c.data.some(s=>s.verdict==="事后信息"))flagged++;
+          return '<li>'+esc(r.text)+'<div class="chips">'+c.signals.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(s.id+" "+s.verdict)+'</span>').join('')+c.data.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(dataName(d,s.id)+" · "+s.verdict)+'</span>').join('')+(!c.signals.length&&!c.data.length?'<span class="tag t-n">主观判断</span>':'')+'</div></li>'}).join('')+'</ol>':'<div class="sub">没有写理由</div>')+'</div>'}
+    h+='</div>'+(flagged?'<div class="card t-warn" style="background:var(--warn-soft)">有 '+flagged+' 条依据未通过检查。可以返回修改，也可以照样提交。</div>':'');
+    h+='<div style="display:flex;gap:10px"><button class="btn btn-g" id="back-form" style="flex:1">返回修改</button><button class="btn btn-p" id="submit" style="flex:2"'+(errs.some(e=>e.includes("没填"))?' disabled':'')+'>提交并锁定</button></div>';
+    showSheet(h);
+    $("back-form").addEventListener("click",()=>renderForm(d));
+    $("submit").addEventListener("click",async()=>{
+      if(!tok){openSettings();return}
+      const b=$("submit");b.disabled=true;b.textContent="提交中…";
+      out.checks=Object.fromEntries(G.funds.map(f=>[f.code,out.funds[f.code].reasons.map(r=>checkReason(d,f.code,r,nowIso))]));
+      const r=await putFile(`data/predictions/${d.T}/user.json`,out,`锁定预测 ${d.T}`,true);
+      if(r){out.lockedAt=r;localUser[d.T]=out;dayCache[d.T]=null;try{localStorage.removeItem("fd-draft-"+d.T)}catch(e){}closeSheet();toast("已锁定 🔒 "+hm(r));renderPred()}
+      else{b.disabled=false;b.textContent="提交并锁定"}
+    });
+  }
+  async function putFile(path,obj,msg,createOnly){
+    const body={message:msg,content:btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,1)+"\n")))};
+    try{
+      const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{method:"PUT",headers:{authorization:"Bearer "+tok,accept:"application/vnd.github+json","content-type":"application/json"},body:JSON.stringify(body)});
+      if(r.status===422&&createOnly){toast("这一天已经提交过，预测不能覆盖");return null}
+      if(r.status===401||r.status===403){toast("令牌无效或没有写权限，请在设置里重新粘贴");return null}
+      if(!r.ok){toast("提交失败："+r.status);return null}
+      const x=await r.json();const t=x.commit&&x.commit.committer&&x.commit.committer.date;
+      return t?new Date(Date.parse(t)+8*3600e3).toISOString().slice(0,19)+"+08:00":obj.createdAt;
+    }catch(e){toast("网络错误，请稍后再试");return null}
+  }
+  function openSettings(){
+    let h=sheetHead("设置");
+    h+='<div class="card"><h2>GitHub 令牌</h2><span class="small sub" style="line-height:1.7">用来把你的预测提交到仓库并锁定。只保存在这台手机的浏览器里。</span>'+
+      '<ol class="pts small"><li>电脑或手机打开 github.com → 右上角头像 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token。</li><li>Repository access 选 Only select repositories → Fund-diary。</li><li>Permissions → Repository permissions → Contents 选 Read and write。</li><li>生成后复制，粘贴到下面。</li></ol>'+
+      '<label for="tok" class="small">令牌</label><input type="password" id="tok" autocomplete="off" placeholder="github_pat_…" value="'+esc(tok||"")+'"><div style="display:flex;gap:10px"><button class="btn btn-p" id="tok-save" style="flex:1">保存</button><button class="btn btn-g" id="tok-clear">清除</button></div></div>';
+    showSheet(h);
+    $("tok-save").addEventListener("click",async()=>{const v=$("tok").value.trim();if(!v)return;
+      const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`,{headers:{authorization:"Bearer "+v}});
+      if(!r.ok){toast("令牌无法访问仓库，请检查");return}const x=await r.json();if(!(x.permissions&&x.permissions.push)){toast("令牌没有写权限，请把 Contents 设为 Read and write");return}
+      tok=v;try{localStorage.setItem("fd-token",v)}catch(e){}toast("已保存");closeSheet();renderPred()});
+    $("tok-clear").addEventListener("click",()=>{tok=null;try{localStorage.removeItem("fd-token")}catch(e){}toast("已清除");closeSheet();renderPred()});
   }
 
   // ---------- 成绩 ----------
   function renderScore(){
-    const S=D.stats; if(!S){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
-    const live=scoreView==="live", Pp=S.predictors;
-    const g=k=>Pp[k]&&(live?Pp[k].live:Pp[k].backtest);
-    const main=live?"ai":"rule", M=g(main);
-    let h='<div class="top"><div><div class="sub small">'+(live?'实盘 · 节后起每个交易日 5 只':'回测 · 规则模型 v'+esc(S.strategyVersion)+' · 最近约 120 个交易日')+'</div><h1>成绩单</h1></div></div>';
-    h+='<div class="seg"><button data-sv="live" aria-pressed="'+live+'">实盘</button><button data-sv="bt" aria-pressed="'+!live+'">回测</button></div>';
+    const S=G.stats;
+    if(!S){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
+    const P=S.predictors, me=P.user;
+    const benches=["bench_us","bench_prev","bench_zero"];
+    const bestB=benches.filter(b=>P[b].n).sort((a,b)=>P[a].mae-P[b].mae)[0];
     let vt,vs;
-    if(!M||!M.en){vt="还没有数据";vs="节后首个交易日收盘后开始记录。"}
-    else if(M.n<100){vt="样本太少，先不下结论";vs="已有 "+M.n+" 次方向判断，猜对 "+M.rate+"%，平均误差 "+M.mae+" 个百分点。攒到 100 次以上再看。"}
-    else{const ok=M.p!=null&&M.p<0.05&&M.mae<=(M.vsBestMae??99);
-      vt=ok?"有迹象可以预测":"还不能证明可预测";
-      vs=NAMES[main]+"方向猜对 "+M.rate+"%，最好的笨办法 "+M.vsBest+"%，高出部分是运气的概率约 "+Math.round(M.p*100)+"%；平均误差 "+M.mae+"，笨办法最低 "+M.vsBestMae+"。"}
-    h+='<div class="card"><span class="sub small">结论</span><span class="verdict">'+esc(vt)+'</span><span style="font-size:13px;line-height:1.6">'+esc(vs)+'</span></div>';
-    const keys=live?["ai","rule","base_us","base_prev"]:["rule","base_us","base_prev"];
-    h+='<div class="card"><b style="font-size:14px">方向猜对的比例 <span class="sub small" style="font-weight:400">虚线为 50%</span></b>';
-    keys.forEach(k=>{const s=g(k);const r=s&&s.rate;const mine=k==="ai"||k==="rule";
-      h+='<div class="rowbar"><span>'+NAMES[k]+'</span><div class="track"><div class="fill" style="width:'+(r||0)+'%;background:'+(mine?'var(--accent)':'var(--sub)')+';opacity:'+(mine?1:.45)+'"></div><div class="half"></div></div><span class="num" style="text-align:right;font-weight:600">'+(r!=null?r.toFixed(1)+'%':'–')+'</span></div>'});
-    h+='<table class="tbl" style="margin-top:4px"><thead><tr><th>预测方</th><th>平均误差</th><th>次数</th></tr></thead><tbody>'+
-      [...keys,"base_zero"].map(k=>{const s=g(k);return '<tr><td style="font-family:var(--f-body)">'+NAMES[k]+'</td><td>'+(s&&s.mae!=null?s.mae.toFixed(2):'–')+'</td><td>'+(s?s.en:'–')+'</td></tr>'}).join('')+
-      '</tbody></table><span class="sub tiny" style="line-height:1.6">平均误差＝|预测−实际| 的平均，单位百分点，越小越好。「全猜不涨不跌」每天都报 0，是误差的及格线。</span></div>';
-    const bo=(S.boldness&&(live?S.boldness.live:S.boldness.backtest))||[];
-    h+='<div class="card"><b style="font-size:14px">敢报大涨大跌的时候，准不准？</b><table class="tbl"><thead><tr><th>预测幅度</th><th>次数</th><th>方向猜对</th><th>平均误差</th></tr></thead><tbody>'+
-      bo.map(b=>'<tr><td style="font-family:var(--f-body)">'+esc(b.label)+'</td><td>'+b.n+'</td><td>'+(b.rate!=null?b.rate.toFixed(0)+'%':'–')+'</td><td>'+(b.mae!=null?b.mae.toFixed(2):'–')+'</td></tr>').join('')+
-      '</tbody></table><span class="sub tiny">好的判断应该是：报的幅度越大，方向越准。</span></div>';
-    if(live){
-      const rows=[];Object.values(D.rec.days).filter(d=>d.format===LF&&d.status==="reviewed").sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).forEach(d=>D.funds.forEach(f=>{const v=V(d.preds.ai&&d.preds.ai[f.code]),a=d.actual&&d.actual[f.code];rows.push({d:d.date,f:f.short,v,a})}));
-      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">流水账</b><a class="small" href="data/records.csv" target="_blank" rel="noopener">下载全部 CSV</a></div>';
-      h+=rows.length?'<table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>预测</th><th>实际</th><th></th></tr></thead><tbody>'+rows.map(r=>{const x=hitOf(r.v,r.a);return '<tr><td>'+esc(r.d.slice(5))+'</td><td style="text-align:left;font-family:var(--f-body)">'+esc(r.f)+'</td><td class="'+vCls(r.v)+'">'+fmt(r.v)+'</td><td class="'+vCls(r.a)+'">'+fmt(r.a)+'</td><td>'+(x==null?'':x?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+'</td></tr>'}).join('')+'</tbody></table><span class="sub tiny">每条预测开盘前锁定，带时间戳，事后不能修改。CSV 里有每条的思路。</span>':'<span class="sub small">节后首日收盘后出现第一行。</span>';
-      h+='</div>';
-    }
-    $("v-score").innerHTML=h;
-    document.querySelectorAll("[data-sv]").forEach(b=>b.addEventListener("click",()=>{scoreView=b.dataset.sv;renderScore()}));
+    if(!me.n){vt="还没有成绩";vs="提交第一份预测、收盘结算后开始统计。"}
+    else if(me.n<100){vt="样本还少，先不下结论";vs="已有 "+me.n+" 条预测（"+S.days+" 个交易日）。至少攒到 100 条，再看是否显著优于基准。"}
+    else{const vb=S.vsBench.user[bestB];const sig=vb&&vb.maeGain&&vb.maeGain.lo>0;
+      vt=sig?"是，我的预测显著优于基准":"还不能证明优于基准";
+      vs="和最好的基准「"+NAMES[bestB]+"」相比，误差平均"+(vb&&vb.maeGain?(vb.maeGain.mean>0?"小 ":"大 ")+Math.abs(vb.maeGain.mean).toFixed(2)+" 个百分点（95% 区间 "+vb.maeGain.lo.toFixed(2)+" ~ "+vb.maeGain.hi.toFixed(2)+"）":"–")+"。区间全部大于 0 才算真正超过。"}
+    let h='<div class="top"><h1>成绩</h1><span class="sub small">'+S.days+' 个交易日</span></div>';
+    h+='<div class="card"><span class="sub small">我的预测能力是否真正超过简单策略？</span><span class="verdict">'+esc(vt)+'</span><span style="font-size:13.5px;line-height:1.6">'+esc(vs)+'</span></div>';
+    h+='<div class="card"><h2>同场比较</h2><div class="scroll"><table class="tbl"><thead><tr><th>预测方</th><th>方向命中</th><th>MAE</th><th>条数</th></tr></thead><tbody>'+
+      ["user","bench_us","bench_prev","bench_zero","ai","model"].map(k=>{const x=P[k];return '<tr class="'+(k==="user"?"me":"")+'"><td class="t">'+NAMES[k]+'</td><td>'+(k==="bench_zero"?'<span class="sub">不判方向</span>':x.rate!=null?x.rate.toFixed(1)+'%':'–')+'</td><td>'+(x.mae!=null?x.mae.toFixed(2)+'%':'–')+'</td><td>'+x.n+'</td></tr>'}).join('')+
+      '</tbody></table></div><span class="sub tiny" style="line-height:1.6">方向分三态：涨（&gt;+'+G.config.flatBand+'%）、跌（&lt;−'+G.config.flatBand+'%）、平。MAE＝|预测−实际| 的平均。</span></div>';
+    const vb=S.vsBench.user||{};
+    h+='<div class="card"><h2>相对基准的提升</h2><div class="scroll"><table class="tbl"><thead><tr><th>对比</th><th>MAE 改善</th><th>误差差 95% 区间</th><th>命中率差</th></tr></thead><tbody>'+
+      benches.map(b=>{const x=vb[b]||{};const g=x.maeGain,hg=x.hitGain;return '<tr><td class="t">vs '+NAMES[b]+'</td><td style="color:var(--'+(x.maeImprovePct>0?'ok':x.maeImprovePct<0?'bad':'sub')+')">'+(x.maeImprovePct!=null?(x.maeImprovePct>0?'+':'')+x.maeImprovePct.toFixed(1)+'%':'–')+'</td><td>'+(g?g.lo.toFixed(2)+' ~ '+g.hi.toFixed(2):'样本不足')+'</td><td>'+(hg?(hg.mean>0?'+':'')+hg.mean.toFixed(1)+' 点':'–')+'</td></tr>'}).join('')+
+      '</tbody></table></div><span class="sub tiny">MAE 改善为正＝比基准更准。误差差区间全部大于 0 才算显著。</span></div>';
+    const rq=S.reasonQuality;
+    if(rq&&(rq.clean.n||rq.flagged.n))h+='<div class="card"><h2>依据有问题的预测，是不是更不准？</h2><table class="tbl"><thead><tr><th>预测</th><th>条数</th><th>方向命中</th><th>MAE</th></tr></thead><tbody><tr><td class="t">依据都通过检查</td><td>'+rq.clean.n+'</td><td>'+(rq.clean.rate??'–')+'%</td><td>'+(rq.clean.mae??'–')+'</td></tr><tr><td class="t">含 ⚠️/❌ 依据</td><td>'+rq.flagged.n+'</td><td>'+(rq.flagged.rate??'–')+'%</td><td>'+(rq.flagged.mae??'–')+'</td></tr></tbody></table></div>';
+    h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>我 命中</th><th>我 MAE</th><th>外盘 MAE</th></tr></thead><tbody>'+G.funds.map(f=>{const b=S.byFund[f.code];return '<tr><td class="t">'+esc(f.short)+'</td><td>'+(b.user.rate??'–')+(b.user.rate!=null?'%':'')+'</td><td>'+(b.user.mae??'–')+'</td><td>'+(b.bench_us.mae??'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+    $("v-score").innerHTML=h+'<div id="ledger"></div>';
+    renderLedger();
+  }
+  async function renderLedger(){
+    const days=Object.keys(G.index.days).filter(d=>G.index.days[d].result).sort().reverse().slice(0,10);
+    if(!days.length)return;
+    let h='<div class="card"><h2>流水账</h2><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>我</th><th>实际</th><th></th><th>误差</th></tr></thead><tbody>';
+    for(const T of days){const r=dayCache[T]&&dayCache[T].result||await j(`data/results/${T}.json`);if(!r)continue;
+      for(const f of G.funds){const s=r.scores.user&&r.scores.user[f.code];h+='<tr><td>'+T.slice(5)+'</td><td class="t">'+esc(f.short)+'</td><td class="'+cls(s&&s.pred)+'">'+(s?fmt(s.pred):'<span class="sub">'+esc(r.meta.user?r.meta.user.status:"")+'</span>')+'</td><td class="'+cls(r.actual[f.code])+'">'+fmt(r.actual[f.code])+'</td><td>'+(s?(s.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):'')+'</td><td>'+(s?s.absErr.toFixed(2):'')+'</td></tr>'}}
+    $("ledger").innerHTML=h+'</tbody></table></div><span class="sub tiny">每条预测的锁定时间以仓库提交记录为准，事后无法修改。</span></div>';
   }
 
   // ---------- 实验室 ----------
   function renderLab(){
-    const st=D.strat,S=D.stats; const sc=id=>(S&&S.rules.find(r=>r.id===id))||{n:0};
-    const lastCh=st.changelog[st.changelog.length-1];
-    const lastRev=Object.values(D.rec.days).filter(d=>d.format===LF&&d.review&&d.review.summary).sort((a,b)=>b.date.localeCompare(a.date))[0];
-    let h='<div class="top"><div><div class="sub small">预测逻辑 v'+st.version+' · '+st.rules.length+' 条信号 · 每日复盘修正</div><h1>信号实验室</h1></div></div>';
-    const good=st.rules.map(r=>({r,s:sc(r.id)})).filter(x=>x.s.verdict==="有效").sort((a,b)=>b.s.lo-a.s.lo)[0];
-    const bad=st.rules.map(r=>({r,s:sc(r.id)})).filter(x=>x.s.verdict==="反向/无效"&&x.r.status==="active");
-    h+='<div class="card dark"><span class="sub small">最近一次体检</span>'+
-      (good?'<span style="font-size:15px;line-height:1.55"><b>最有用：</b>'+esc(good.r.name)+'（'+good.s.rate+'%，'+good.s.n+' 次）</span>':'')+
-      (bad.length?'<span style="font-size:15px;line-height:1.55"><b>拖后腿：</b>'+bad.map(x=>esc(x.r.name)+'（'+x.s.rate+'%）').join('；')+'</span>':'<span style="font-size:15px">正式规则里没有明显拖后腿的。</span>')+
-      (lastRev?'<span class="sub small" style="line-height:1.6">'+esc(lastRev.date.slice(5))+' 复盘：'+esc(lines(lastRev.review.summary).join('；'))+'</span>':'')+
-      (lastCh?'<span class="sub small">v'+lastCh.version+'（'+esc(lastCh.date)+'）：'+esc(lastCh.changes)+(lastCh.maeBefore!=null?'；误差 '+lastCh.maeBefore+' → '+lastCh.maeAfter:'')+'</span>':'')+'</div>';
-    h+='<div class="strip sub small" style="padding:0 4px"><span>触发后命中率 · 横线为 95% 区间</span><span>虚线 50%</span></div>';
-    const pos=v=>((Math.max(20,Math.min(90,v))-20)/70*100);
-    const ordered=[...st.rules].sort((a,b)=>{const o={"有效":0,"不确定":1,"反向/无效":2,"样本不足":3};return (o[sc(a.id).verdict]-o[sc(b.id).verdict])||(a.status==="active"?-1:1)});
-    ordered.forEach(r=>{
-      const s=sc(r.id);const thin=s.n<20;
-      const col=thin?'var(--track)':s.verdict==="有效"?'var(--good)':s.verdict==="反向/无效"?'var(--bad)':'var(--sub)';
-      h+='<div class="sig"><div class="h"><b>'+esc(r.id+" "+r.name)+'</b><span class="chip '+(r.status==="active"?'c-act':'c-sh')+'">'+(r.status==="active"?'正式':'观察')+'</span></div>'+
-        '<div class="ci"><div class="t" aria-hidden="true"><div class="base"></div><div class="fifty" style="left:'+pos(50)+'%"></div>'+
-        (s.n?'<div class="rng" style="left:'+pos(s.lo)+'%;width:'+(pos(s.hi)-pos(s.lo))+'%;background:'+col+'"></div><div class="dot" style="left:'+pos(s.rate)+'%;background:'+(thin?'var(--sub)':col)+'"></div>':'')+
-        '</div><span class="num small" style="text-align:right"><b>'+(s.n?s.rate.toFixed(1)+'%':'–')+'</b> · '+s.n+'次 · <span class="'+(s.verdict==="有效"?'v-good':s.verdict==="反向/无效"?'v-bad':'sub')+'">'+esc(s.verdict||"")+'</span></span></div>'+
-        '<span class="sub tiny">'+(r.vote>0?'看涨':'看跌')+' · 权重 '+r.weight+(r.fund!=="*"?' · 仅 '+esc((D.funds.find(f=>f.code===r.fund)||{}).short||r.fund):'')+' · <code class="num">'+esc(r.when)+'</code></span></div>';
-    });
-    if((st.ideas||[]).length)h+='<div class="card"><b style="font-size:14px">野路子候选</b>'+st.ideas.map(i=>'<span style="font-size:13px">· '+esc(i.text)+' <span class="sub tiny">'+esc(i.date)+'</span></span>').join('')+'<span class="sub tiny">需要新的数据源，跟 Claude 说想试哪条。</span></div>';
-    h+='<details class="card fold"><summary><span>修改记录</span><span class="sub small">'+st.changelog.length+' 次 · 被拒 '+((st.rejected||[]).length)+' 次</span></summary>'+
-      [...st.changelog].reverse().map(c=>'<div style="font-size:13px;border-top:1px solid var(--line);padding-top:8px"><b>v'+c.version+'</b> <span class="sub tiny">'+esc(c.date)+(c.maeBefore!=null?' · 误差 '+c.maeBefore+' → '+c.maeAfter:'')+'</span><div>'+esc(c.changes)+'</div>'+(c.reason?'<div class="sub small">'+esc(c.reason)+'</div>':'')+'</div>').join('')+'</details>';
+    const st=G.status||{}, sp=st.split||{};
+    let h='<div class="top"><h1>实验室</h1><span class="sub small">规则模型 '+esc(G.model?G.model.version:"–")+'</span></div>';
+    const R=G.stats||{};
+    const board=(t,xs,good)=>'<div class="card"><h2>'+t+'</h2>'+(xs&&xs.length?'<ol class="pts">'+xs.map(x=>'<li><span>'+esc(x.name)+'</span> <span class="num" style="font-weight:600;color:var(--'+(good?'ok':'bad')+')">'+x.rate.toFixed(1)+'%</span> <span class="sub tiny">基准 '+x.base+'% · '+x.n+' 次 · '+esc(x.status)+'</span></li>').join('')+'</ol>':'<span class="sub small">'+(good?'还没有规律稳定跑赢基准。':'还没有规律明显低于基准。')+'</span>')+'</div>';
+    h+=board("最可靠的规律",R.reliable,true)+board("最会骗人的规律",R.deceptive,false);
+    h+='<div class="card"><h2>信号库</h2><span class="sub tiny" style="line-height:1.6">研究集 '+esc(sp.researchFrom||"")+' 起，留出集 '+esc(sp.holdoutFrom||"")+' 至 '+esc(sp.to||"")+'。规则修改只能参考研究集，留出集用来验证。</span>';
+    const order={"有效":0,"待验证":1,"实验中":2,"失效":3,"淘汰":4};
+    for(const s of [...G.signals].filter(s=>s.sourceType!=="外部观点"||s.status==="有效").sort((a,b)=>(order[a.status]-order[b.status])||a.id.localeCompare(b.id))){
+      const r=s.research||{},o=s.holdout||{};
+      h+='<details style="border-top:1px solid var(--line);padding-top:8px"><summary style="cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center"><span style="min-width:0"><b class="num">'+esc(s.id)+'</b> '+esc(s.name)+'</span><span class="tag '+(STATUS_TAG[s.status]||"t-n")+'">'+esc(s.status)+'</span></summary>'+
+        '<table class="tbl" style="margin-top:6px"><thead><tr><th></th><th>样本</th><th>命中率</th><th>MAE</th><th>基准</th></tr></thead><tbody>'+
+        '<tr><td class="t">研究集</td><td>'+(r.n??0)+'</td><td>'+(r.rate!=null?r.rate.toFixed(1)+'%':'–')+(r.lo!=null?'<div class="sub tiny">'+r.lo+'~'+r.hi+'</div>':'')+'</td><td>'+(r.mae??'–')+'</td><td>'+(r.base??'–')+'%</td></tr>'+
+        '<tr><td class="t">留出集</td><td>'+(o.n??0)+'</td><td>'+(o.rate!=null?o.rate.toFixed(1)+'%':'–')+'</td><td>'+(o.mae??'–')+'</td><td>'+(o.base??'–')+'%</td></tr></tbody></table>'+
+        '<div class="sub tiny">条件 <code class="num">'+esc(s.when)+'</code> → '+(s.vote>0?'看涨':'看跌')+(s.scope!=="*"?' · 仅 '+esc((G.funds.find(f=>f.code===s.scope)||{}).short||s.scope):'')+'</div>'+
+        (s.statusHistory&&s.statusHistory.length>1?'<div class="sub tiny">'+s.statusHistory.slice(1).map(x=>esc(x.date+" "+x.from+"→"+x.to)).join("；")+'</div>':'')+'</details>';
+    }
+    h+='<span class="sub tiny" style="line-height:1.6">状态：实验中（样本&lt;'+G.config.minSamples+'）→ 待验证 → 有效（研究集区间下限高于基准且留出集确认）→ 失效 → 淘汰（失效满 '+G.config.retireAfter+' 个交易日）。</span></div>';
+    const cl=[...(G.changelog||[])].reverse();
+    h+='<div class="card"><h2>规则版本</h2>'+(cl.length?cl.map(c=>'<div style="border-top:1px solid var(--line);padding-top:8px;font-size:13.5px"><b>'+esc(c.version)+'</b> <span class="tag '+(c.passed?'t-ok':'t-bad')+'">'+esc(c.status)+'</span> <span class="sub tiny">'+esc(String(c.createdAt).slice(0,10))+'</span><div>'+esc(c.change)+'</div>'+
+      (c.research&&c.research.old?'<table class="tbl"><thead><tr><th></th><th>命中 旧→新</th><th>MAE 旧→新</th></tr></thead><tbody><tr><td class="t">研究集</td><td>'+c.research.old.rate+'→'+c.research.new.rate+'</td><td>'+c.research.old.mae+'→'+c.research.new.mae+'</td></tr><tr><td class="t">留出集</td><td>'+c.holdout.old.rate+'→'+c.holdout.new.rate+'</td><td>'+c.holdout.old.mae+'→'+c.holdout.new.mae+'</td></tr></tbody></table>':
+       (c.research&&c.research.new?'<div class="sub tiny">研究集 命中 '+c.research.new.rate+'%、MAE '+c.research.new.mae+'；留出集 命中 '+c.holdout.new.rate+'%、MAE '+c.holdout.new.mae+'</div>':''))+'</div>').join(''):'<span class="sub small">暂无</span>')+'</div>';
     $("v-lab").innerHTML=h;
   }
 
-  function renderAll(){renderPred();renderScore();renderLab();
-    $("foot").textContent=(D.status.lastRun?'上次更新 '+D.status.lastRun+' · ':'')+'每晚 22:13 复盘、修正并预测下一交易日，交易日 8:07 结合隔夜美股定稿并锁定。仅作实验记录，不构成投资建议。'}
-
+  // ---------- 框架 ----------
   function show(v){document.querySelectorAll(".tabbar button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));["pred","score","lab"].forEach(k=>$("v-"+k).hidden=k!==v);window.scrollTo(0,0);try{localStorage.setItem("fd-v",v)}catch(e){}}
   document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
   try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
-
   async function load(){
-    try{
-      const q='?t='+Date.now();
-      const j=n=>fetch('data/'+n+'.json'+q,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(n+' '+r.status);return r.json()});
-      const [funds,rec,stats,strat,status]=await Promise.all([j('funds'),j('records'),j('stats').catch(()=>null),j('strategy'),j('status').catch(()=>({}))]);
-      D={funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),rec,stats,strat,status};
-      renderAll();
-    }catch(e){$("v-pred").innerHTML='<div class="empty">数据读取失败：'+esc(e.message)+'，下拉或稍后再打开。</div>'}
+    const [config,funds,index,signals,stats,changelog,status,model]=await Promise.all(["config","funds","index","signals","stats","models/changelog","status","models/current"].map(n=>j(`data/${n}.json`)));
+    if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
+    G={config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),index,signals:signals||[],stats,changelog:changelog||[],status,model};
+    dayCache={};
+    await renderPred();renderScore();renderLab();
+    $("foot").textContent=(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止填写。仅作实验记录，不构成投资建议。';
   }
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$("sheet").hidden)load()});
   load();
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
