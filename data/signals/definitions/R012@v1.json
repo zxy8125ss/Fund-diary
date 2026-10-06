@@ -1,0 +1,13 @@
+{
+ "key": "R012@v1",
+ "id": "R012",
+ "version": 1,
+ "name": "跑赢锚定指数2%以上，次日回吐",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "dev > 2",
+ "vote": -1,
+ "createdAt": "2026-10-01",
+ "legacyId": "S7"
+}

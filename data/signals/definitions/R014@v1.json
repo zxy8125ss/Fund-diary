@@ -1,0 +1,13 @@
+{
+ "key": "R014@v1",
+ "id": "R014",
+ "version": 1,
+ "name": "恒生科技前一日大涨跟涨",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "!qdii && hstech_prev > 1.5",
+ "vote": 1,
+ "createdAt": "2026-10-01",
+ "legacyId": "S9"
+}

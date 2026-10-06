@@ -1,0 +1,13 @@
+{
+ "key": "R003@v1",
+ "id": "R003",
+ "version": 1,
+ "name": "近5日跌超8%，超跌反弹",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "mom5 < -8",
+ "vote": 1,
+ "createdAt": "2026-10-01",
+ "legacyId": "R3"
+}

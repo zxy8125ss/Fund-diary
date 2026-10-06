@@ -1,0 +1,13 @@
+{
+ "key": "R004@v1",
+ "id": "R004",
+ "version": 1,
+ "name": "近5日涨超8%，涨多回调",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "mom5 > 8",
+ "vote": -1,
+ "createdAt": "2026-10-01",
+ "legacyId": "R4"
+}

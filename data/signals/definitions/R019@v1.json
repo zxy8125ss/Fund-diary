@@ -1,0 +1,12 @@
+{
+ "key": "R019@v1",
+ "id": "R019",
+ "version": 1,
+ "name": "中概互联网隔夜涨超2%",
+ "sourceType": "行情",
+ "proposedBy": "manual",
+ "scope": "*",
+ "when": "kweb_on > 2",
+ "vote": 1,
+ "createdAt": "2026-10-06"
+}

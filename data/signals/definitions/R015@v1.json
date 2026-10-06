@@ -1,0 +1,12 @@
+{
+ "key": "R015@v1",
+ "id": "R015",
+ "version": 1,
+ "name": "隔夜纳指涨超1%（科技跟涨）",
+ "sourceType": "行情",
+ "proposedBy": "manual",
+ "scope": "*",
+ "when": "ndx_on > 1",
+ "vote": 1,
+ "createdAt": "2026-10-06"
+}

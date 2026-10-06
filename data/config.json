@@ -1,12 +1,82 @@
 {
+ "version": "2.1",
+ "owner": "zxy8125ss",
  "flatBand": 0.1,
- "deadline": "09:25",
- "researchDays": 160,
- "holdoutDays": 40,
- "minSamples": 20,
- "retireAfter": 20,
+ "deadline": "09:15",
+ "windows": {
+  "evening": [
+   "21:30",
+   "23:59"
+  ],
+  "morning": [
+   "07:30",
+   "09:15"
+  ]
+ },
+ "split": {
+  "researchDays": 160,
+  "holdoutStart": "2026-08-05",
+  "note": "留出集起点固定，之后的交易日都属于留出集；每季度人工重切一次并记录版本"
+ },
+ "signals": {
+  "minDays": 20,
+  "fdr": 0.1,
+  "hysteresisDays": 5,
+  "retireAfter": 20
+ },
  "gate": {
   "mae": 0.02,
   "hit": 1
- }
+ },
+ "benchmarks": {
+  "externalMap": {
+   "005698": "ndx",
+   "002910": "sox",
+   "024481": "sox",
+   "015060": "sox",
+   "001672": "ndx"
+  },
+  "directionPool": [
+   "bench_external_raw",
+   "bench_external_beta",
+   "bench_prev"
+  ],
+  "maePool": [
+   "bench_external_raw",
+   "bench_external_beta",
+   "bench_prev",
+   "bench_zero"
+  ]
+ },
+ "preregistration": {
+  "registeredAt": "2026-10-06",
+  "primary": [
+   {
+    "id": "MAE",
+    "against": "best_mae_benchmark"
+   },
+   {
+    "id": "DIR",
+    "against": "best_direction_benchmark"
+   }
+  ],
+  "test": "按交易日聚类的正态混合置信序列（随时有效，单侧）",
+  "multiplicity": "holm",
+  "alpha": 0.05,
+  "rho": 60,
+  "minObsForConclusion": 100,
+  "note": "每天都可查看；只有随时有效 p 值经 Holm 校正后低于门槛，才可以写「有统计证据」。其余对比均为探索性。"
+ },
+ "changelog": [
+  {
+   "version": "2.0",
+   "date": "2026-10-06",
+   "change": "初版：截止 09:25，平盘线 ±0.10%"
+  },
+  {
+   "version": "2.1",
+   "date": "2026-10-06",
+   "change": "截止改为 09:15（集合竞价前）；外盘基准拆为原始与 β；统计改为按日聚类、随时有效序贯检验；信号 BH 校正、防抖、前向验证；批次时间窗"
+  }
+ ]
 }

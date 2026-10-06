@@ -1,0 +1,12 @@
+{
+ "key": "R016@v1",
+ "id": "R016",
+ "version": 1,
+ "name": "隔夜纳指跌超1%（科技跟跌）",
+ "sourceType": "行情",
+ "proposedBy": "manual",
+ "scope": "*",
+ "when": "ndx_on < -1",
+ "vote": -1,
+ "createdAt": "2026-10-06"
+}

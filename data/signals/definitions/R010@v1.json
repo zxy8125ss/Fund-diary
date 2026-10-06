@@ -1,0 +1,13 @@
+{
+ "key": "R010@v1",
+ "id": "R010",
+ "version": 1,
+ "name": "长假后首日看涨",
+ "sourceType": "日历",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "gap >= 4",
+ "vote": 1,
+ "createdAt": "2026-10-01",
+ "legacyId": "S5"
+}

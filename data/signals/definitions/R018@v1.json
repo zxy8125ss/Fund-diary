@@ -1,0 +1,12 @@
+{
+ "key": "R018@v1",
+ "id": "R018",
+ "version": 1,
+ "name": "锚定指数近3日跌超3%（动量延续）",
+ "sourceType": "行情",
+ "proposedBy": "manual",
+ "scope": "*",
+ "when": "anc_mom3 < -3",
+ "vote": -1,
+ "createdAt": "2026-10-06"
+}

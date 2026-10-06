@@ -1,0 +1,13 @@
+{
+ "key": "R001@v1",
+ "id": "R001",
+ "version": 1,
+ "name": "隔夜外盘大涨跟涨（QDII看纳指，其余看费城半导体）",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "(qdii ? ndx_on : sox_on) > 1",
+ "vote": 1,
+ "createdAt": "2026-10-01",
+ "legacyId": "R1"
+}

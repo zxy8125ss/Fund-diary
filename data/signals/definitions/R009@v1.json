@@ -1,0 +1,13 @@
+{
+ "key": "R009@v1",
+ "id": "R009",
+ "version": 1,
+ "name": "外部观点看空（反向）",
+ "sourceType": "外部观点",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "guxia <= -1",
+ "vote": 1,
+ "createdAt": "2026-10-01",
+ "legacyId": "S4"
+}

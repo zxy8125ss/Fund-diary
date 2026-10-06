@@ -2,25 +2,19 @@ name: 更新基金日记
 
 on:
   schedule:
-    # GitHub 使用 UTC：14:13 UTC = 北京时间 22:13（结算今天：评分、复盘、信号统计、模型门槛；再出下一交易日晚间草稿）
-    - cron: '13 14 * * *'
-    # 00:07 UTC = 北京时间 08:07，周一至周五（隔夜美股收盘后出早间快照和草稿，供 9:25 前填写预测）
-    - cron: '7 0 * * 1-5'
-  # Claude 推送代码或规则修改后自动跑一次（机器人提交的数据更新不会再触发，不会循环）
+    # GitHub 使用 UTC；定时任务可能延迟或被丢弃，所以每个时段跑两次，靠幂等保证不重复生成
+    - cron: '13 14 * * *'     # 北京 22:13 结算 + 下一交易日晚间批次
+    - cron: '43 14 * * *'     # 北京 22:43 补偿
+    - cron: '7 0 * * 1-5'     # 北京 08:07 早间批次（隔夜美股已收盘）
+    - cron: '27 0 * * 1-5'    # 北京 08:27 补偿
   push:
     branches: [main]
     paths: ['scripts/**', '.github/workflows/**', 'data/config.json', 'data/funds.json', 'data/calendar.json']
-  workflow_dispatch:
-    inputs:
-      mode:
-        description: 'evening=结算+下一交易日晚间草稿；morning=早间快照与草稿'
-        required: false
-        default: 'evening'
-        type: choice
-        options: [evening, morning]
+  workflow_dispatch: {}
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: update-diary
@@ -29,25 +23,33 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 0   # 需要完整提交历史来核验预测的锁定时间
+          fetch-depth: 0   # 完整提交历史：按第一次提交的内容计分、检测改动
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-      - name: 抓净值、复盘、预测
+      - name: 结算、信号、模型、批次
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
-          MODE: ${{ github.event.inputs.mode || (github.event.schedule == '7 0 * * 1-5' && 'morning') || 'evening' }}
         run: node scripts/run.mjs
       - name: 提交更新
+        if: always()
         run: |
           git config user.name "fund-diary-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
           if git diff --cached --quiet; then echo "数据无变化"; exit 0; fi
           git commit -m "更新基金日记 $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M')"
-          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
+          for i in 1 2 3 4; do git pull --rebase -q && git push && break; sleep $((i*5)); done
+      - name: 失败时开 Issue 提醒
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -s -X POST -H "authorization: Bearer $GH_TOKEN" -H "accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d "{\"title\":\"自动更新失败 $(TZ=Asia/Shanghai date '+%m-%d %H:%M')\",\"body\":\"运行记录：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"

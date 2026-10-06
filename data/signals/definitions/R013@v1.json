@@ -1,0 +1,13 @@
+{
+ "key": "R013@v1",
+ "id": "R013",
+ "version": 1,
+ "name": "周一看跌",
+ "sourceType": "行情",
+ "proposedBy": "migration",
+ "scope": "*",
+ "when": "wd == 1",
+ "vote": -1,
+ "createdAt": "2026-10-01",
+ "legacyId": "S8"
+}

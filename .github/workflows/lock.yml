@@ -1,0 +1,38 @@
+name: 锁定预测
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: lock-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  lock:
+    if: startsWith(github.event.issue.title, '预测 ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: 公证
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/lock.mjs
+      - name: 提交
+        run: |
+          git config user.name "fund-diary-notary"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "锁定 $(echo '${{ github.event.issue.title }}' | tr -d '\n') #${{ github.event.issue.number }}"
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push && break; sleep $((i*3)); done
