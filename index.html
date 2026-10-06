@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <style>
-/* 手机优先的实验记录本：预测（填写、锁定、详情）/ 成绩（是否胜过基准）/ 实验室（信号与版本）。A股惯例红涨绿跌 */
+/* 手机优先的预测实验记录本：预测（独立判断 → 看草稿定稿 → Issue 公证）/ 成绩（是否胜过基准）/ 实验室（信号与模型版本）。A股惯例红涨绿跌 */
 :root{
   --bg:#F3F5F9; --card:#FFFFFF; --ink:#1A2233; --sub:#5A6478; --line:#E6EAF0; --soft:#EEF1F6;
   --accent:#2F55D4; --accent-soft:#E8EEFC;
@@ -32,32 +32,34 @@
 html{padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
 button,input,textarea,select{font:inherit;color:inherit}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .app{max-width:560px;margin:0 auto;padding:14px 14px calc(84px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .sub{color:var(--sub)} .small{font-size:12.5px} .tiny{font-size:11.5px}
 .up{color:var(--up)} .down{color:var(--down)} .mid{color:var(--mid)}
 h1{font-family:var(--f-head);font-size:22px;margin:0;line-height:1.25;white-space:nowrap}
-.datenav h1{font-family:var(--f-num);font-size:19px}
 h2{font-size:15px;margin:0;font-weight:600}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-.datenav{display:flex;align-items:center;gap:4px}
-.icon{border:none;background:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;color:var(--sub)}
-.icon:hover{background:var(--soft)} .icon svg{width:20px;height:20px}
+h3{font-size:14px;margin:0;font-weight:600}
+p{margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.datenav{display:flex;align-items:center;gap:2px;min-width:0}
+.datenav h1{font-family:var(--f-num);font-size:19px}
+.icon{border:none;background:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;cursor:pointer;color:var(--sub);flex:none}
+.icon:hover{background:var(--soft)} .icon:disabled{opacity:.3;cursor:default} .icon svg{width:20px;height:20px}
 .pill{font-size:12px;padding:3px 10px;border-radius:999px;white-space:nowrap}
-.p-lock{background:var(--accent-soft);color:var(--accent)} .p-open{background:var(--warn-soft);color:var(--warn)} .p-miss{background:var(--soft);color:var(--sub)}
+.p-lock{background:var(--accent-soft);color:var(--accent)} .p-open{background:var(--warn-soft);color:var(--warn)} .p-miss{background:var(--soft);color:var(--sub)} .p-bad{background:var(--bad-soft);color:var(--bad)}
 .card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .big{font-family:var(--f-num);font-size:36px;font-weight:600;line-height:1.05}
 .list{background:var(--card);border-radius:14px;overflow:hidden}
 .row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:13px 16px;border:none;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;cursor:pointer;min-height:52px}
 .row:last-child{border-bottom:none}
 .row .nm{font-size:15.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .v{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right;min-width:72px}
-.row .a{font-family:var(--f-num);font-size:13px;text-align:right;min-width:64px}
+.row .v{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right;min-width:76px}
+.row .a{font-family:var(--f-num);font-size:13px;text-align:right;min-width:70px}
 .chev{color:var(--sub)}
-.btn{border:none;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;min-height:44px}
+.btn{border:none;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;min-height:46px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .btn-p{background:var(--accent);color:#fff} .btn-g{background:var(--soft);color:var(--ink)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .hit{color:var(--accent);font-weight:700} .miss{color:var(--sub);font-weight:700}
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl th{font-weight:500;color:var(--sub);font-size:12px;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -68,11 +70,14 @@ h2{font-size:15px;margin:0;font-weight:600}
 .tbl tr.me td{font-weight:600}
 .scroll{overflow-x:auto}
 .tag{font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
-.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-bad{background:var(--bad-soft);color:var(--bad)} .t-n{background:var(--soft);color:var(--sub)}
+.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-bad{background:var(--bad-soft);color:var(--bad)} .t-n{background:var(--soft);color:var(--sub)} .t-ac{background:var(--accent-soft);color:var(--accent)}
 ol.pts,ul.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.6}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px;margin:0}
 .kv dt{color:var(--sub)} .kv dd{margin:0}
-.verdict{font-size:18px;font-weight:700;line-height:1.4}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-radius:12px;overflow:hidden}
+.kpi{background:var(--card);padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi b{font-family:var(--f-num);font-size:19px;font-weight:600}
+.verdict{font-size:18px;font-weight:700;line-height:1.45}
 .empty{color:var(--sub);text-align:center;padding:22px 12px;background:var(--card);border-radius:14px;font-size:14px;line-height:1.6}
 .tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
 .tabbar div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -81,25 +86,32 @@ ol.pts,ul.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:
 .tabbar svg{width:22px;height:22px}
 .sheet{position:fixed;inset:0;background:var(--bg);z-index:10;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sheet .app{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
-.sheethead{position:sticky;top:0;background:var(--bg);display:flex;align-items:center;gap:6px;padding:8px 0;z-index:2}
+.sheethead{position:sticky;top:0;background:var(--bg);display:flex;align-items:center;gap:6px;padding:6px 0;z-index:2}
 .sheethead h2{flex:1;font-size:16px}
-.fund-in{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
-.fund-in:first-child{border-top:none;padding-top:0}
-.vin{display:flex;align-items:center;gap:8px}
-.vin input{width:110px;font-family:var(--f-num);font-size:18px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);text-align:right}
-textarea,input[type=text],input[type=password]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:14px}
-textarea{min-height:40px;resize:vertical}
+.steps{display:flex;gap:6px}
+.steps span{flex:1;height:4px;border-radius:2px;background:var(--track)}
+.steps span.on{background:var(--accent)}
+.vin{display:flex;align-items:center;gap:6px}
+.vin input{width:96px;font-family:var(--f-num);font-size:18px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);text-align:right}
+.vin input:disabled{background:var(--soft)}
+.pm{border:1px solid var(--line);background:var(--card);border-radius:10px;width:44px;height:44px;font-size:18px;cursor:pointer;flex:none}
+textarea,input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:14px}
+select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:13.5px;min-height:40px}
+textarea{min-height:44px;resize:vertical}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:12.5px;cursor:pointer;min-height:32px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:12.5px;cursor:pointer;min-height:34px}
 .chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .reason{display:flex;flex-direction:column;gap:6px;background:var(--soft);border-radius:10px;padding:8px}
 .rhead{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.link{border:none;background:none;color:var(--accent);cursor:pointer;padding:4px 0;font-size:13px}
+.link{border:none;background:none;color:var(--accent);cursor:pointer;padding:6px 0;font-size:13.5px;text-align:left}
+.cmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.cmp div{background:var(--soft);border-radius:10px;padding:6px 8px;display:flex;flex-direction:column}
+.cmp b{font-family:var(--f-num);font-size:15px}
+.sticky{position:sticky;top:52px;z-index:1}
 .foot{font-size:11.5px;color:var(--sub);line-height:1.6;padding:0 4px}
-.bar{position:relative;height:10px;background:var(--track);border-radius:5px}
-.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--accent)}
-.bar b{position:absolute;top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink)}
+.note{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.6}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;max-width:90vw}
+details>summary{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -119,308 +131,371 @@ textarea{min-height:40px;resize:vertical}
 
 <script>
 (function(){
-  const REPO_OWNER="zxy8125ss", REPO_NAME="Fund-diary";
+  const OWNER="zxy8125ss", REPO="Fund-diary", API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+  try{localStorage.removeItem("fd-token")}catch(e){}   // v2.0 存过写权限令牌；v2.1 改为 Issue 提交，不再保存
   const $=id=>document.getElementById(id);
-  const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const fmt=v=>v==null||isNaN(v)?"–":(v>0?"+":"")+Number(v).toFixed(2)+"%";
+  const f2=v=>v==null||isNaN(v)?"–":Number(v).toFixed(2);
+  const pp=v=>v==null||isNaN(v)?"–":Number(v).toFixed(1)+"%";
   const cls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
   const WD="日一二三四五六";
   const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return String(t.getUTCMonth()+1).padStart(2,"0")+"."+String(t.getUTCDate()).padStart(2,"0")+" 周"+WD[t.getUTCDay()]};
   const hm=iso=>iso?String(iso).slice(11,16):"";
-  const NAMES={user:"我的预测",ai:"AI 草稿",model:"规则模型",bench_us:"跟随外盘",bench_prev:"昨日延续",bench_zero:"永远 0%"};
-  const BATCH={morning:"早间",evening:"晚间",early:"提前"};
-  const VERDICT={"有效依据":"t-ok","今天未触发":"t-warn","历史不成立":"t-bad","预测前已成立":"t-ok","事后信息":"t-bad","疑似事后信息":"t-bad","数据不在快照中":"t-n","核心变量":"t-ok","对结论影响小":"t-warn","装饰":"t-warn","无法判断":"t-n"};
-  const STATUS_TAG={"有效":"t-ok","待验证":"t-warn","实验中":"t-n","失效":"t-bad","淘汰":"t-bad"};
   const bjNow=()=>new Date(Date.now()+8*3600e3);
+  const nowIso=()=>bjNow().toISOString().slice(0,19)+"+08:00";
   const todayBJ=()=>bjNow().toISOString().slice(0,10);
-  let G=null, cur=null, dayCache={};
-  let tok=null; try{tok=localStorage.getItem("fd-token")}catch(e){}
+  const NAMES={user:"我",bench_external_raw:"原始外盘",bench_external_beta:"外盘 Beta",bench_prev:"昨日延续",bench_zero:"永远 0%",model:"规则模型",ai:"AI"};
+  const LONG={bench_external_raw:"原始外盘跟随（预测＝隔夜外盘涨跌）",bench_external_beta:"外盘 Beta（预测＝β×隔夜外盘，β 在研究集拟合）",bench_prev:"昨日延续（预测＝上一个净值日涨跌）",bench_zero:"永远 0%（只比 MAE）"};
+  const VERDICT={"有效依据":"t-ok","今天未触发":"t-warn","历史不成立":"t-bad","预测前已成立":"t-ok","事后信息":"t-bad","疑似事后信息":"t-bad","数据不在快照中":"t-n","核心变量":"t-ok","非核心变量":"t-warn","装饰":"t-warn","无法判断":"t-n"};
+  const STATUS_TAG={"有效":"t-ok","待验证":"t-warn","实验中":"t-n","失效":"t-bad","淘汰":"t-bad"};
+  const USTATUS={ok:"已锁定",late:"迟交（不计分）",unverified:"未经公证（不计分）",modified_scored_first:"文件被改动（按首次内容计分）",absent:"缺席"};
+  let G=null, cur=null, cache={};
 
-  async function j(p){try{const r=await fetch(p+(p.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"});if(!r.ok)return null;return await r.json()}catch(e){return null}}
-  function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+  async function j(p){try{const r=await fetch(p+(p.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"});return r.ok?await r.json():null}catch(e){return null}}
+  async function apiRaw(path){try{const r=await fetch(`${API}/contents/${path}?t=${Date.now()}`,{headers:{accept:"application/vnd.github.raw+json"},cache:"no-store"});return r.ok?await r.json():null}catch(e){return null}}
+  function toast(t){const d=document.createElement("div");d.className="toast";d.setAttribute("role","status");d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
+  const store={get(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+  const sig=id=>G.signals.find(s=>s.id===id);
+  const sigHist=s=>{if(!s||!s.stats)return "暂无历史样本";const R=s.stats.research||{};return R.days?`研究集 ${pp(R.rate)}（${R.days} 天，基准 ${pp(R.base)}，95% 区间 ${f2(R.lo)}~${f2(R.hi)}）`:"暂无历史样本"};
+  const visibleTrig=(trig,code)=>((trig&&trig.funds[code])||[]).filter(t=>{const s=sig(t.signal);return !(s&&s.sourceType==="外部观点"&&t.status!=="有效")});
+  const deadlineOf=T=>T+"T"+G.config.deadline+":00+08:00";
+  const weights=()=>Object.fromEntries(G.funds.map(f=>[f.code,Math.max(0,((G.holdings[f.code]||f.holding||{}).amount)||0)]));
+  function portfolio(vals){const w=weights();let s=0,t=0;for(const f of G.funds){const v=vals[f.code];if(v==null)continue;s+=w[f.code]*v;t+=w[f.code]}if(t)return Math.round(s/t*100)/100;const xs=G.funds.map(f=>vals[f.code]).filter(v=>v!=null);return xs.length?Math.round(xs.reduce((a,b)=>a+b,0)/xs.length*100)/100:null}
 
-  // ---------- 数据 ----------
+  // ---------- 某一天的数据 ----------
   async function loadDay(T){
-    if(dayCache[T])return dayCache[T];
+    if(cache[T])return cache[T];
     const info=G.index.days[T]||{batches:[]};
-    const b=["morning","evening","early"].find(x=>info.batches.includes(x));
-    const d={T,batch:b,info};
-    const tasks={snap:b&&j(`data/snapshots/${T}/${b}.json`),trig:b&&j(`data/triggers/${T}/${b}.json`),ai:b&&j(`data/predictions/${T}/ai-${b}.json`),model:b&&j(`data/predictions/${T}/model-${b}.json`),bench_us:b&&j(`data/predictions/${T}/bench_us-${b}.json`),bench_prev:b&&j(`data/predictions/${T}/bench_prev-${b}.json`),user:j(`data/predictions/${T}/user.json`),result:info.result?j(`data/results/${T}.json`):null,review:info.review?j(`data/reviews/${T}.json`):null};
-    for(const[k,p]of Object.entries(tasks))d[k]=p?await p:null;
-    if(!d.user&&localUser[T])d.user=localUser[T];
-    return dayCache[T]=d;
+    const d={T,info,batches:[]};
+    const snaps=await Promise.all((info.batches||[]).map(b=>j(`data/snapshots/${T}/${b}.json`).then(s=>s&&{batch:b,snap:s})));
+    d.batches=snaps.filter(Boolean).sort((a,b)=>Date.parse(a.snap.asOf)-Date.parse(b.snap.asOf));
+    [d.user,d.lock,d.result,d.review]=await Promise.all([j(`data/predictions/${T}/user.json`),j(`data/locks/${T}/user.json`),info.result?j(`data/results/${T}.json`):null,info.review?j(`data/reviews/${T}.json`):null]);
+    const pend=store.get("fd-pending-"+T);
+    if(!d.lock&&pend){const L=await apiRaw(`data/locks/${T}/user.json`);if(L){d.lock=L;d.user=await apiRaw(`data/predictions/${T}/user.json`);store.del("fd-pending-"+T)}}
+    const limit=d.lock?d.lock.serverLockedAt:null;
+    d.seen=limit?d.batches.filter(b=>Date.parse(b.snap.asOf)<=Date.parse(limit)).at(-1)||null:d.batches.at(-1)||null;
+    d.snap=d.seen&&d.seen.snap;
+    d.trig=d.seen?await j(`data/triggers/${T}/${d.seen.batch}.json`):null;
+    return cache[T]=d;
   }
-  const localUser={};
-  function sig(id){return G.signals.find(s=>s.id===id)}
-  function visibleTrig(d,code){return (d.trig&&d.trig.funds[code]||[]).filter(t=>{const s=sig(t.signal);return !(s&&s.sourceType==="外部观点"&&t.status!=="有效")})}
-  function sigRate(s){if(!s||!s.research)return "";const n=(s.research.n||0)+(s.holdout?s.holdout.n:0),h=(s.research.hit||0)+(s.holdout?s.holdout.hit:0);return n?`历史 ${(h/n*100).toFixed(1)}%（${n} 次，基准 ${s.research.base??"–"}%）`:"暂无历史样本"}
-  function checkReason(d,code,r,lockIso){
-    const sv=(r.signals||[]).map(id=>{const t=(d.trig&&d.trig.funds[code]||[]).find(x=>x.signal===id);return {id,verdict:!t?"今天未触发":t.status!=="有效"?"历史不成立":"有效依据"}});
-    const dv=(r.dataRefs||[]).map(id=>{const it=d.snap&&d.snap.items.find(i=>i.id===id);return {id,verdict:!it?"数据不在快照中":Date.parse(it.cutoff)<=Date.parse(lockIso)?"预测前已成立":"事后信息"}});
-    return {signals:sv,data:dv};
+  async function sysPreds(d){   // 对照组：只用你锁定时已经生成的那个批次
+    if(d.sys)return d.sys;
+    const b=d.result&&d.result.meta&&d.result.meta.ai&&d.result.meta.ai.batch||(d.seen&&d.seen.batch);
+    d.sys={};
+    if(b){const ks=["ai","model","bench_external_raw","bench_external_beta","bench_prev","bench_zero"];const xs=await Promise.all(ks.map(k=>j(`data/predictions/${d.T}/${k}-${b}.json`)));ks.forEach((k,i)=>d.sys[k]=xs[i])}
+    return d.sys;
   }
-  function deadlineOf(T){return T+"T"+G.config.deadline+":00+08:00"}
-  function lockState(d){
-    if(d.user)return {k:"lock",text:"已锁定 🔒 "+hm(d.user.lockedAt)};
-    if(Date.now()>Date.parse(deadlineOf(d.T)))return {k:"miss",text:"已截止 · 未提交"};
+  function state(d){
+    if(d.lock)return d.lock.onTime?{k:"lock",text:"已锁定 🔒 "+hm(d.lock.serverLockedAt)}:{k:"bad",text:"迟交 "+hm(d.lock.serverLockedAt)};
+    if(store.get("fd-pending-"+d.T))return {k:"open",text:"已提交 · 等待公证"};
+    if(d.user)return {k:"bad",text:"未经公证"};
+    if(Date.now()>Date.parse(deadlineOf(d.T)))return {k:"miss",text:"已截止 · 缺席"};
     return {k:"open",text:"待填写 · "+G.config.deadline+" 截止"};
   }
 
   // ---------- 预测 ----------
   function pickDay(){
-    const days=Object.keys(G.index.days).sort();
-    const t=todayBJ();
+    const days=Object.keys(G.index.days).sort(), t=todayBJ();
     return days.find(x=>x>=t&&!G.index.days[x].result)||days.filter(x=>!G.index.days[x].result).at(-1)||days.at(-1)||null;
   }
+  let pollTimer=null;
   async function renderPred(){
     const days=Object.keys(G.index.days).sort();
     if(!cur)cur=pickDay();
-    if(!cur){$("v-pred").innerHTML='<div class="empty">还没有预测日。下一个交易日前一晚 22:13 系统会准备好数据。</div>';return}
-    const d=await loadDay(cur), ls=lockState(d), i=days.indexOf(cur);
-    let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+ls.k+'">'+esc(ls.text)+'</span></div>';
-    const u=d.user, res=d.result;
-    const ov=u?u.overall&&u.overall.value:null;
-    const act=res?avgActual(res):null;
-    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>科技仓</h2>'+(res?'<span class="sub small">实际 <b class="num '+cls(act)+'">'+fmt(act)+'</b></span>':'')+'</div>';
-    if(u){h+='<span class="big '+cls(ov)+'">'+fmt(ov)+'</span>'+(u.overall&&u.overall.conclusion?'<span style="font-size:14px">'+esc(u.overall.conclusion)+'</span>':'')}
-    else if(ls.k==="open"){h+='<span class="sub" style="font-size:14px;line-height:1.6">今天的预测还没填。参考数据、今天触发的规律和 AI 草稿后，给每只基金一个数值，'+esc(G.config.deadline)+' 前提交，提交即锁定。</span><button class="btn btn-p" id="go-form">填写今日预测</button>'}
-    else h+='<span class="sub" style="font-size:14px">这一天没有提交预测，只统计基准和 AI 草稿的成绩。</span>';
-    h+='</div>';
-    h+='<div class="list">';
+    if(!cur){$("v-pred").innerHTML='<div class="empty">还没有预测日。下一个交易日前一晚 22:13，系统会准备好当天的数据。</div>'+holdingsCard();return}
+    const d=await loadDay(cur), st=state(d), i=days.indexOf(cur), res=d.result;
+    let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+st.k+'">'+esc(st.text)+'</span></div>';
+    const u=d.lock?d.user:null;
+    const actAll=res?portfolio(res.actual):null;
+    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>科技仓</h2>'+(res?'<span class="sub small">实际 <b class="num '+cls(actAll)+'">'+fmt(actAll)+'</b></span>':'')+'</div>';
+    if(u){h+='<span class="big '+cls(u.overall&&u.overall.value)+'">'+fmt(u.overall&&u.overall.value)+'</span><span class="sub tiny">由 5 只基金预测按持仓金额加权自动计算</span>'}
+    else if(st.k==="open"&&store.get("fd-pending-"+d.T))h+='<span style="font-size:14px;line-height:1.6">已经在 GitHub 提交，系统正在公证（通常 1 分钟内）。锁定时间以 GitHub 服务器收到的时间为准。</span><button class="btn btn-g" id="reopen">没提交成功？重新打开提交页</button>';
+    else if(st.k==="open")h+='<span class="sub" style="font-size:14px;line-height:1.6">'+(d.seen?'今天的数据已经准备好。先独立判断，再看 AI 草稿定稿，'+esc(G.config.deadline)+' 前提交。':'数据还在准备中（前一晚 22:13、当天 08:07 各生成一次）。')+'</span>'+(d.seen?'<button class="btn btn-p" id="go-form">'+(store.get("fd-draft-"+d.T)?'继续填写':'开始预测')+'</button>':'');
+    else if(d.user&&!d.lock)h+='<span class="sub" style="font-size:14px">这份预测没有经过公证（可能是旧版 app 提交的），不计入成绩。</span>';
+    else h+='<span class="sub" style="font-size:14px">这一天没有提交预测，只统计基准、规则模型和 AI 的成绩。</span>';
+    h+='</div><div class="list">';
     for(const f of G.funds){
       const v=u&&u.funds[f.code]?u.funds[f.code].value:null, a=res?res.actual[f.code]:null, sc=res&&res.scores.user&&res.scores.user[f.code];
-      const ref=!u&&d.ai&&d.ai.funds[f.code]?d.ai.funds[f.code].value:null;
-      h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span>'+
-        (u?'<span class="v '+cls(v)+'">'+fmt(v)+'</span>':'<span class="v sub" style="font-size:14px;font-weight:500">'+(ref!=null?'草稿 '+fmt(ref):'–')+'</span>')+
-        '<span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):''):'<span class="chev">›</span>')+'</span></button>';
+      h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span><span class="v '+cls(v)+'">'+fmt(v)+'</span><span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit" aria-label="方向对">✓</span>':'<span class="miss" aria-label="方向错">✗</span>'):''):'<span class="chev" aria-hidden="true">›</span>')+'</span></button>';
     }
-    h+='</div>';
-    if(!tok&&ls.k==="open")h+='<p class="foot">第一次填写前，需要在「设置」里粘贴 GitHub 令牌，用来把预测锁定到仓库里。</p>';
-    h+='<div style="display:flex;justify-content:flex-end"><button class="link" id="go-settings">设置</button></div>';
+    h+='</div>'+holdingsCard();
     $("v-pred").innerHTML=h;
     $("v-pred").querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const k=days.indexOf(cur)+(+b.dataset.nav);if(days[k]){cur=days[k];renderPred()}}));
     $("v-pred").querySelectorAll("[data-fund]").forEach(b=>b.addEventListener("click",()=>openFund(d,b.dataset.fund)));
     const gf=$("go-form");if(gf)gf.addEventListener("click",()=>openForm(d));
-    $("go-settings").addEventListener("click",openSettings);
+    const ro=$("reopen");if(ro)ro.addEventListener("click",()=>{store.del("fd-pending-"+d.T);openForm(d,3)});
+    clearTimeout(pollTimer);
+    if(store.get("fd-pending-"+d.T)&&!d.lock)pollTimer=setTimeout(async()=>{cache[d.T]=null;await renderPred();const x=cache[d.T];if(x&&x.lock)toast(x.lock.onTime?"🔒 已锁定 "+hm(x.lock.serverLockedAt):"已记录，但超过截止时间")},15000);
   }
-  function avgActual(res){const xs=G.funds.map(f=>res.actual[f.code]).filter(v=>v!=null);return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null}
+  function holdingsCard(){
+    const w=weights(),t=Object.values(w).reduce((a,b)=>a+b,0),pn=G.funds.reduce((s,f)=>s+(+((G.holdings[f.code]||f.holding||{}).pnl)||0),0);
+    return '<details class="card"><summary style="display:flex;justify-content:space-between;font-weight:600;font-size:14px"><span>持仓 ¥'+t.toFixed(2)+'</span><span class="num '+cls(pn)+'">'+pn.toFixed(2)+'</span></summary><table class="tbl"><thead><tr><th>基金</th><th>金额</th><th>权重</th><th>持有收益</th></tr></thead><tbody>'+
+      G.funds.map(f=>{const x=G.holdings[f.code]||f.holding||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+Number(x.amount||0).toFixed(2)+'</td><td>'+(t?(w[f.code]/t*100).toFixed(0)+'%':'–')+'</td><td class="'+cls(x.pnl)+'">'+Number(x.pnl||0).toFixed(2)+'</td></tr>'}).join('')+
+      '</tbody></table><span class="sub tiny">权重用于自动计算科技仓预测。金额按每日净值滚动；加减仓需要在仓库 data/state/holdings.json 里修改。</span></details>';
+  }
 
   // ---------- 单只基金详情 ----------
   async function openFund(d,code){
-    const f=G.funds.find(x=>x.code===code), u=d.user&&d.user.funds[code], res=d.result, sc=res&&res.scores.user&&res.scores.user[code];
-    const checks=(res&&res.userChecks&&res.userChecks[code])||(u&&d.user?(u.reasons||[]).map(r=>checkReason(d,code,r,d.user.lockedAt)):[]);
+    const f=G.funds.find(x=>x.code===code), u=d.lock?d.user:null, uf=u&&u.funds[code], res=d.result, sc=res&&res.scores.user&&res.scores.user[code];
+    const checks=(res&&res.userChecks&&res.userChecks[code])||(u&&u.checks&&u.checks[code])||[];
+    const revealed=!!d.lock||Date.now()>Date.parse(deadlineOf(d.T));
     let h=sheetHead(f.short);
-    h+='<div class="card"><dl class="kv"><dt>预测值</dt><dd class="num '+cls(u&&u.value)+'" style="font-size:20px;font-weight:600">'+fmt(u&&u.value)+'</dd>'+
-      '<dt>实际值</dt><dd class="num '+cls(res&&res.actual[code])+'">'+(res?fmt(res.actual[code]):'收盘后公布')+'</dd>'+
-      (sc?'<dt>结果</dt><dd>'+(sc.hit?'<span class="hit">方向对 ✓</span>':'<span class="miss">方向错 ✗</span>')+'　误差 <span class="num">'+sc.absErr.toFixed(2)+'</span></dd>':'')+
-      (d.user?'<dt>锁定</dt><dd class="num">'+esc(String(d.user.lockedAt).replace("T"," ").slice(0,16))+'</dd>':'')+'</dl>'+
-      (u&&u.conclusion?'<div style="font-weight:600">结论：'+esc(u.conclusion)+'</div>':'')+'</div>';
-    if(u&&(u.reasons||[]).length){
-      h+='<div class="card"><h2>预测理由</h2><ol class="pts">'+u.reasons.map((r,i)=>{const c=checks[i]||{signals:[],data:[]};
-        return '<li>'+esc(r.text)+'<div class="chips" style="margin-top:4px">'+c.signals.map(x=>'<span class="tag '+(VERDICT[x.verdict]||'t-n')+'">'+esc(x.id+" "+x.verdict)+'</span>').join('')+c.data.map(x=>'<span class="tag '+(VERDICT[x.verdict]||'t-n')+'">'+esc(dataName(d,x.id)+" · "+x.verdict)+'</span>').join('')+'</div></li>'}).join('')+'</ol></div>';
+    h+='<div class="card"><dl class="kv"><dt>预测值</dt><dd class="num '+cls(uf&&uf.value)+'" style="font-size:20px;font-weight:600">'+fmt(uf&&uf.value)+'</dd>'+
+      '<dt>实际值</dt><dd class="num '+cls(res&&res.actual[code])+'">'+(res&&res.actual[code]!=null?fmt(res.actual[code]):(f.qdii?'QDII 净值次日晚公布':'收盘后公布'))+'</dd>'+
+      (sc?'<dt>结果</dt><dd>'+(sc.hit?'<span class="hit">方向对 ✓</span>':'<span class="miss">方向错 ✗</span>')+'　误差 <span class="num">'+f2(sc.absErr)+'</span></dd>':'')+
+      (u&&u.initial&&u.initial[code]!=null?'<dt>看草稿前</dt><dd class="num">'+fmt(u.initial[code])+'</dd>':'')+'</dl>'+
+      (uf&&uf.conclusion?'<div style="font-weight:600">结论：'+esc(uf.conclusion)+'</div>':'')+'</div>';
+    if(uf&&(uf.reasons||[]).length){
+      h+='<div class="card"><h2>预测理由</h2><ol class="pts">'+uf.reasons.map((r,i)=>{const c=checks[i]||{signals:[],data:[]};
+        return '<li>'+esc(r.text)+'<div class="chips" style="margin-top:4px">'+c.signals.map(x=>'<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.id+" "+x.verdict)+'</span>').join('')+c.data.map(x=>'<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(dataName(d,x.id)+" · "+x.verdict)+'</span>').join('')+(!c.signals.length&&!c.data.length?'<span class="tag t-n">主观判断</span>':'')+'</div></li>'}).join('')+'</ol></div>';
     }
-    // 市场依据
-    const items=d.snap?d.snap.items.filter(i=>!i.hidden&&i.kind==="行情"&&(!i.key.includes(".")||i.key.startsWith(code))):[];
-    if(items.length)h+='<div class="card"><h2>市场依据 <span class="sub small" style="font-weight:400">'+esc(BATCH[d.batch]||"")+'快照，均为预测前已可获得</span></h2><table class="tbl"><tbody>'+items.map(i=>'<tr><td class="t">'+esc(i.name)+'</td><td class="'+cls(i.value)+'">'+fmt(i.value)+'</td><td class="sub tiny" style="white-space:nowrap">'+esc(String(i.dataTime).slice(5,10))+'</td></tr>').join('')+'</tbody></table></div>';
-    // 触发的历史规律
-    const trig=visibleTrig(d,code);
-    h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigRate(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table><span class="sub tiny">只有「有效」的规律可以作为预测依据。</span>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
-    // 对照
-    const cmp=[["ai",d.ai],["model",d.model],["bench_us",d.bench_us],["bench_prev",d.bench_prev]];
-    h+='<div class="card"><h2>对照组</h2><table class="tbl"><tbody>'+cmp.map(([k,p])=>{const x=p&&p.funds[code];const s2=res&&res.scores[k]&&res.scores[k][code];return '<tr><td class="t">'+NAMES[k]+'</td><td class="'+cls(x&&x.value)+'">'+fmt(x&&x.value)+'</td><td>'+(s2?(s2.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+' <span class="sub">'+s2.absErr.toFixed(2)+'</span>':'')+'</td></tr>'}).join('')+'</tbody></table>'+
-      (d.ai&&d.ai.funds[code]&&d.ai.funds[code].reasons.length?'<details><summary class="small sub">AI 草稿的理由</summary><ol class="pts" style="margin-top:6px;font-size:13px">'+d.ai.funds[code].reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol></details>':'')+'</div>';
-    // 复盘
+    const items=d.snap?d.snap.items.filter(it=>!it.hidden&&it.kind==="行情"&&(!String(it.key).includes(".")||String(it.key).startsWith(code))):[];
+    if(items.length)h+='<div class="card"><h2>市场依据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'快照（'+esc(hm(d.snap.asOf))+'），只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+items.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td><td class="sub tiny" style="white-space:nowrap">'+esc(String(it.dataTime).slice(5,10))+'</td></tr>').join('')+'</tbody></table></div>';
+    const trig=visibleTrig(d.trig,code);
+    h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigHist(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table><span class="sub tiny">「历史有效」且「今天触发」才算有效依据。</span>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
+    if(revealed){
+      const S=await sysPreds(d);
+      const ks=["ai","model","bench_external_raw","bench_external_beta","bench_prev","bench_zero"];
+      h+='<div class="card"><h2>对照组</h2><span class="sub tiny">都是你锁定之前生成的版本</span><table class="tbl"><tbody>'+ks.map(k=>{const x=S[k]&&S[k].funds[code];const s2=res&&res.scores[k]&&res.scores[k][code];return '<tr><td class="t">'+NAMES[k]+'</td><td class="'+cls(x&&x.value)+'">'+fmt(x&&x.value)+'</td><td>'+(s2?(k==="bench_zero"?'':(s2.hit?'<span class="hit">✓</span> ':'<span class="miss">✗</span> '))+'<span class="sub">'+f2(s2.absErr)+'</span>':'')+'</td></tr>'}).join('')+'</tbody></table>'+
+        (S.ai&&S.ai.funds[code]&&(S.ai.funds[code].reasons||[]).length?'<details><summary class="small sub">AI 草稿的理由</summary><ol class="pts" style="margin-top:6px;font-size:13px">'+S.ai.funds[code].reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol></details>':'')+'</div>';
+    }
     if(d.review){
       const rv=d.review, hs=(rv.hindsight||[]).filter(x=>x.fund===code), ab=(rv.ablation||[]).filter(x=>x.fund===code);
-      h+='<div class="card"><h2>复盘'+(rv.subject==="ai"?' <span class="sub small" style="font-weight:400">（当天未提交，复盘的是 AI 草稿）</span>':'')+'</h2>'+
+      h+='<div class="card"><h2>复盘'+(rv.subject==="ai"?' <span class="sub small" style="font-weight:400">（当天没有你的预测，复盘的是 AI）</span>':'')+'</h2>'+
         list("判断正确",rv.right)+list("判断错误",rv.wrong)+
-        (rv.bestSignal&&rv.bestSignal.why?'<div class="small"><b>贡献最大：</b>'+esc((rv.bestSignal.id?rv.bestSignal.id+" ":"")+rv.bestSignal.why)+'</div>':'')+
-        (rv.misleading&&rv.misleading.why?'<div class="small"><b>误导判断：</b>'+esc((rv.misleading.id?rv.misleading.id+" ":"")+rv.misleading.why)+'</div>':'')+
+        (rv.bestSignal&&rv.bestSignal.why?'<div class="small"><b>最有价值的信号：</b>'+esc((rv.bestSignal.id?rv.bestSignal.id+" ":"")+rv.bestSignal.why)+'</div>':'')+
+        (rv.misleading&&rv.misleading.why?'<div class="small"><b>最误导的信号：</b>'+esc((rv.misleading.id?rv.misleading.id+" ":"")+rv.misleading.why)+'</div>':'')+
         list("下次怎么改",rv.nextTime)+
-        (hs.length?'<div class="small"><b>我是不是在找事后理由？</b>'+hs.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.evidence||x.why||"")+'</span></div>').join('')+'</div>':'')+
-        (ab.length?'<div class="small"><b>删掉这条理由，结论还一样吗？</b>'+ab.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.detail||x.why||"")+'</span></div>').join('')+'</div>':'')+'</div>';
+        (hs.length?'<div class="small"><b>我是不是在找事后理由？</b>'+hs.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.evidence||x.why||"")+(x.by==="ai"?'（AI 辅助判断）':'')+'</span></div>').join('')+'</div>':'')+
+        (ab.length?'<div class="small"><b>删掉这条理由，结论还一样吗？</b>'+ab.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.detail||x.why||"")+(x.by==="ai"?'（AI 辅助判断）':'')+'</span></div>').join('')+'</div>':'')+'</div>';
     }
-    // 修正意见
-    if(d.user){
-      const am=await amendments(d.T);const mine=am.filter(a=>!a.fund||a.fund===code);
-      h+='<div class="card"><h2>修正意见</h2><span class="sub tiny">原始预测永久保留；修正意见只用于复盘，不参与评分。</span>'+
-        (mine.length?'<ul class="pts">'+mine.map(a=>'<li>'+esc(a.text)+' <span class="sub tiny">'+esc(String(a.createdAt).replace("T"," ").slice(5,16))+'</span></li>').join('')+'</ul>':'')+
-        '<label class="small" for="am-text">追加一条</label><textarea id="am-text" placeholder="例如：开盘后发现……"></textarea><button class="btn btn-g" id="am-save">追加修正意见</button></div>';
+    if(d.lock){
+      h+='<div class="card"><h2>修正意见</h2><span class="sub tiny" style="line-height:1.6">原始预测永久保留；修正意见只用于复盘，不参与评分。在锁定那条 Issue 下评论即可，开头写「基金：'+code+'」会归到这只基金。</span><div id="am-list" class="small sub">读取中…</div><a class="btn btn-g" target="_blank" rel="noopener" href="https://github.com/'+OWNER+'/'+REPO+'/issues/'+d.lock.issueNumber+'">去 Issue 写修正意见</a></div>';
+      h+='<div class="card"><h2>锁定凭证</h2><dl class="kv small"><dt>服务器时间</dt><dd class="num">'+esc(String(d.lock.serverLockedAt).replace("T"," ").slice(0,19))+'</dd><dt>截止时间</dt><dd class="num">'+esc(String(d.lock.deadline).replace("T"," ").slice(0,16))+'</dd><dt>依据快照</dt><dd class="num">'+esc(d.lock.snapshotId||"–")+'</dd><dt>预测哈希</dt><dd class="num" style="word-break:break-all">'+esc(d.lock.predictionHash)+'</dd><dt>Issue</dt><dd><a href="https://github.com/'+OWNER+'/'+REPO+'/issues/'+d.lock.issueNumber+'" target="_blank" rel="noopener">#'+d.lock.issueNumber+'</a></dd></dl></div>';
     }
     showSheet(h);
-    const sv=$("am-save");if(sv)sv.addEventListener("click",async()=>{const t=$("am-text").value.trim();if(!t)return;if(!tok){openSettings();return}
-      sv.disabled=true;const ok=await putFile(`data/amendments/${d.T}/${Date.now()}.json`,{date:d.T,fund:code,createdAt:bjNow().toISOString().slice(0,19)+"+08:00",text:t,affectsScore:false},`修正意见 ${d.T} ${f.short}`);
-      sv.disabled=false;if(ok){toast("已追加");amCache[d.T]=null;openFund(d,code)}});
+    if(d.lock)amendments(d.T,code).then(xs=>{const el=$("am-list");if(el)el.innerHTML=xs.length?'<ul class="pts">'+xs.map(a=>'<li style="color:var(--ink)">'+esc(a.text)+' <span class="sub tiny">'+esc(String(a.createdAt).replace("T"," ").slice(5,16))+'</span></li>').join('')+'</ul>':'暂无'});
   }
   const list=(t,xs)=>xs&&xs.length?'<div class="small"><b>'+t+'</b><ul class="pts" style="font-size:13.5px">'+xs.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'';
-  function dataName(d,id){const it=d.snap&&d.snap.items.find(i=>i.id===id);return it?it.name:id}
-  const amCache={};
-  async function amendments(T){
-    if(amCache[T])return amCache[T];
-    try{const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/amendments/${T}`,{headers:tok?{authorization:"Bearer "+tok}:{}});if(!r.ok)return amCache[T]=[];
-      const files=await r.json();const out=[];for(const f of files.slice(-20)){const x=await j(`data/amendments/${T}/${f.name}`);if(x)out.push(x)}return amCache[T]=out}catch(e){return []}
+  function dataName(d,id){const it=d.snap&&d.snap.items.find(i=>i.id===id);return it?(it.kind==="消息"?"快讯 "+hm(it.dataTime):it.name):id}
+  async function amendments(T,code){
+    try{const r=await fetch(`${API}/contents/data/amendments/${T}`);if(!r.ok)return [];const fs=await r.json();
+      const xs=(await Promise.all(fs.slice(-20).map(x=>j(`data/amendments/${T}/${x.name}`)))).filter(Boolean);
+      return xs.filter(a=>!a.fund||a.fund===code).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)))}catch(e){return []}
   }
   function sheetHead(t){return '<div class="app"><div class="sheethead"><button class="icon" id="sheet-x" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h2>'+esc(t)+'</h2></div>'}
   function showSheet(h){const s=$("sheet");s.innerHTML=h+'</div>';s.hidden=false;s.scrollTop=0;$("sheet-x").addEventListener("click",closeSheet)}
-  function closeSheet(){$("sheet").hidden=true;$("sheet").innerHTML=""}
+  function closeSheet(){$("sheet").hidden=true;$("sheet").innerHTML="";if(cur)renderPred()}
 
-  // ---------- 填写预测 ----------
+  // ---------- 填写：第 1 步独立判断 → 第 2 步看草稿定稿 → 第 3 步检查并提交 ----------
   let draft=null;
-  function openForm(d){
-    try{draft=JSON.parse(localStorage.getItem("fd-draft-"+d.T)||"null")}catch(e){draft=null}
-    if(!draft)draft={overall:{value:"",conclusion:""},funds:Object.fromEntries(G.funds.map(f=>[f.code,{value:"",reasons:[{text:"",signals:[],dataRefs:[]}],conclusion:""}]))};
-    renderForm(d);
+  const blankFund=()=>({value:"",reasons:[{text:"",signals:[],dataRefs:[]}],conclusion:""});
+  async function openForm(d,step){
+    draft=store.get("fd-draft-"+d.T)||{date:d.T,step:1,initial:{},initialFrozenAt:null,aiSeen:null,funds:Object.fromEntries(G.funds.map(f=>[f.code,blankFund()]))};
+    if(step)draft.step=step;
+    renderStep(d);
   }
-  function saveDraft(d){try{localStorage.setItem("fd-draft-"+d.T,JSON.stringify(draft))}catch(e){}}
-  function renderForm(d){
-    let h=sheetHead("填写 "+d.T.slice(5)+" 预测");
-    h+='<div class="card"><span class="sub small" style="line-height:1.6">每只基金一个数值（单位 %，如 0.80 或 -1.20）。理由可以关联「今天触发的规律」和「快照里的数据」，提交时会自动检查依据。'+G.config.deadline+' 截止，提交后不能修改。</span>'+
-      (d.ai?'<button class="btn btn-g" id="use-ai">带入 AI 草稿（之后可以改）</button>':'')+'</div>';
-    h+='<div class="card"><h2>科技仓整体</h2><div class="vin"><input id="ov-v" inputmode="decimal" aria-label="科技仓预测涨跌幅" value="'+esc(draft.overall.value)+'"><span class="sub">%</span></div><input type="text" id="ov-c" placeholder="一句话结论" value="'+esc(draft.overall.conclusion)+'"></div>';
+  const save=d=>store.set("fd-draft-"+d.T,draft);
+  function parseV(s){const v=parseFloat(String(s).replace(/[%＋\s]/g,"").replace(/[−－—]/g,"-"));return Number.isFinite(v)?Math.round(Math.max(-10,Math.min(10,v))*100)/100:null}
+  function stepsBar(n){return '<div class="steps" aria-label="第 '+n+' 步，共 3 步">'+[1,2,3].map(i=>'<span class="'+(i<=n?"on":"")+'"></span>').join('')+'</div>'}
+  function valueInput(id,val,dis,label){return '<div class="vin"><button type="button" class="pm" data-pm="'+id+'" aria-label="切换正负"'+(dis?' disabled':'')+'>±</button><input id="'+id+'" inputmode="decimal" autocomplete="off" aria-label="'+esc(label)+'" value="'+esc(val)+'"'+(dis?' disabled':'')+'><span class="sub">%</span></div>'}
+  function bindPM(S,onChange){S.querySelectorAll("[data-pm]").forEach(b=>b.addEventListener("click",()=>{const el=S.querySelector("#"+CSS.escape(b.dataset.pm));const v=el.value.trim();el.value=v.startsWith("-")?v.slice(1):(v?"-"+v.replace(/^\+/,""):"-");el.dispatchEvent(new Event("input"));el.focus()}))}
+  function renderStep(d){
+    if(draft.step===1)return step1(d);
+    if(draft.step===2)return step2(d);
+    return step3(d);
+  }
+  function marketCard(d){
+    const items=d.snap.items.filter(it=>!it.hidden);
+    const mk=items.filter(it=>it.kind==="行情"&&!String(it.key).includes(".")), nw=items.filter(it=>it.kind==="消息");
+    return '<div class="card"><h2>市场数据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'快照 '+esc(hm(d.snap.asOf))+'，只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+mk.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td></tr>').join('')+'</tbody></table>'+
+      (nw.length?'<details><summary class="small">相关快讯（'+nw.length+'）</summary><ul class="pts" style="font-size:13px;margin-top:6px">'+nw.map(it=>'<li><span class="sub num">'+esc(hm(it.dataTime))+'</span> '+esc(it.text)+'</li>').join('')+'</ul></details>':'')+'</div>';
+  }
+  function step1(d){
+    const frozen=!!draft.initialFrozenAt;
+    let h=sheetHead("第 1 步 · 独立判断")+stepsBar(1);
+    h+='<div class="note">这一步看不到 AI 草稿和规则模型。只根据数据和规律，先写下你自己的判断。'+(frozen?'你已经看过 AI 草稿，初判已经固定，不能再改。':'')+'</div>';
+    h+=marketCard(d);
     h+='<div class="card">';
     for(const f of G.funds){
-      const x=draft.funds[f.code], trig=visibleTrig(d,f.code);
-      h+='<div class="fund-in"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2>'+esc(f.short)+'</h2><div class="vin"><input data-v="'+f.code+'" inputmode="decimal" aria-label="'+esc(f.short)+' 预测涨跌幅" value="'+esc(x.value)+'"><span class="sub">%</span></div></div>';
-      x.reasons.forEach((r,i)=>{
-        h+='<div class="reason"><div class="rhead"><span class="small sub">理由 '+(i+1)+'</span>'+(x.reasons.length>1?'<button class="link" data-del="'+f.code+':'+i+'">删除</button>':'')+'</div><textarea data-rt="'+f.code+':'+i+'" placeholder="判断 + 市场依据">'+esc(r.text)+'</textarea>'+
-          (trig.length?'<div class="chips">'+trig.map(t=>'<button class="chip" data-sig="'+f.code+':'+i+':'+t.signal+'" aria-pressed="'+r.signals.includes(t.signal)+'">'+esc(t.signal)+' <span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></button>').join('')+'</div>':'')+
-          (d.snap?'<select data-ref="'+f.code+':'+i+'" aria-label="关联数据"><option value="">＋ 关联快照数据…</option>'+d.snap.items.filter(it=>!it.hidden).map(it=>'<option value="'+esc(it.id)+'">'+esc(it.name+(it.value!=null?" "+fmt(it.value):"")+(it.text?"："+it.text.slice(0,24):""))+'</option>').join('')+'</select>'+(r.dataRefs.length?'<div class="chips">'+r.dataRefs.map(id=>'<button class="chip" aria-pressed="true" data-unref="'+f.code+':'+i+':'+esc(id)+'">'+esc(dataName(d,id))+' ×</button>').join('')+'</div>':''):'')+'</div>';
-      });
-      h+='<button class="link" data-add="'+f.code+'">＋ 再加一条理由</button><input type="text" data-c="'+f.code+'" placeholder="结论" value="'+esc(x.conclusion)+'"></div>';
+      const ff=d.snap.features.f[f.code]||{}, trig=visibleTrig(d.trig,f.code);
+      h+='<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>'+esc(f.short)+'</h3>'+valueInput("i-"+f.code,draft.initial[f.code]??"",frozen,f.short+" 初判涨跌幅")+'</div>'+
+        '<div class="sub small num">上一日 '+fmt(ff.prev)+' · 近5日 '+fmt(ff.mom5)+' · '+esc(f.anchor.name)+' '+fmt(ff.anc)+' · 日波动 '+(ff.vol20!=null?ff.vol20.toFixed(2)+'%':'–')+'</div>'+
+        (trig.length?'<div class="chips">'+trig.map(t=>{const s=sig(t.signal);return '<span class="tag '+(STATUS_TAG[t.status]||"t-n")+'" title="'+esc(sigHist(s))+'">'+esc(t.signal+" "+(s?s.name:"")+" · "+t.status)+'</span>'}).join('')+'</div>':'<span class="sub tiny">没有规律被触发</span>')+'</div>';
     }
-    h+='</div><button class="btn btn-p" id="to-check">检查依据并提交</button>';
+    h+='</div><button class="btn btn-p" id="next1">下一步：看 AI 草稿</button><span class="sub tiny" style="text-align:center">进入下一步后，初判会固定下来，用来统计看了 AI 之后你是更准还是更差。</span>';
     showSheet(h);
-    const S=$("sheet"), sync=()=>saveDraft(d);
-    S.querySelector("#ov-v").addEventListener("input",e=>{draft.overall.value=e.target.value;sync()});
-    S.querySelector("#ov-c").addEventListener("input",e=>{draft.overall.conclusion=e.target.value;sync()});
-    S.querySelectorAll("[data-v]").forEach(el=>el.addEventListener("input",()=>{draft.funds[el.dataset.v].value=el.value;sync()}));
-    S.querySelectorAll("[data-c]").forEach(el=>el.addEventListener("input",()=>{draft.funds[el.dataset.c].conclusion=el.value;sync()}));
-    S.querySelectorAll("[data-rt]").forEach(el=>el.addEventListener("input",()=>{const[c,i]=el.dataset.rt.split(":");draft.funds[c].reasons[i].text=el.value;sync()}));
-    S.querySelectorAll("[data-sig]").forEach(el=>el.addEventListener("click",()=>{const[c,i,id]=el.dataset.sig.split(":");const a=draft.funds[c].reasons[i].signals;const k=a.indexOf(id);k<0?a.push(id):a.splice(k,1);sync();renderForm(d)}));
-    S.querySelectorAll("[data-ref]").forEach(el=>el.addEventListener("change",()=>{if(!el.value)return;const[c,i]=el.dataset.ref.split(":");const a=draft.funds[c].reasons[i].dataRefs;if(!a.includes(el.value))a.push(el.value);sync();renderForm(d)}));
-    S.querySelectorAll("[data-unref]").forEach(el=>el.addEventListener("click",()=>{const[c,i,...rest]=el.dataset.unref.split(":");const id=rest.join(":");const a=draft.funds[c].reasons[i].dataRefs;a.splice(a.indexOf(id),1);sync();renderForm(d)}));
-    S.querySelectorAll("[data-add]").forEach(el=>el.addEventListener("click",()=>{draft.funds[el.dataset.add].reasons.push({text:"",signals:[],dataRefs:[]});sync();renderForm(d)}));
-    S.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",()=>{const[c,i]=el.dataset.del.split(":");draft.funds[c].reasons.splice(+i,1);sync();renderForm(d)}));
-    const ua=$("use-ai");if(ua)ua.addEventListener("click",()=>{
-      draft.overall={value:d.ai.overall&&d.ai.overall.value!=null?String(d.ai.overall.value):"",conclusion:(d.ai.overall&&d.ai.overall.conclusion)||""};
-      for(const f of G.funds){const a=d.ai.funds[f.code];if(a)draft.funds[f.code]={value:String(a.value),reasons:a.reasons.length?a.reasons.map(r=>({text:r.text,signals:[...r.signals],dataRefs:[...r.dataRefs]})):[{text:"",signals:[],dataRefs:[]}],conclusion:a.conclusion||""}}
-      sync();renderForm(d);toast("已带入 AI 草稿，请逐条确认或修改")});
-    $("to-check").addEventListener("click",()=>reviewBeforeSubmit(d));
-  }
-  function parseV(s){const v=parseFloat(String(s).replace("%","").replace("＋","+").replace("－","-"));return Number.isFinite(v)?Math.round(v*100)/100:null}
-  function reviewBeforeSubmit(d){
-    const errs=[];const nowIso=bjNow().toISOString().slice(0,19)+"+08:00";
-    const out={date:d.T,predictor:"user",createdAt:nowIso,lockedAt:nowIso,snapshot:d.batch?d.T+"/"+d.batch:null,dataCutoff:d.snap?d.snap.asOf:null,modelVersion:G.model?G.model.version:null,
-      overall:{value:parseV(draft.overall.value),conclusion:draft.overall.conclusion.trim()},funds:{}};
-    for(const f of G.funds){const x=draft.funds[f.code],v=parseV(x.value);if(v==null)errs.push(f.short+" 没填数值");
-      out.funds[f.code]={value:v,reasons:x.reasons.filter(r=>r.text.trim()).map(r=>({text:r.text.trim(),signals:r.signals,dataRefs:r.dataRefs})),conclusion:x.conclusion.trim()}}
-    if(out.overall.value==null)errs.push("科技仓整体没填数值");
-    if(Date.now()>Date.parse(deadlineOf(d.T)))errs.push("已过 "+G.config.deadline+" 截止时间，提交会记为迟交，不计入正式成绩");
-    let h=sheetHead("提交前检查");
-    if(errs.length)h+='<div class="card">'+errs.map(e=>'<div class="t-bad tag" style="white-space:normal">'+esc(e)+'</div>').join('')+'</div>';
-    let flagged=0;
-    h+='<div class="card"><h2>依据检查</h2><span class="sub tiny">✅ 历史有效且今天触发　⚠️ 今天未触发　❌ 历史不成立 / 事后信息。有问题的依据也能提交，但会被记录，以后统计这类预测准不准。</span>';
-    for(const f of G.funds){const x=out.funds[f.code];
-      h+='<div class="small" style="border-top:1px solid var(--line);padding-top:8px"><b>'+esc(f.short)+'</b> <span class="num '+cls(x.value)+'">'+fmt(x.value)+'</span>'+
-        (x.reasons.length?'<ol class="pts" style="font-size:13px">'+x.reasons.map(r=>{const c=checkReason(d,f.code,r,nowIso);if(c.signals.some(s=>s.verdict!=="有效依据")||c.data.some(s=>s.verdict==="事后信息"))flagged++;
-          return '<li>'+esc(r.text)+'<div class="chips">'+c.signals.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(s.id+" "+s.verdict)+'</span>').join('')+c.data.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(dataName(d,s.id)+" · "+s.verdict)+'</span>').join('')+(!c.signals.length&&!c.data.length?'<span class="tag t-n">主观判断</span>':'')+'</div></li>'}).join('')+'</ol>':'<div class="sub">没有写理由</div>')+'</div>'}
-    h+='</div>'+(flagged?'<div class="card t-warn" style="background:var(--warn-soft)">有 '+flagged+' 条依据未通过检查。可以返回修改，也可以照样提交。</div>':'');
-    h+='<div style="display:flex;gap:10px"><button class="btn btn-g" id="back-form" style="flex:1">返回修改</button><button class="btn btn-p" id="submit" style="flex:2"'+(errs.some(e=>e.includes("没填"))?' disabled':'')+'>提交并锁定</button></div>';
-    showSheet(h);
-    $("back-form").addEventListener("click",()=>renderForm(d));
-    $("submit").addEventListener("click",async()=>{
-      if(!tok){openSettings();return}
-      const b=$("submit");b.disabled=true;b.textContent="提交中…";
-      out.checks=Object.fromEntries(G.funds.map(f=>[f.code,out.funds[f.code].reasons.map(r=>checkReason(d,f.code,r,nowIso))]));
-      const r=await putFile(`data/predictions/${d.T}/user.json`,out,`锁定预测 ${d.T}`,true);
-      if(r){out.lockedAt=r;localUser[d.T]=out;dayCache[d.T]=null;try{localStorage.removeItem("fd-draft-"+d.T)}catch(e){}closeSheet();toast("已锁定 🔒 "+hm(r));renderPred()}
-      else{b.disabled=false;b.textContent="提交并锁定"}
+    const S=$("sheet");
+    S.querySelector(".sheethead h2").parentElement.querySelector("#sheet-x").onclick=()=>{save(d);closeSheet()};
+    G.funds.forEach(f=>{const el=S.querySelector("#i-"+f.code);el.addEventListener("input",()=>{draft.initial[f.code]=el.value;save(d)})});
+    bindPM(S);
+    $("next1").addEventListener("click",()=>{
+      const vals={};for(const f of G.funds){const v=parseV(draft.initial[f.code]);if(v==null){toast(f.short+" 还没填初判");return}vals[f.code]=v}
+      if(!frozen){draft.initial=vals;draft.initialFrozenAt=nowIso();for(const f of G.funds)if(draft.funds[f.code].value==="")draft.funds[f.code].value=String(vals[f.code])}
+      draft.step=2;save(d);renderStep(d);
     });
   }
-  async function putFile(path,obj,msg,createOnly){
-    const body={message:msg,content:btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,1)+"\n")))};
-    try{
-      const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{method:"PUT",headers:{authorization:"Bearer "+tok,accept:"application/vnd.github+json","content-type":"application/json"},body:JSON.stringify(body)});
-      if(r.status===422&&createOnly){toast("这一天已经提交过，预测不能覆盖");return null}
-      if(r.status===401||r.status===403){toast("令牌无效或没有写权限，请在设置里重新粘贴");return null}
-      if(!r.ok){toast("提交失败："+r.status);return null}
-      const x=await r.json();const t=x.commit&&x.commit.committer&&x.commit.committer.date;
-      return t?new Date(Date.parse(t)+8*3600e3).toISOString().slice(0,19)+"+08:00":obj.createdAt;
-    }catch(e){toast("网络错误，请稍后再试");return null}
-  }
-  function openSettings(){
-    let h=sheetHead("设置");
-    h+='<div class="card"><h2>GitHub 令牌</h2><span class="small sub" style="line-height:1.7">用来把你的预测提交到仓库并锁定。只保存在这台手机的浏览器里。</span>'+
-      '<ol class="pts small"><li>电脑或手机打开 github.com → 右上角头像 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token。</li><li>Repository access 选 Only select repositories → Fund-diary。</li><li>Permissions → Repository permissions → Contents 选 Read and write。</li><li>生成后复制，粘贴到下面。</li></ol>'+
-      '<label for="tok" class="small">令牌</label><input type="password" id="tok" autocomplete="off" placeholder="github_pat_…" value="'+esc(tok||"")+'"><div style="display:flex;gap:10px"><button class="btn btn-p" id="tok-save" style="flex:1">保存</button><button class="btn btn-g" id="tok-clear">清除</button></div></div>';
+  async function step2(d){
+    const S0=await sysPreds(d), ai=S0.ai, model=S0.model;
+    if(!draft.aiSeen)draft.aiSeen={batch:d.seen.batch,snapshotId:d.seen.snap.snapshotId,aiVersion:ai&&ai.aiVersion||null,modelName:ai&&ai.modelName||null,seenAt:nowIso()};
+    save(d);
+    let h=sheetHead("第 2 步 · 看草稿后定稿")+stepsBar(2);
+    h+='<div class="card sticky" style="flex-direction:row;justify-content:space-between;align-items:center"><span class="small">科技仓（按持仓加权，自动计算）</span><b class="num" id="pf" style="font-size:18px">–</b></div>';
+    if(!ai)h+='<div class="note">这个批次的 AI 草稿没有生成成功，直接按你的判断定稿即可。</div>';
+    for(const f of G.funds){
+      const x=draft.funds[f.code], a=ai&&ai.funds[f.code], mv=model&&model.funds[f.code], trig=visibleTrig(d.trig,f.code);
+      h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2>'+esc(f.short)+'</h2>'+valueInput("v-"+f.code,x.value,false,f.short+" 最终预测涨跌幅")+'</div>'+
+        '<div class="cmp"><div><span class="sub tiny">我的初判</span><b class="'+cls(draft.initial[f.code])+'">'+fmt(draft.initial[f.code])+'</b></div><div><span class="sub tiny">AI 草稿</span><b class="'+cls(a&&a.value)+'">'+fmt(a&&a.value)+'</b></div><div><span class="sub tiny">规则模型 '+esc(model&&model.modelVersion||"")+'</span><b class="'+cls(mv&&mv.value)+'">'+fmt(mv&&mv.value)+'</b></div></div>'+
+        (a&&(a.reasons||[]).length?'<details><summary class="small sub">AI 草稿的理由（参考，不能直接带入）</summary><ol class="pts" style="margin-top:6px;font-size:13px">'+a.reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol></details>':'');
+      x.reasons.forEach((r,i)=>{
+        h+='<div class="reason"><div class="rhead"><span class="small sub">理由 '+(i+1)+'</span>'+(x.reasons.length>1?'<button class="link" data-del="'+f.code+':'+i+'">删除</button>':'')+'</div><textarea data-rt="'+f.code+':'+i+'" placeholder="判断 + 市场依据" aria-label="'+esc(f.short)+' 理由 '+(i+1)+'">'+esc(r.text)+'</textarea>'+
+          (trig.length?'<div class="chips" role="group" aria-label="关联今天触发的规律">'+trig.map(t=>'<button type="button" class="chip" data-sig="'+f.code+':'+i+':'+t.signal+'" aria-pressed="'+r.signals.includes(t.signal)+'">'+esc(t.signal)+' · '+esc(t.status)+'</button>').join('')+'</div>':'')+
+          '<select data-ref="'+f.code+':'+i+'" aria-label="关联快照数据"><option value="">＋ 关联快照数据…</option>'+d.snap.items.filter(it=>!it.hidden).map(it=>'<option value="'+esc(it.id)+'">'+esc((it.kind==="消息"?"快讯 "+hm(it.dataTime)+"："+String(it.text).slice(0,22):it.name+" "+fmt(it.value)))+'</option>').join('')+'</select>'+
+          (r.dataRefs.length?'<div class="chips">'+r.dataRefs.map(id=>'<button type="button" class="chip" aria-pressed="true" data-unref="'+f.code+':'+i+':'+esc(id)+'" aria-label="取消关联 '+esc(dataName(d,id))+'">'+esc(dataName(d,id))+' ×</button>').join('')+'</div>':'')+'</div>';
+      });
+      h+='<button type="button" class="link" data-add="'+f.code+'">＋ 再加一条理由</button><input type="text" data-c="'+f.code+'" placeholder="最终结论（一句话）" aria-label="'+esc(f.short)+' 结论" value="'+esc(x.conclusion)+'"></div>';
+    }
+    h+='<div style="display:flex;gap:10px"><button class="btn btn-g" id="back2" style="flex:1">上一步</button><button class="btn btn-p" id="next2" style="flex:2">下一步：检查依据</button></div>';
     showSheet(h);
-    $("tok-save").addEventListener("click",async()=>{const v=$("tok").value.trim();if(!v)return;
-      const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`,{headers:{authorization:"Bearer "+v}});
-      if(!r.ok){toast("令牌无法访问仓库，请检查");return}const x=await r.json();if(!(x.permissions&&x.permissions.push)){toast("令牌没有写权限，请把 Contents 设为 Read and write");return}
-      tok=v;try{localStorage.setItem("fd-token",v)}catch(e){}toast("已保存");closeSheet();renderPred()});
-    $("tok-clear").addEventListener("click",()=>{tok=null;try{localStorage.removeItem("fd-token")}catch(e){}toast("已清除");closeSheet();renderPred()});
+    const S=$("sheet"), y=S.scrollTop;
+    const upd=()=>{const vals={};G.funds.forEach(f=>vals[f.code]=parseV(draft.funds[f.code].value));const p=portfolio(vals);const el=$("pf");el.textContent=fmt(p);el.className="num "+cls(p)};
+    upd();
+    $("sheet-x").onclick=()=>{save(d);closeSheet()};
+    bindPM(S);
+    G.funds.forEach(f=>S.querySelector("#v-"+f.code).addEventListener("input",e=>{draft.funds[f.code].value=e.target.value;save(d);upd()}));
+    S.querySelectorAll("[data-c]").forEach(el=>el.addEventListener("input",()=>{draft.funds[el.dataset.c].conclusion=el.value;save(d)}));
+    S.querySelectorAll("[data-rt]").forEach(el=>el.addEventListener("input",()=>{const[c,i]=el.dataset.rt.split(":");draft.funds[c].reasons[i].text=el.value;save(d)}));
+    const rer=()=>{const top=S.scrollTop;save(d);step2(d).then(()=>{$("sheet").scrollTop=top})};
+    S.querySelectorAll("[data-sig]").forEach(el=>el.addEventListener("click",()=>{const[c,i,id]=el.dataset.sig.split(":");const a=draft.funds[c].reasons[i].signals;const k=a.indexOf(id);k<0?a.push(id):a.splice(k,1);rer()}));
+    S.querySelectorAll("[data-ref]").forEach(el=>el.addEventListener("change",()=>{if(!el.value)return;const[c,i]=el.dataset.ref.split(":");const a=draft.funds[c].reasons[i].dataRefs;if(!a.includes(el.value))a.push(el.value);rer()}));
+    S.querySelectorAll("[data-unref]").forEach(el=>el.addEventListener("click",()=>{const[c,i,...rest]=el.dataset.unref.split(":");const id=rest.join(":");const a=draft.funds[c].reasons[i].dataRefs;a.splice(a.indexOf(id),1);rer()}));
+    S.querySelectorAll("[data-add]").forEach(el=>el.addEventListener("click",()=>{draft.funds[el.dataset.add].reasons.push({text:"",signals:[],dataRefs:[]});rer()}));
+    S.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",()=>{const[c,i]=el.dataset.del.split(":");draft.funds[c].reasons.splice(+i,1);rer()}));
+    $("back2").addEventListener("click",()=>{draft.step=1;save(d);renderStep(d)});
+    $("next2").addEventListener("click",()=>{for(const f of G.funds)if(parseV(draft.funds[f.code].value)==null){toast(f.short+" 还没填最终预测");return}draft.step=3;save(d);renderStep(d)});
+  }
+  function checkReason(d,code,r,lockIso){
+    const sv=(r.signals||[]).map(id=>{const t=((d.trig&&d.trig.funds[code])||[]).find(x=>x.signal===id);return {id,verdict:!t?"今天未触发":t.status!=="有效"?"历史不成立":"有效依据"}});
+    const dv=(r.dataRefs||[]).map(id=>{const it=d.snap&&d.snap.items.find(i=>i.id===id);return {id,verdict:!it?"数据不在快照中":Date.parse(it.cutoff)<=Date.parse(lockIso)?"预测前已成立":"事后信息"}});
+    return {signals:sv,data:dv};
+  }
+  function buildPayload(d){
+    const funds={};for(const f of G.funds){const x=draft.funds[f.code];funds[f.code]={value:parseV(x.value),reasons:x.reasons.filter(r=>r.text.trim()).map(r=>({text:r.text.trim(),signals:r.signals,dataRefs:r.dataRefs})),conclusion:x.conclusion.trim()}}
+    return {v:1,date:d.T,clientSubmittedAt:nowIso(),snapshotId:d.seen.snap.snapshotId,initial:draft.initial,initialFrozenAt:draft.initialFrozenAt,aiSeen:draft.aiSeen,funds};
+  }
+  function b64url(bytes){let s="";for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+  async function issueBody(payload){
+    const json=JSON.stringify(payload);
+    let block;
+    if("CompressionStream" in window){try{const cs=new CompressionStream("deflate-raw");const w=cs.writable.getWriter();w.write(new TextEncoder().encode(json));w.close();const buf=new Uint8Array(await new Response(cs.readable).arrayBuffer());block="```fd1\n"+b64url(buf).replace(/(.{76})/g,"$1\n")+"\n```"}catch(e){}}
+    if(!block)block="```json\n"+json+"\n```";
+    return "基金日记 "+payload.date+" 预测（由 app 生成，请直接提交，不要改动下面的内容）\n\n"+block+"\n";
+  }
+  function step3(d){
+    const late=Date.now()>Date.parse(deadlineOf(d.T)), lockIso=nowIso(), pl=buildPayload(d);
+    const ev={dataRefs:0,validSignals:0,notTriggered:0,historicallyInvalid:0,afterLock:0,subjectiveOnly:0};
+    let h=sheetHead("第 3 步 · 检查并提交")+stepsBar(3);
+    if(late)h+='<div class="note" style="background:var(--bad-soft);color:var(--bad)">已经过了 '+esc(G.config.deadline)+' 截止时间。现在提交会记为迟交，不计入正式成绩。</div>';
+    let body='';
+    for(const f of G.funds){const x=pl.funds[f.code];
+      body+='<div class="small" style="border-top:1px solid var(--line);padding-top:8px"><b>'+esc(f.short)+'</b> <span class="num '+cls(x.value)+'">'+fmt(x.value)+'</span> <span class="sub tiny">初判 '+fmt(pl.initial[f.code])+'</span>'+
+        (x.reasons.length?'<ol class="pts" style="font-size:13px">'+x.reasons.map(r=>{const c=checkReason(d,f.code,r,lockIso);
+          c.signals.forEach(s=>ev[s.verdict==="有效依据"?"validSignals":s.verdict==="今天未触发"?"notTriggered":"historicallyInvalid"]++);c.data.forEach(s=>{if(s.verdict==="预测前已成立")ev.dataRefs++;else if(s.verdict==="事后信息")ev.afterLock++});if(!c.signals.length&&!c.data.length)ev.subjectiveOnly++;
+          return '<li>'+esc(r.text)+'<div class="chips">'+c.signals.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(s.id+" "+s.verdict)+'</span>').join('')+c.data.map(s=>'<span class="tag '+VERDICT[s.verdict]+'">'+esc(dataName(d,s.id)+" · "+s.verdict)+'</span>').join('')+(!c.signals.length&&!c.data.length?'<span class="tag t-n">主观判断</span>':'')+'</div></li>'}).join('')+'</ol>':'<div class="sub">没有写理由（记为纯主观）</div>')+
+        (x.conclusion?'<div>结论：'+esc(x.conclusion)+'</div>':'')+'</div>'}
+    const vals=Object.fromEntries(G.funds.map(f=>[f.code,pl.funds[f.code].value]));
+    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>科技仓</h2><b class="num '+cls(portfolio(vals))+'" style="font-size:20px">'+fmt(portfolio(vals))+'</b></div>'+
+      '<h3>依据完整性</h3><div class="chips"><span class="tag t-ok">数据依据 '+ev.dataRefs+'</span><span class="tag t-ok">有效信号 '+ev.validSignals+'</span><span class="tag t-warn">今天未触发 '+ev.notTriggered+'</span><span class="tag t-bad">历史无效 '+ev.historicallyInvalid+'</span><span class="tag t-bad">事后信息 '+ev.afterLock+'</span><span class="tag t-n">纯主观 '+ev.subjectiveOnly+'</span></div>'+
+      '<span class="sub tiny" style="line-height:1.6">有问题的依据也可以提交，但会被记录，以后统计这类预测是不是更不准。最终以服务器锁定时的检查为准。</span>'+body+'</div>';
+    h+='<div class="card"><h2>提交方式</h2><ol class="pts small"><li>点下面的按钮：预测内容会复制到剪贴板，同时打开 GitHub 的新建 Issue 页面（标题和内容已经填好）。</li><li>在 GitHub 页面点 <b>Submit new issue</b>。</li><li>如果打开的是 GitHub App、内容是空的：标题填「预测 '+esc(d.T)+'」，正文长按粘贴，再提交。</li><li>回到这里，大约 1 分钟后显示「已锁定」。锁定时间以 GitHub 服务器收到 Issue 的时间为准。</li></ol></div>';
+    h+='<div style="display:flex;gap:10px"><button class="btn btn-g" id="back3" style="flex:1">上一步</button><button class="btn btn-p" id="submit" style="flex:2">复制并去 GitHub 提交</button></div>';
+    showSheet(h);
+    $("sheet-x").onclick=()=>{save(d);closeSheet()};
+    $("back3").addEventListener("click",()=>{draft.step=2;save(d);renderStep(d)});
+    $("submit").addEventListener("click",async()=>{
+      const payload=buildPayload(d), body=await issueBody(payload), title="预测 "+d.T;
+      try{await navigator.clipboard.writeText(body)}catch(e){}
+      let url=`https://github.com/${OWNER}/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+      if(url.length>7800)url=`https://github.com/${OWNER}/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent("（内容较长，请把剪贴板里的内容粘贴到这里）")}`;
+      store.set("fd-pending-"+d.T,{at:nowIso(),hash:body.length});
+      window.open(url,"_blank","noopener");
+      closeSheet();
+    });
   }
 
   // ---------- 成绩 ----------
   function renderScore(){
     const S=G.stats;
-    if(!S){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
-    const P=S.predictors, me=P.user;
-    const benches=["bench_us","bench_prev","bench_zero"];
-    const bestB=benches.filter(b=>P[b].n).sort((a,b)=>P[a].mae-P[b].mae)[0];
-    let vt,vs;
-    if(!me.n){vt="还没有成绩";vs="提交第一份预测、收盘结算后开始统计。"}
-    else if(me.n<100){vt="样本还少，先不下结论";vs="已有 "+me.n+" 条预测（"+S.days+" 个交易日）。至少攒到 100 条，再看是否显著优于基准。"}
-    else{const vb=S.vsBench.user[bestB];const sig=vb&&vb.maeGain&&vb.maeGain.lo>0;
-      vt=sig?"是，我的预测显著优于基准":"还不能证明优于基准";
-      vs="和最好的基准「"+NAMES[bestB]+"」相比，误差平均"+(vb&&vb.maeGain?(vb.maeGain.mean>0?"小 ":"大 ")+Math.abs(vb.maeGain.mean).toFixed(2)+" 个百分点（95% 区间 "+vb.maeGain.lo.toFixed(2)+" ~ "+vb.maeGain.hi.toFixed(2)+"）":"–")+"。区间全部大于 0 才算真正超过。"}
-    let h='<div class="top"><h1>成绩</h1><span class="sub small">'+S.days+' 个交易日</span></div>';
-    h+='<div class="card"><span class="sub small">我的预测能力是否真正超过简单策略？</span><span class="verdict">'+esc(vt)+'</span><span style="font-size:13.5px;line-height:1.6">'+esc(vs)+'</span></div>';
-    h+='<div class="card"><h2>同场比较</h2><div class="scroll"><table class="tbl"><thead><tr><th>预测方</th><th>方向命中</th><th>MAE</th><th>条数</th></tr></thead><tbody>'+
-      ["user","bench_us","bench_prev","bench_zero","ai","model"].map(k=>{const x=P[k];return '<tr class="'+(k==="user"?"me":"")+'"><td class="t">'+NAMES[k]+'</td><td>'+(k==="bench_zero"?'<span class="sub">不判方向</span>':x.rate!=null?x.rate.toFixed(1)+'%':'–')+'</td><td>'+(x.mae!=null?x.mae.toFixed(2)+'%':'–')+'</td><td>'+x.n+'</td></tr>'}).join('')+
-      '</tbody></table></div><span class="sub tiny" style="line-height:1.6">方向分三态：涨（&gt;+'+G.config.flatBand+'%）、跌（&lt;−'+G.config.flatBand+'%）、平。MAE＝|预测−实际| 的平均。</span></div>';
-    const vb=S.vsBench.user||{};
-    h+='<div class="card"><h2>相对基准的提升</h2><div class="scroll"><table class="tbl"><thead><tr><th>对比</th><th>MAE 改善</th><th>误差差 95% 区间</th><th>命中率差</th></tr></thead><tbody>'+
-      benches.map(b=>{const x=vb[b]||{};const g=x.maeGain,hg=x.hitGain;return '<tr><td class="t">vs '+NAMES[b]+'</td><td style="color:var(--'+(x.maeImprovePct>0?'ok':x.maeImprovePct<0?'bad':'sub')+')">'+(x.maeImprovePct!=null?(x.maeImprovePct>0?'+':'')+x.maeImprovePct.toFixed(1)+'%':'–')+'</td><td>'+(g?g.lo.toFixed(2)+' ~ '+g.hi.toFixed(2):'样本不足')+'</td><td>'+(hg?(hg.mean>0?'+':'')+hg.mean.toFixed(1)+' 点':'–')+'</td></tr>'}).join('')+
-      '</tbody></table></div><span class="sub tiny">MAE 改善为正＝比基准更准。误差差区间全部大于 0 才算显著。</span></div>';
-    const rq=S.reasonQuality;
-    if(rq&&(rq.clean.n||rq.flagged.n))h+='<div class="card"><h2>依据有问题的预测，是不是更不准？</h2><table class="tbl"><thead><tr><th>预测</th><th>条数</th><th>方向命中</th><th>MAE</th></tr></thead><tbody><tr><td class="t">依据都通过检查</td><td>'+rq.clean.n+'</td><td>'+(rq.clean.rate??'–')+'%</td><td>'+(rq.clean.mae??'–')+'</td></tr><tr><td class="t">含 ⚠️/❌ 依据</td><td>'+rq.flagged.n+'</td><td>'+(rq.flagged.rate??'–')+'%</td><td>'+(rq.flagged.mae??'–')+'</td></tr></tbody></table></div>';
-    h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>我 命中</th><th>我 MAE</th><th>外盘 MAE</th></tr></thead><tbody>'+G.funds.map(f=>{const b=S.byFund[f.code];return '<tr><td class="t">'+esc(f.short)+'</td><td>'+(b.user.rate??'–')+(b.user.rate!=null?'%':'')+'</td><td>'+(b.user.mae??'–')+'</td><td>'+(b.bench_us.mae??'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+    if(!S||!S.predictors){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
+    const P=S.predictors, U=P.user, C=S.conclusion||{}, cmp=(S.compare&&S.compare.user)||{};
+    const bD=C.bestDirectionBenchmark, bM=C.bestMaeBenchmark, cD=bD&&cmp[bD], cM=bM&&cmp[bM];
+    let h='<div class="top"><h1>成绩</h1><span class="sub small">样本单位：交易日 × 基金</span></div>';
+    const vt=C.verdict==="evidence"?"当前有统计证据支持：你的预测能力优于最佳简单基准。":C.verdict==="no_evidence"?"尚无足够证据证明你的预测能力优于简单基准。":U.obs?"样本不足，暂不下结论。":"还没有成绩。";
+    const vs=C.verdict==="insufficient"||!U.obs?(U.obs?"已有 "+U.obs+" 个观测（"+U.days+" 个交易日）。满 "+G.config.preregistration.minObsForConclusion+" 个观测才开放结论；即使满了，也要通过统计检验才能说「优于」。":"第一份预测锁定、收盘结算后开始统计。"):"结论来自事先登记的两项主要检验（方向、MAE），按交易日聚类，用随时有效的序贯检验，Holm 校正，α = "+G.config.preregistration.alpha+"。";
+    h+='<div class="card"><span class="sub small">我到底有没有预测能力？</span><span class="verdict">'+esc(vt)+'</span><span class="small" style="line-height:1.6">'+esc(vs)+'</span>'+
+      '<div class="kpis"><div class="kpi"><span class="sub tiny">正式预测</span><b>'+(U.lockedDays||0)+' 天</b></div><div class="kpi"><span class="sub tiny">有效观测</span><b>'+U.obs+'</b><span class="sub tiny">'+U.days+' 个交易日</span></div><div class="kpi"><span class="sub tiny">方向命中</span><b>'+pp(U.rate)+'</b></div></div>'+
+      '<div class="kpis"><div class="kpi"><span class="sub tiny">MAE</span><b>'+(U.mae!=null?f2(U.mae)+'%':'–')+'</b></div><div class="kpi"><span class="sub tiny">方向提升</span><b>'+(cD&&cD.direction.liftPP!=null?(cD.direction.liftPP>0?"+":"")+cD.direction.liftPP.toFixed(1)+'pp':'–')+'</b><span class="sub tiny">vs '+esc(bD?NAMES[bD]:"–")+'</span></div><div class="kpi"><span class="sub tiny">MAE 改善</span><b>'+(cM&&cM.mae.improvePct!=null?(cM.mae.improvePct>0?"+":"")+cM.mae.improvePct.toFixed(1)+'%':'–')+'</b><span class="sub tiny">vs '+esc(bM?NAMES[bM]:"–")+'</span></div></div></div>';
+    if(U.obs&&(cD||cM)){
+      const row=(lab,x,k)=>!x?'':'<tr><td class="t">'+lab+'</td><td>'+(x[k].ci95?f2(x[k].ci95[0])+' ~ '+f2(x[k].ci95[1]):'样本不足')+'</td><td>'+(x[k].alwaysValidP??'–')+'</td></tr>';
+      const e=(C.endpoints||[]);
+      h+='<div class="card"><h2>主要检验</h2><dl class="kv small"><dt>最佳方向基准</dt><dd>'+esc(bD?NAMES[bD]:"–")+'（'+pp(bD&&P[bD].rate)+'）</dd><dt>最佳 MAE 基准</dt><dd>'+esc(bM?NAMES[bM]:"–")+'（'+(bM?f2(P[bM].mae)+'%':'–')+'）</dd>'+(cD?'<dt>方向对比</dt><dd>我对它错 '+cD.direction.wins+' 次，我错它对 '+cD.direction.losses+' 次</dd>':'')+'</dl>'+
+        '<div class="scroll"><table class="tbl"><thead><tr><th>检验</th><th>按日聚类 95% 区间</th><th>随时有效 p</th></tr></thead><tbody>'+row("方向（百分点）",cD,"direction")+row("MAE（百分点）",cM,"mae")+'</tbody></table></div>'+
+        '<span class="sub tiny" style="line-height:1.6">区间是「我比基准好多少」，全部大于 0 才说明更好。p 值每天都可以看，不会因为反复查看而虚高；'+e.map(x=>x.id+(x.level!=null?' 门槛 '+x.level:'')+(x.reject?' ✓ 通过':'')).join('，')+'。</span></div>';
+    }
+    h+='<div class="card"><h2>同场比较</h2><div class="scroll"><table class="tbl"><thead><tr><th>预测方</th><th>方向命中</th><th>MAE</th><th>观测</th></tr></thead><tbody>'+
+      ["user","bench_external_raw","bench_external_beta","bench_prev","bench_zero","model","ai"].map(k=>{const x=P[k]||{};return '<tr class="'+(k==="user"?"me":"")+'"><td class="t">'+NAMES[k]+(k==="model"||k==="ai"?' <span class="sub tiny">对照</span>':'')+'</td><td>'+(k==="bench_zero"?'<span class="sub tiny">不参与</span>':pp(x.rate))+'</td><td>'+(x.mae!=null?f2(x.mae)+'%':'–')+'</td><td>'+(x.obs||0)+'</td></tr>'}).join('')+
+      '</tbody></table></div><span class="sub tiny" style="line-height:1.6">方向分三态：涨 &gt; +'+G.config.flatBand+'%，跌 &lt; −'+G.config.flatBand+'%，其余为平；预测和实际用同一规则。永远 0% 天然预测「平」，只比 MAE。和规则模型、AI 的对比属于探索性，不能据此说「显著」。</span>'+
+      '<details><summary class="small sub">基准怎么算</summary><ul class="pts small" style="margin-top:6px">'+Object.entries(LONG).map(([k,t])=>'<li>'+esc(t)+'</li>').join('')+'<li>外盘：QDII 和国寿看纳指100，其余看费城半导体，按上一个 A 股收盘之后累计。</li></ul></details></div>';
+    const E=S.evidence;
+    if(E&&(E.clean.obs||E.flagged.obs||E.subjective.obs))h+='<div class="card"><h2>我靠的是有效信息，还是直觉？</h2><table class="tbl"><thead><tr><th>依据类型</th><th>观测</th><th>方向命中</th><th>MAE</th></tr></thead><tbody>'+[["clean","依据都通过检查"],["subjective","纯主观"],["flagged","含未触发 / 无效 / 事后依据"]].map(([k,t])=>'<tr><td class="t">'+t+'</td><td>'+E[k].obs+'</td><td>'+pp(E[k].rate)+'</td><td>'+(E[k].mae!=null?f2(E[k].mae):'–')+'</td></tr>').join('')+'</tbody></table></div>';
+    h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>我 命中</th><th>我 MAE</th><th>外盘 Beta MAE</th></tr></thead><tbody>'+G.funds.map(f=>{const b=(S.byFund||{})[f.code]||{};const u=b.user||{},x=b.bench_external_beta||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+pp(u.rate)+'</td><td>'+(u.mae!=null?f2(u.mae):'–')+'</td><td>'+(x.mae!=null?f2(x.mae):'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+    const av=Object.entries(S.aiVersions||{});
+    if(av.length)h+='<div class="card"><h2>AI 各版本（探索性）</h2><table class="tbl"><thead><tr><th>版本</th><th>观测</th><th>命中</th><th>MAE</th></tr></thead><tbody>'+av.map(([v,x])=>'<tr><td class="t">'+esc(v)+'<div class="sub tiny">'+esc((x.modelNames||[]).join("、"))+'</div></td><td>'+x.obs+'</td><td>'+pp(x.rate)+'</td><td>'+f2(x.mae)+'</td></tr>').join('')+'</tbody></table></div>';
     $("v-score").innerHTML=h+'<div id="ledger"></div>';
     renderLedger();
   }
   async function renderLedger(){
-    const days=Object.keys(G.index.days).filter(d=>G.index.days[d].result).sort().reverse().slice(0,10);
+    const days=Object.keys(G.index.days).filter(d=>G.index.days[d].result).sort().reverse();
     if(!days.length)return;
-    let h='<div class="card"><h2>流水账</h2><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>我</th><th>实际</th><th></th><th>误差</th></tr></thead><tbody>';
-    for(const T of days){const r=dayCache[T]&&dayCache[T].result||await j(`data/results/${T}.json`);if(!r)continue;
-      for(const f of G.funds){const s=r.scores.user&&r.scores.user[f.code];h+='<tr><td>'+T.slice(5)+'</td><td class="t">'+esc(f.short)+'</td><td class="'+cls(s&&s.pred)+'">'+(s?fmt(s.pred):'<span class="sub">'+esc(r.meta.user?r.meta.user.status:"")+'</span>')+'</td><td class="'+cls(r.actual[f.code])+'">'+fmt(r.actual[f.code])+'</td><td>'+(s?(s.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):'')+'</td><td>'+(s?s.absErr.toFixed(2):'')+'</td></tr>'}}
-    $("ledger").innerHTML=h+'</tbody></table></div><span class="sub tiny">每条预测的锁定时间以仓库提交记录为准，事后无法修改。</span></div>';
+    const rs=(await Promise.all(days.slice(0,10).map(T=>j(`data/results/${T}.json`)))).filter(Boolean);
+    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2>流水账</h2><button class="link" id="csv">下载 CSV</button></div><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>我</th><th>实际</th><th></th><th>误差</th></tr></thead><tbody>';
+    for(const r of rs)for(const f of G.funds){const s=r.scores.user&&r.scores.user[f.code];const a=r.actual[f.code];h+='<tr><td>'+r.date.slice(5)+'</td><td class="t">'+esc(f.short)+'</td><td class="'+cls(s&&s.pred)+'">'+(s?fmt(s.pred):'<span class="sub tiny">'+esc(USTATUS[(r.meta.user||{}).status]||"")+'</span>')+'</td><td class="'+cls(a)+'">'+fmt(a)+'</td><td>'+(s?(s.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):'')+'</td><td>'+(s?f2(s.absErr):'')+'</td></tr>'}
+    $("ledger").innerHTML=h+'</tbody></table></div><span class="sub tiny">锁定时间以 GitHub 服务器收到 Issue 的时间为准；每份预测都有哈希凭证。</span></div>';
+    $("csv").addEventListener("click",async()=>{
+      const all=(await Promise.all(days.map(T=>j(`data/results/${T}.json`)))).filter(Boolean).sort((a,b)=>a.date.localeCompare(b.date));
+      const ks=["user","bench_external_raw","bench_external_beta","bench_prev","bench_zero","model","ai"];
+      const lines=[["日期","基金代码","基金","实际%",...ks.map(k=>NAMES[k]+"%"),"我的状态","锁定时间"].join(",")];
+      for(const r of all)for(const f of G.funds)lines.push([r.date,f.code,f.short,r.actual[f.code]??"",...ks.map(k=>(r.scores[k]&&r.scores[k][f.code]?r.scores[k][f.code].pred:"")),(r.meta.user||{}).status||"",(r.meta.user||{}).serverLockedAt||""].join(","));
+      const url=URL.createObjectURL(new Blob(["﻿"+lines.join("\n")],{type:"text/csv"}));const a=document.createElement("a");a.href=url;a.download="基金日记.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+    });
   }
 
   // ---------- 实验室 ----------
   function renderLab(){
-    const st=G.status||{}, sp=st.split||{};
+    const S=G.stats||{}, st=G.status||{}, sp=st.split||{};
     let h='<div class="top"><h1>实验室</h1><span class="sub small">规则模型 '+esc(G.model?G.model.version:"–")+'</span></div>';
-    const R=G.stats||{};
-    const board=(t,xs,good)=>'<div class="card"><h2>'+t+'</h2>'+(xs&&xs.length?'<ol class="pts">'+xs.map(x=>'<li><span>'+esc(x.name)+'</span> <span class="num" style="font-weight:600;color:var(--'+(good?'ok':'bad')+')">'+x.rate.toFixed(1)+'%</span> <span class="sub tiny">基准 '+x.base+'% · '+x.n+' 次 · '+esc(x.status)+'</span></li>').join('')+'</ol>':'<span class="sub small">'+(good?'还没有规律稳定跑赢基准。':'还没有规律明显低于基准。')+'</span>')+'</div>';
-    h+=board("最可靠的规律",R.reliable,true)+board("最会骗人的规律",R.deceptive,false);
-    h+='<div class="card"><h2>信号库</h2><span class="sub tiny" style="line-height:1.6">研究集 '+esc(sp.researchFrom||"")+' 起，留出集 '+esc(sp.holdoutFrom||"")+' 至 '+esc(sp.to||"")+'。规则修改只能参考研究集，留出集用来验证。</span>';
+    const board=(t,xs,good,empty)=>'<div class="card"><h2>'+t+'</h2>'+(xs&&xs.length?'<ol class="pts">'+xs.map(x=>'<li>'+esc(x.name)+' <span class="num" style="font-weight:600;color:var(--'+(good?'ok':'bad')+')">'+pp(x.rate)+'</span><div class="sub tiny">95% 区间 '+f2(x.lo)+'~'+f2(x.hi)+' · 基准 '+pp(x.base)+' · '+x.days+' 个交易日 · '+esc(x.status)+'</div></li>').join('')+'</ol>':'<span class="sub small">'+empty+'</span>')+'</div>';
+    h+=board("最可靠的规律",S.reliable,true,"样本还不够（每条至少 "+G.config.signals.minDays+" 个交易日）。")+board("最会骗人的规律",S.deceptive,false,"样本还不够。");
+    h+='<div class="card"><h2>信号库</h2><span class="sub tiny" style="line-height:1.6">研究集 '+esc((sp.research||[]).join(" ~ "))+'；留出集 '+esc((sp.holdout||[]).join(" ~ "))+'（起点固定，不滚动）。样本按交易日计：同一天 5 只基金高度相关，只算 1 个独立样本。</span>';
     const order={"有效":0,"待验证":1,"实验中":2,"失效":3,"淘汰":4};
     for(const s of [...G.signals].filter(s=>s.sourceType!=="外部观点"||s.status==="有效").sort((a,b)=>(order[a.status]-order[b.status])||a.id.localeCompare(b.id))){
-      const r=s.research||{},o=s.holdout||{};
-      h+='<details style="border-top:1px solid var(--line);padding-top:8px"><summary style="cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center"><span style="min-width:0"><b class="num">'+esc(s.id)+'</b> '+esc(s.name)+'</span><span class="tag '+(STATUS_TAG[s.status]||"t-n")+'">'+esc(s.status)+'</span></summary>'+
-        '<table class="tbl" style="margin-top:6px"><thead><tr><th></th><th>样本</th><th>命中率</th><th>MAE</th><th>基准</th></tr></thead><tbody>'+
-        '<tr><td class="t">研究集</td><td>'+(r.n??0)+'</td><td>'+(r.rate!=null?r.rate.toFixed(1)+'%':'–')+(r.lo!=null?'<div class="sub tiny">'+r.lo+'~'+r.hi+'</div>':'')+'</td><td>'+(r.mae??'–')+'</td><td>'+(r.base??'–')+'%</td></tr>'+
-        '<tr><td class="t">留出集</td><td>'+(o.n??0)+'</td><td>'+(o.rate!=null?o.rate.toFixed(1)+'%':'–')+'</td><td>'+(o.mae??'–')+'</td><td>'+(o.base??'–')+'%</td></tr></tbody></table>'+
-        '<div class="sub tiny">条件 <code class="num">'+esc(s.when)+'</code> → '+(s.vote>0?'看涨':'看跌')+(s.scope!=="*"?' · 仅 '+esc((G.funds.find(f=>f.code===s.scope)||{}).short||s.scope):'')+'</div>'+
-        (s.statusHistory&&s.statusHistory.length>1?'<div class="sub tiny">'+s.statusHistory.slice(1).map(x=>esc(x.date+" "+x.from+"→"+x.to)).join("；")+'</div>':'')+'</details>';
+      const R=(s.stats||{}).research||{},O=(s.stats||{}).holdout||{},F=(s.stats||{}).forward||{};
+      const r=(lab,x)=>'<tr><td class="t">'+lab+'</td><td>'+(x.days||0)+'</td><td>'+pp(x.rate)+(x.lo!=null?'<div class="sub tiny">'+f2(x.lo)+'~'+f2(x.hi)+'</div>':'')+'</td><td>'+pp(x.base)+'</td><td>'+(x.signal_mean_forecast_mae!=null?f2(x.signal_mean_forecast_mae):'–')+'</td></tr>';
+      h+='<details style="border-top:1px solid var(--line);padding-top:8px"><summary style="display:flex;justify-content:space-between;gap:8px;align-items:center;min-height:36px"><span style="min-width:0"><b class="num">'+esc(s.id)+'</b> '+esc(s.name)+'</span><span class="tag '+(STATUS_TAG[s.status]||"t-n")+'">'+esc(s.status)+(s.pending?' → '+esc(s.pending.to)+' '+s.pending.count+'/'+G.config.signals.hysteresisDays:'')+'</span></summary>'+
+        '<div class="scroll"><table class="tbl" style="margin-top:6px"><thead><tr><th></th><th>交易日</th><th>方向命中</th><th>基准</th><th>幅度MAE</th></tr></thead><tbody>'+r("研究集",R)+r("留出集",O)+r("提出后",F)+'</tbody></table></div>'+
+        '<div class="sub tiny" style="line-height:1.6">条件 <code class="num">'+esc(s.when)+'</code> → '+(s.vote>0?'看涨':'看跌')+(s.scope!=="*"?' · 仅 '+esc((G.funds.find(f=>f.code===s.scope)||{}).short||s.scope):'')+' · 多重检验校正 '+(s.bhPass?'通过':'未通过')+' · 版本 v'+(s.version||1)+'</div>'+
+        '<div class="sub tiny">「幅度MAE」＝用触发时的历史平均涨跌当预测值的误差，衡量幅度能力，和方向命中是两回事。</div></details>';
     }
-    h+='<span class="sub tiny" style="line-height:1.6">状态：实验中（样本&lt;'+G.config.minSamples+'）→ 待验证 → 有效（研究集区间下限高于基准且留出集确认）→ 失效 → 淘汰（失效满 '+G.config.retireAfter+' 个交易日）。</span></div>';
-    const cl=[...(G.changelog||[])].reverse();
-    h+='<div class="card"><h2>规则版本</h2>'+(cl.length?cl.map(c=>'<div style="border-top:1px solid var(--line);padding-top:8px;font-size:13.5px"><b>'+esc(c.version)+'</b> <span class="tag '+(c.passed?'t-ok':'t-bad')+'">'+esc(c.status)+'</span> <span class="sub tiny">'+esc(String(c.createdAt).slice(0,10))+'</span><div>'+esc(c.change)+'</div>'+
-      (c.research&&c.research.old?'<table class="tbl"><thead><tr><th></th><th>命中 旧→新</th><th>MAE 旧→新</th></tr></thead><tbody><tr><td class="t">研究集</td><td>'+c.research.old.rate+'→'+c.research.new.rate+'</td><td>'+c.research.old.mae+'→'+c.research.new.mae+'</td></tr><tr><td class="t">留出集</td><td>'+c.holdout.old.rate+'→'+c.holdout.new.rate+'</td><td>'+c.holdout.old.mae+'→'+c.holdout.new.mae+'</td></tr></tbody></table>':
-       (c.research&&c.research.new?'<div class="sub tiny">研究集 命中 '+c.research.new.rate+'%、MAE '+c.research.new.mae+'；留出集 命中 '+c.holdout.new.rate+'%、MAE '+c.holdout.new.mae+'</div>':''))+'</div>').join(''):'<span class="sub small">暂无</span>')+'</div>';
+    h+='<span class="sub tiny" style="line-height:1.6">状态：实验中（不足 '+G.config.signals.minDays+' 个交易日）→ 待验证 → 有效（研究集区间下限高于基准、通过多重检验校正、留出集确认）→ 失效 → 淘汰（失效满 '+G.config.signals.retireAfter+' 个交易日）。转为有效或失效需要连续 '+G.config.signals.hysteresisDays+' 天满足条件。复盘提出的新规律只用提出之后的数据验证。</span></div>';
+    const cl=[...(G.modelLog||[])].reverse(), live=S.models||{};
+    h+='<div class="card"><h2>规则模型版本</h2>'+(cl.length?cl.map(c=>{const L=live[c.version];return '<div style="border-top:1px solid var(--line);padding-top:8px;font-size:13.5px;display:flex;flex-direction:column;gap:4px"><div><b>'+esc(c.version)+'</b> <span class="tag '+(c.status==="launched"?'t-ok':'t-bad')+'">'+(c.status==="launched"?'已上线':'未上线')+'</span> <span class="sub tiny">'+esc(String(c.createdAt).slice(0,10))+'</span></div><div>'+esc(c.change||"")+'</div>'+(c.reason?'<div class="sub small">'+esc(c.reason)+'</div>':'')+
+      '<div class="scroll"><table class="tbl"><thead><tr><th></th><th>命中</th><th>MAE</th></tr></thead><tbody>'+
+      '<tr><td class="t">研究集</td><td>'+(c.research.old?pp(c.research.old.rate)+'→':'')+pp(c.research.new.rate)+'</td><td>'+(c.research.old?f2(c.research.old.mae)+'→':'')+f2(c.research.new.mae)+'</td></tr>'+
+      '<tr><td class="t">留出集</td><td>'+(c.holdout.old?pp(c.holdout.old.rate)+'→':'')+pp(c.holdout.new.rate)+'</td><td>'+(c.holdout.old?f2(c.holdout.old.mae)+'→':'')+f2(c.holdout.new.mae)+'</td></tr>'+
+      (c.vsBenchmark?'<tr><td class="t">最佳基准（留出集）</td><td>'+pp(c.vsBenchmark.holdout.rate)+'</td><td>'+f2(c.vsBenchmark.holdout.mae)+'</td></tr>':'')+
+      '<tr><td class="t"><b>上线后实盘</b></td><td>'+(L?pp(L.rate):'–')+'</td><td>'+(L?f2(L.mae):'–')+'</td></tr></tbody></table></div><span class="sub tiny">'+(c.signals&&c.signals.length?'使用信号：'+esc(c.signals.join("、")):'没有被证明有效的信号，模型每天预测 0%。')+(L?' · 实盘 '+L.obs+' 个观测':'')+'</span></div>'}).join(''):'<span class="sub small">暂无</span>')+
+      '<span class="sub tiny">回测只是初筛；真正的检验是每个版本上线之后的实盘成绩。</span></div>';
     $("v-lab").innerHTML=h;
   }
 
@@ -429,12 +504,12 @@ textarea{min-height:40px;resize:vertical}
   document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
   try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
   async function load(){
-    const [config,funds,index,signals,stats,changelog,status,model]=await Promise.all(["config","funds","index","signals","stats","models/changelog","status","models/current"].map(n=>j(`data/${n}.json`)));
+    const [config,funds,holdings,index,signals,stats,modelLog,status,model]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current"].map(n=>j(`data/${n}.json`)));
     if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
-    G={config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),index,signals:signals||[],stats,changelog:changelog||[],status,model};
-    dayCache={};
+    G={config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
+    cache={};
     await renderPred();renderScore();renderLab();
-    $("foot").textContent=(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止填写。仅作实验记录，不构成投资建议。';
+    $("foot").textContent=(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止（集合竞价之前）。仅作实验记录，不构成投资建议。';
   }
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$("sheet").hidden)load()});
   load();

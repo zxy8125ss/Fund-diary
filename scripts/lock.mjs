@@ -2,6 +2,7 @@
 // - 新建 Issue「预测 YYYY-MM-DD」：校验作者 → serverLockedAt = issue.created_at（服务器时间）→ 写预测和锁定记录（只新建）→ 回复并关闭
 // - 在该 Issue 下评论：记为修正意见（服务器时间，不参与计分）
 import fs from 'node:fs';
+import zlib from 'node:zlib';
 import { P, exists, readJ, writeJ, writeOnce, CFG, toBJ, ms, deadlineOf, r2, sha256, checkReasons, batchAsOf } from './lib.mjs';
 
 const ev = readJ(process.env.GITHUB_EVENT_PATH);
@@ -10,7 +11,17 @@ const REPO = process.env.GITHUB_REPOSITORY;
 const TOKEN = process.env.GITHUB_TOKEN;
 const OWNER = CFG.owner;
 const issue = ev.issue;
-const m = /^预测\s+(\d{4}-\d{2}-\d{2})\s*$/.exec(issue?.title || '');
+// 正文：app 生成的 ```fd1 块（deflate-raw + base64url），或 ```json 块
+function parseBody(body) {
+  const z = /```fd1\s*([A-Za-z0-9_\-+\/=\s]+?)```/.exec(body || '');
+  if (z) return JSON.parse(zlib.inflateRawSync(Buffer.from(z[1].replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/'), 'base64')).toString('utf8'));
+  const raw = (/```(?:json)?\s*([\s\S]*?)```/.exec(body || '') || [null, body || ''])[1];
+  return JSON.parse(raw);
+}
+let parsed = null, parseErr = null;
+try { parsed = parseBody(issue?.body); } catch (e) { parseErr = e; }
+// 日期：标题「预测 YYYY-MM-DD」优先；GitHub App 里标题没带上时，用正文里的日期
+const m = /^预测\s+(\d{4}-\d{2}-\d{2})\s*$/.exec(issue?.title || '') || (/^\d{4}-\d{2}-\d{2}$/.test(parsed?.date || '') ? [null, parsed.date] : null);
 
 async function gh(method, url, body) {
   const r = await fetch(`https://api.github.com/repos/${REPO}${url}`, { method, headers: { authorization: `Bearer ${TOKEN}`, accept: 'application/vnd.github+json', 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
@@ -26,10 +37,9 @@ if (EVENT === 'issues') {
   if (issue.user.login !== OWNER) { await reply('只接受仓库主人提交的预测，本条不记录。'); await close(); process.exit(0); }
   const serverLockedAt = toBJ(ms(issue.created_at));
   if (exists(P('predictions', T, 'user.json'))) { await reply(`${T} 已经有一份锁定的预测，不能覆盖。需要补充请在原 Issue 下评论（记为修正意见）。`); await close(); process.exit(0); }
-  // 解析正文里的 JSON
-  const raw = (/```(?:json)?\s*([\s\S]*?)```/.exec(issue.body || '') || [null, issue.body || ''])[1];
-  let sub;
-  try { sub = JSON.parse(raw); } catch (e) { await reply('没能读出预测内容（JSON 格式错误），本条不记录。请回到 app 重新提交。'); await close(); process.exit(0); }
+  const sub = parsed;
+  if (!sub || parseErr) { await reply('没能读出预测内容（格式错误），本条不记录。请回到 app 重新提交。'); await close(); process.exit(0); }
+  if (sub.date && sub.date !== T) { await reply(`标题日期 ${T} 和正文日期 ${sub.date} 不一致，本条不记录。`); await close(); process.exit(0); }
   const funds = readJ(P('funds.json'));
   const holdings = readJ(P('state', 'holdings.json'), {});
   const clean = x => {
