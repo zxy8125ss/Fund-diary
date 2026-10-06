@@ -221,7 +221,7 @@ textarea{min-height:40px;resize:vertical}
     }
     // 市场依据
     const items=d.snap?d.snap.items.filter(i=>!i.hidden&&i.kind==="行情"&&(!i.key.includes(".")||i.key.startsWith(code))):[];
-    if(items.length)h+='<div class="card"><h2>市场依据 <span class="sub small" style="font-weight:400">'+esc(BATCH[d.batch]||"")+'快照，均为预测前已可获得</span></h2><table class="tbl"><tbody>'+items.map(i=>'<tr><td class="t">'+esc(i.name)+'</td><td class="'+cls(i.value)+'">'+fmt(i.value)+'</td><td class="sub tiny">'+esc(i.dataTime)+'</td></tr>').join('')+'</tbody></table></div>';
+    if(items.length)h+='<div class="card"><h2>市场依据 <span class="sub small" style="font-weight:400">'+esc(BATCH[d.batch]||"")+'快照，均为预测前已可获得</span></h2><table class="tbl"><tbody>'+items.map(i=>'<tr><td class="t">'+esc(i.name)+'</td><td class="'+cls(i.value)+'">'+fmt(i.value)+'</td><td class="sub tiny" style="white-space:nowrap">'+esc(String(i.dataTime).slice(5,10))+'</td></tr>').join('')+'</tbody></table></div>';
     // 触发的历史规律
     const trig=visibleTrig(d,code);
     h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigRate(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table><span class="sub tiny">只有「有效」的规律可以作为预测依据。</span>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
