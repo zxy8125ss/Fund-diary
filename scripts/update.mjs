@@ -464,9 +464,10 @@ ${recent}
 相关快讯：
 ${newsCache.join('\n') || '无'}
 
-历史证据（回测+实盘，每条信号触发后的命中率与95%区间）：
-${stats.rules.filter(x => x.n >= 20).map(x => { const r = strategy.rules.find(y => y.id === x.id); return `${r.name}：${x.rate}%（${x.lo}~${x.hi}，${x.n}次，${x.verdict}）`; }).join('\n')}
-命中率低于50%的规律，实际更常反着走，不能按原方向当依据（例如"超跌反弹"若低于50%，就不能说超跌会反弹）；"不确定"的只能作辅助。要点里引用任何规律，都要写出它的历史命中率。
+今天每只基金实际触发的信号（只有这些成立，没列出的规律今天不成立，不能说"触发了"）：
+${CODES.map(c => { const fired = rulePreds[c].fired || []; return `${FUND[c].short}：` + (fired.length ? fired.map(id => { const r = strategy.rules.find(y => y.id === id), x = stats.rules.find(y => y.id === id); return `${r.name}（历史命中${x?.rate ?? '–'}%，${x?.n ?? 0}次）`; }).join('；') : '无'); }).join('\n')}
+历史上反着走的规律（命中率低于50%，绝不能按原方向当依据）：${stats.rules.filter(x => x.n >= 20 && x.rate < 50).map(x => { const r = strategy.rules.find(y => y.id === x.id); return `"${r.name}"只有${x.rate}%`; }).join('；') || '无'}。比如"跌多了会反弹"若在这里，就不能用"超跌反弹"做理由。
+引用任何规律都要写出它的历史命中率；没有历史验证的判断要说明是主观判断。
 
 要求：用你自己的分析思路，不要转述别人的观点。
 1. 先判断科技仓整体：tech.points 3~5 条分析思路，每条 {"k":"维度","t":"判断+市场依据，40字内，必须带具体数值或快讯"}，维度从 外盘、板块动量、资金与情绪、消息面、历史规律 中选；tech.conclusion 一句话结论；tech.v 科技仓整体预测涨跌幅。
@@ -492,7 +493,7 @@ async function makePrediction(T, phaseNote, keepEvening) {
   const gx = old?.guxia || null;
   if (gx?.stance != null) feat.c.guxia = gx.stance;
   const preds = buildPreds(strategy, feat, bt.cal);
-  const day = { date: T, phase: 'live', format: LIVE_FMT, status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, lockedAt: phaseNote.includes('定稿') ? nowStr : null, features: feat, preds, actual: old?.actual || {}, guxia: gx };
+  const day = { date: T, phase: 'live', format: LIVE_FMT, ev: 3, status: 'pending', strategyVersion: strategy.version, madeAt: nowStr + phaseNote, lockedAt: phaseNote.includes('定稿') ? nowStr : null, features: feat, preds, actual: old?.actual || {}, guxia: gx };
   if (keepEvening && old?.preds && old.format === LIVE_FMT) day.predsEvening = old.preds;
   try {
     const note = phaseNote.includes('定稿') ? '这是开盘前定稿，隔夜美股已收盘。' : (isTD(today) ? '' : '今天A股休市，注意休市期间外盘累计表现。');
@@ -508,7 +509,7 @@ try {
     const e = rec.days[T];
     const isEve = addDays(today, 1) === T || isTD(today);
     if (e?.status === 'reviewed') log(`${T} 已复盘`);
-    else if (!e || e.format !== LIVE_FMT || !e.tech?.points || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
+    else if (!e || e.format !== LIVE_FMT || !e.tech?.points || e.ev !== 3 || !e.features || e.features.c.sh_prev == null || e.features.c.sox_on == null || (isEve && !String(e.madeAt || '').startsWith(today))) {
       const P = tdays.filter(d => d < T).at(-1) || today;
       let gx = null;
       try { gx = await guxia(P); log(`天津股侠：${gx.stance ?? '无观点'} ${gx.summary}`); } catch (err) { log('天津股侠抓取失败：' + err.message); }
