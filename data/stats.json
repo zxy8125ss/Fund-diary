@@ -1,0 +1,744 @@
+{
+ "updatedAt": "2026-10-06T20:16:03+08:00",
+ "sampleUnit": "交易日 × 基金",
+ "predictors": {
+  "user": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null,
+   "lockedDays": 0
+  },
+  "bench_external_raw": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_external_beta": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_prev": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "bench_zero": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "model": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  },
+  "ai": {
+   "obs": 0,
+   "days": 0,
+   "hit": 0,
+   "rate": null,
+   "mae": null
+  }
+ },
+ "compare": {
+  "user": {
+   "bench_external_raw": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_prev": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_zero": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "model": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "ai": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   }
+  },
+  "model": {
+   "bench_external_raw": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_prev": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_zero": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   }
+  },
+  "ai": {
+   "bench_external_raw": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_prev": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   },
+   "bench_zero": {
+    "obs": 0,
+    "days": 0,
+    "mae": {
+     "mine": null,
+     "bench": null,
+     "improvePct": null,
+     "meanGain": null,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    },
+    "direction": {
+     "mine": null,
+     "bench": null,
+     "liftPP": null,
+     "wins": 0,
+     "losses": 0,
+     "both": 0,
+     "neither": 0,
+     "ci95": null,
+     "signFlipP": null,
+     "alwaysValidP": null
+    }
+   }
+  }
+ },
+ "conclusion": {
+  "bestDirectionBenchmark": null,
+  "bestMaeBenchmark": null,
+  "endpoints": [
+   {
+    "id": "MAE",
+    "bench": null,
+    "p": null
+   },
+   {
+    "id": "DIR",
+    "bench": null,
+    "p": null
+   }
+  ],
+  "obs": 0,
+  "days": 0,
+  "gateOpen": false,
+  "verdict": "insufficient"
+ },
+ "byFund": {
+  "002910": {
+   "user": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_raw": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "005698": {
+   "user": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_raw": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "024481": {
+   "user": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_raw": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "015060": {
+   "user": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_raw": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   }
+  },
+  "001672": {
+   "user": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_raw": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_external_beta": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_prev": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "bench_zero": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "model": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   },
+   "ai": {
+    "obs": 0,
+    "rate": null,
+    "mae": null
+   }
+  }
+ },
+ "evidence": {
+  "clean": {
+   "obs": 0,
+   "rate": null,
+   "mae": null
+  },
+  "flagged": {
+   "obs": 0,
+   "rate": null,
+   "mae": null
+  },
+  "subjective": {
+   "obs": 0,
+   "rate": null,
+   "mae": null
+  }
+ },
+ "models": {},
+ "aiVersions": {},
+ "reliable": [
+  {
+   "id": "R001",
+   "name": "隔夜外盘大涨跟涨（QDII看纳指，其余看费城半导体）",
+   "days": 89,
+   "rate": 65.32,
+   "lo": 54.98,
+   "hi": 74.38,
+   "base": 55.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R005",
+   "name": "单日大跌超3%后反抽",
+   "days": 59,
+   "rate": 62.32,
+   "lo": 49.56,
+   "hi": 73.57,
+   "base": 55.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R017",
+   "name": "锚定指数近3日涨超3%（动量延续）",
+   "days": 85,
+   "rate": 59.26,
+   "lo": 48.63,
+   "hi": 69.08,
+   "base": 55.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R011",
+   "name": "跑输锚定指数2%以上，次日补涨",
+   "days": 57,
+   "rate": 59.65,
+   "lo": 46.7,
+   "hi": 71.39,
+   "base": 55.9,
+   "status": "待验证"
+  },
+  {
+   "id": "R015",
+   "name": "隔夜纳指涨超1%（科技跟涨）",
+   "days": 45,
+   "rate": 61.11,
+   "lo": 46.54,
+   "hi": 73.94,
+   "base": 55.9,
+   "status": "待验证"
+  }
+ ],
+ "deceptive": [
+  {
+   "id": "R012",
+   "name": "跑赢锚定指数2%以上，次日回吐",
+   "days": 82,
+   "rate": 44.21,
+   "lo": 33.96,
+   "hi": 54.98,
+   "base": 44.1,
+   "status": "待验证"
+  },
+  {
+   "id": "R018",
+   "name": "锚定指数近3日跌超3%（动量延续）",
+   "days": 57,
+   "rate": 42.93,
+   "lo": 30.93,
+   "hi": 55.82,
+   "base": 44.1,
+   "status": "待验证"
+  },
+  {
+   "id": "R013",
+   "name": "周一看跌",
+   "days": 39,
+   "rate": 43.85,
+   "lo": 29.53,
+   "hi": 59.27,
+   "base": 44.1,
+   "status": "待验证"
+  },
+  {
+   "id": "R004",
+   "name": "近5日涨超8%，涨多回调",
+   "days": 60,
+   "rate": 48.36,
+   "lo": 36.2,
+   "hi": 60.72,
+   "base": 44.1,
+   "status": "待验证"
+  },
+  {
+   "id": "R014",
+   "name": "恒生科技前一日大涨跟涨",
+   "days": 31,
+   "rate": 46.78,
+   "lo": 30.56,
+   "hi": 63.7,
+   "base": 55.9,
+   "status": "待验证"
+  }
+ ]
+}
