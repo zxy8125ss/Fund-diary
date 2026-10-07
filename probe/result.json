@@ -1,0 +1,53 @@
+{
+ "gemini-3.8-flash": {
+  "status": 200,
+  "head": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"受人工智能（AI）芯片制造需求激增及中国市场强劲销售提振，半导体设备巨头应用材料（Applied Materials）最新公布的季度业绩与下季度营收指引均超华尔街预期，带动板块情绪回暖。（来源：路透社 / 彭博社）\",\n            \"thoughtSignature\": \"EvYRCvMRAWkUfRP8GSqZterNzodUXd9wIuDSSrQBqOmqT1fTGvLSXG5GQH9pyyc4QvNl4QXWETivxFKxy5Ck3YyA/ODOo4ROxck60O7NLiogz5Y1vbuFQZcgbZTlv5KuOcIF/g7JUOQSZUdM9nspHIxbT72p7XyhW7kBFf01fDl0/BtP1iqY+KE7AWX6fwYXLZiecI5k9vIIkONaW7LvlSFn2TMZVI5Er7jw4ODq8veYMtnA4bwep4FoRG3FdXpOTAec"
+ },
+ "gemini-3.8-flash+search": {
+  "status": 429,
+  "head": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quota"
+ },
+ "gemini-3.6-flash": {
+  "status": 200,
+  "head": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"受微软发布搭载高通骁龙芯片的全新AI PC产品提振，高通股价创下历史新高，同时投资者在英伟达（Nvidia）即发布财报前保持强劲乐观情绪，推动美股半导体板块整体走强。（来源：路透社/彭博社）\",\n            \"thoughtSignature\": \"EuwYCukYAWkUfROBWCugAmAHQQ8zKicNAOz5GMJJ2eE2Sj6JtizmtvaIE3tufIj33OOr+O9q526z914aQa0WYXLD1I+N5N3baiBzZjJD73uIjCz2U+GtoHBvGZ2S5CKCzwVwBlvDpGxe23iFo2/1JKxSs0nCW0JF3JsguXa4uxJipmjs4pDWlVl/8x2Rs0ct8IlNIBA0vW1LiXiCekOia5WrYk4i86CPIF06bLAsRPs6cQwO3LkALsn3KbLgmYvP6/SLjzoT5e6U3J4U"
+ },
+ "gemini-3.6-flash+search": {
+  "status": 429,
+  "head": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quota"
+ },
+ "gemini-3.5-flash-lite": {
+  "status": 200,
+  "head": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"过去24小时美股半导体板块的重要新闻为：**台积电因地震暂停部分晶圆厂生产并疏散员工，引发市场对全球芯片供应链潜在中断的担忧，导致半导体板块普遍承压。**\\n\\n（来源：路透社 / Bloomberg）\",\n            \"thoughtSignature\": \"EmAKXgFpFH0T7xrYc9KJZJvPx3K04R69kw17aAQ0pEs6J4raguZ6GiASwLX+2U24LVXHTMJDVPYSCHUWlDhi6jZWrtO4fSXY8xFmoyejdUf3edOU1GUewTG8fHxDaNpxjNM=\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\":"
+ },
+ "gemini-3.5-flash-lite+search": {
+  "status": 429,
+  "head": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quota"
+ },
+ "models": "models/gemini-2.5-flash models/gemini-2.5-pro models/gemini-2.5-flash-preview-tts models/gemini-2.5-pro-preview-tts models/gemma-4-26b-a4b-it models/gemma-4-31b-it models/gemini-flash-latest models/gemini-flash-lite-latest models/gemini-pro-latest models/gemini-2.5-flash-lite models/gemini-2.5-flash-image models/gemini-3-flash-preview models/gemini-3.1-pro-preview models/gemini-3.1-pro-preview-customtools models/gemini-3.1-flash-lite-preview models/gemini-3.1-flash-lite models/gemini-3-pro-image-preview models/gemini-3-pro-image models/nano-banana-pro-preview models/gemini-3.1-flash-image-preview models/gemini-3.1-flash-image models/gemini-3.1-flash-lite-image models/gemini-nano-banana-2.1 models/gemini-3.5-flash models/gemini-3.5-flash-lite models/gemini-omni-flash-preview models/gemini-omni-1.1-flash models/gemini-3.5-transcribe models/gemini-3.6-flash models/gemini-3.7-flash models/gemini-3.8-flash models/lyria-3-clip-preview models/lyria-3-pro-preview models/lyria-3.5 models/gemini-3.1-flash-tts-preview models/gemini-3.8-flash-tts models/gemini-3.8-flash-lite-tts models/gemini-robotics-er-2-preview models/gemini-2.5-computer-use-preview-10-2025 models/antigravity-preview-05-2026 models/antigravity-preview-09-2026 models/antigravity-preview-latest models/deep-research-max-preview-04-2026 models/deep-research-preview-04-2026 models/deep-research-pro-preview-12-2025 models/gemini-embedding-001 models/gemini-embedding-2-preview models/gemini-embedding-2 models/aqa models/veo-3.1-generate-preview models/veo-3.1-fast-generate-preview models/veo-3.1-lite-generate-preview models/gemini-3.5-transcribe-live models/gemini-2.5-flash-native-audio-latest models/gemini-2.5-flash-native-audio-preview-09-2025 models/gemini-2.5-flash-native-audio-preview-12-2025 models/gemini-3.1-flash-live-preview models/gemini-3.8-live models/gemini-3.8-live-extended-thinking models/gemini-robotics-er-2-streaming-preview models/gemini-3.5-live-translate-preview models/lyria-realtime-exp",
+ "wscn": {
+  "n": 100,
+  "first": 1791342606,
+  "last": 1791307403,
+  "next": "1791307403",
+  "sample": [
+   "港股半导体股走低，澜起科技跌近8%，爱芯元智跌超5%，纳芯微、晶合集成、兆易创新跌超4%，华虹宏力、江波龙跌超2%。",
+   "国家医保局日前发布数据，2026年1月至8月，我国基本医疗保险（含生育保险）统筹基金总收入20727.72亿元，基本医疗保险（含生育保险）统筹基金总支出1550",
+   "中国9月末黄金储备7747万盎司，8月末黄金储备7673万盎司。"
+  ]
+ },
+ "jin10": {
+  "n": 21,
+  "first": "2026-10-07 11:08:09",
+  "last": "2026-10-07 10:47:50",
+  "sample": [
+   "{\"content\":\"<span class=\\\"section-news\\\">1. DRAM迎超级成长周期，传南亚科计划涨价，涨幅最高达20%。</span><br/><span class=\\\"section-news\\\">2. 三星",
+   "{\"content\":\"\",\"exclusive_to\":[\"plus\"],\"lock\":true,\"vip_desc\":\"PLUS专享快讯，解锁直达\",\"vip_title\":\"伯恩斯坦：阿尔茨海默症生物药市场\\\"仍处山脚\\\"，2037年",
+   "{\"content\":\"【胡塞武装称袭击沙特哈立德国王国际机场等多处目标】金十数据10月7日讯，据路透社7日消息，也门胡塞武装称，使用无人机袭击了沙特首都利雅得的哈立德国王国际机场及艾卜哈机场，此外还用弹道导弹和无人机袭击了海米斯穆谢特的空"
+  ]
+ },
+ "sina5": {
+  "n": 100,
+  "first": "2026-10-07 00:02:16",
+  "last": "2026-10-06 22:30:38"
+ }
+}
