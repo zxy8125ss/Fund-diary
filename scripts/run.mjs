@@ -385,7 +385,7 @@ async function news(sinceIso, untilIso) {
   for (const n of out.sort((a, b) => ms(a.time) - ms(b.time))) {
     const t = ms(n.time); if (!(t >= lo && t <= hi) || NEWS_DROP.test(n.text) || n.text.length < 12) continue;
     const k = n.text.replace(/[【】\[\]（）()，。：:、\s"“”]/g, '').slice(0, 22); if (seen.has(k)) continue; seen.add(k);
-    res.push({ id: `NEWS@${n.src}:${n.sid}`, time: new Date(t).toISOString(), text: n.text.slice(0, 220), source: n.source, url: n.url, relevant: NEWS_KEYS.test(n.text), score: n.score });
+    res.push({ id: `NEWS@${n.src}:${n.sid}`, time: toBJ(t), text: n.text.slice(0, 220), source: n.source, url: n.url, relevant: NEWS_KEYS.test(n.text), score: n.score });
   }
   return res;
 }
@@ -393,7 +393,7 @@ async function news(sinceIso, untilIso) {
 async function newsDigest(T, items, asOf) {
   const list = items.filter(i => i.kind === '消息');
   if (list.length < 3) return null;
-  const txt = list.map(i => `[${i.id}] ${i.dataTime.slice(5, 16).replace('T', ' ')} ${i.text}`).join('\n');
+  const txt = list.map(i => `[${i.id}] ${toBJ(ms(i.dataTime)).slice(5, 16).replace("T", " ")} ${i.text.slice(0, 140)}`).join('\n');
   const fundsTxt = funds.map(f => `${f.code} ${f.short}：${f.drivers.join('；')}`).join('\n');
   const { out, modelName } = await gemini(`你是基金持有人的资讯助理。下面是北京时间 ${asOf} 之前抓到的财经快讯（上一个 A 股收盘以来），请整理成预测 ${T} 当天基金涨跌前需要知道的消息面要点。
 要求：
@@ -441,7 +441,9 @@ function snapshotItems(feat, newsList, asOfIso) {
     const name = (code ? `${FUND[code].short}${sub === 'prev' ? ' 上一净值日涨跌' : ' 锚定（' + FUND[code].anchor.name + '）'}` : VAR_NAMES[k] || k) + (ref.days > 1 ? `（${ref.from}起 ${ref.days} 个交易日累计）` : '');
     items.push({ id: ref.id, key: k, name, value, unit: '%', source: ref.source || null, dataTime: ref.date, cutoff: ref.cutoff, fetchedAt: nowISO, kind: '行情' });
   }
-  const rel = newsList.filter(n => n.relevant), pick = (rel.length >= 15 ? rel : newsList).slice(-80);
+  const rel = newsList.filter(n => n.relevant), base = rel.length >= 15 ? rel : newsList;
+  const keep = base.length <= 150 ? base : [...base.filter(n => n.score > 0), ...base.filter(n => !(n.score > 0)).slice(-150)].slice(0, 150);
+  const pick = keep.sort((a, b) => ms(a.time) - ms(b.time));
   for (const n of pick)
     items.push({ id: n.id, name: '快讯', text: n.text, source: n.source, url: n.url || undefined, dataTime: n.time, cutoff: n.time, fetchedAt: nowISO, kind: '消息' });
   return items;
