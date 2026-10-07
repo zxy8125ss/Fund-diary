@@ -142,7 +142,8 @@ details>summary{cursor:pointer}
   const cls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
   const WD="日一二三四五六";
   const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return String(t.getUTCMonth()+1).padStart(2,"0")+"."+String(t.getUTCDate()).padStart(2,"0")+" 周"+WD[t.getUTCDay()]};
-  const hm=iso=>iso?String(iso).slice(11,16):"";
+  const md=iso=>{const t=Date.parse(iso);return isNaN(t)?"":new Date(t+8*3600e3).toISOString().slice(5,10).replace("-","/")};
+  const hm=iso=>{if(!iso)return "";const t=Date.parse(iso);return isNaN(t)?String(iso).slice(11,16):new Date(t+8*3600e3).toISOString().slice(11,16)};
   const bjNow=()=>new Date(Date.now()+8*3600e3);
   const nowIso=()=>bjNow().toISOString().slice(0,19)+"+08:00";
   const todayBJ=()=>bjNow().toISOString().slice(0,10);
@@ -325,7 +326,7 @@ details>summary{cursor:pointer}
       h+='<ol class="news">'+dg.points.map(p=>{const r=byId[p.refs[0]];return '<li><div class="chips"><span class="tag t-ac">'+esc(p.tag)+'</span><span class="tag '+(EF[p.effect]||"t-n")+'">'+esc(p.effect)+'</span>'+(p.funds||[]).map(c=>'<span class="tag t-n">'+esc(fname(c))+'</span>').join('')+'</div><div>'+esc(p.text)+'</div>'+(r?'<span class="sub tiny">'+esc(r.source||"")+' '+esc(hm(r.dataTime))+(p.refs.length>1?' 等 '+p.refs.length+' 条':'')+'</span>':'')+'</li>'}).join('')+'</ol>';
       h+='<span class="sub tiny">要点由 AI 根据下面的原始快讯整理，只做归纳不做涨跌判断；每条都能在原文里核对。</span>';
     }
-    if(nw.length)h+='<details'+(open&&!dg?' open':'')+'><summary class="small">全部快讯（'+nw.length+'）</summary><ul class="pts" style="font-size:13px;margin-top:6px">'+nw.slice().reverse().map(it=>'<li><span class="sub num">'+esc(String(it.dataTime).slice(5,10).replace("-","/"))+' '+esc(hm(it.dataTime))+'</span> '+esc(it.text)+' <span class="sub tiny">'+esc(it.source||"")+'</span></li>').join('')+'</ul></details>';
+    if(nw.length)h+='<details'+(open&&!dg?' open':'')+'><summary class="small">全部快讯（'+nw.length+'）</summary><ul class="pts" style="font-size:13px;margin-top:6px">'+nw.slice().reverse().map(it=>'<li><span class="sub num">'+esc(md(it.dataTime))+' '+esc(hm(it.dataTime))+'</span> '+esc(it.text)+' <span class="sub tiny">'+esc(it.source||"")+'</span></li>').join('')+'</ul></details>';
     return h+'</div>';
   }
   function step1(d){
