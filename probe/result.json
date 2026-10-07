@@ -1,0 +1,39 @@
+{
+ "em": {
+  "status": 567,
+  "len": 7072,
+  "head": "<!doctype html><html lang=zh-CN><meta charset=UTF-8><meta content=\"width=device-width,initial-scale=1\" name=viewport><title></title><style>*{margin:0;padding:0;box-sizing:border-box}html{background:#fff;font-family:\"PingFang SC\",-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Ari"
+ },
+ "sina": {
+  "status": 200,
+  "len": 224514,
+  "head": "{\"result\":{\"status\":{\"code\":0,\"msg\":\"OK\"},\"timestamp\":\"Wed Oct 07 11:11:40 +0800 2026\",\"data\":{\"zhibo\":[],\"focus\":[],\"top\":{\"list\":[],\"html\":\"\",\"top_ids\":\"\",\"survey_id\":[]},\"feed\":{\"list\":[{\"id\":5129389,\"zhibo_id\":152,\"type\":0,\"rich_text\":\"\\u3010\\u524d\\u77bb\\uff1a\\u98df\\u54c1\\u4ef7\\u683c\\u4e0a\\u6da8"
+ },
+ "cls": {
+  "status": 404,
+  "len": 8685,
+  "head": "<!DOCTYPE html><html lang=\"zh\"><head><meta charSet=\"utf-8\" data-next-head=\"\"/><meta name=\"viewport\" content=\"width=device-width\" data-next-head=\"\"/><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge,chrome=1\"/><meta name=\"renderer\" content=\"webkit\"/><meta http-equiv=\"Content-Language\" content=\"zh-c"
+ },
+ "jin10": {
+  "status": 200,
+  "len": 20571,
+  "head": "{\"status\":200,\"message\":\"OK\",\"data\":[{\"channel\":[1],\"data\":{\"content\":\"<span class=\\\"section-news\\\">1. DRAM迎超级成长周期，传南亚科计划涨价，涨幅最高达20%。</span><br/><span class=\\\"section-news\\\">2. 三星电机签订2900亿韩元AI服务器MLCC供应合同。</span><br/><span class=\\\"section-news\\\">3. 三星斥资近50亿美元在韩越扩产半导体基板。</span><br/><span class=\\\"secti"
+ },
+ "wsj": {
+  "status": 200,
+  "len": 117162,
+  "head": "{\"code\":20000,\"message\":\"OK\",\"data\":{\"items\":[{\"article\":null,\"author\":{\"avatar\":\"https://wpimg-wscn.awtmt.com/3975af19-a3cf-40d4-908a-8f582b8fefcc\",\"display_name\":\"贺晨\",\"id\":269141,\"is_followed\":false,\"uri\":\"https://wallstreetcn.com/authors/269141\"},\"ban_comment\":false,\"channels\":[\"global-channel\",\""
+ },
+ "g_gemini-3.6-flash": {
+  "status": 429,
+  "head": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n   "
+ },
+ "g_gemini-3.5-flash-lite": {
+  "status": 429,
+  "head": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.Help\",\n        \"links\": [\n          {\n            \"description\": \"Learn more about Gemini API quotas\",\n            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n          }\n        ]\n   "
+ },
+ "g_gemini-2.5-flash": {
+  "status": 404,
+  "head": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started).\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n"
+ }
+}
