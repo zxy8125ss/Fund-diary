@@ -3,3 +3,4 @@ import { execSync } from 'node:child_process';
 execSync('rm -rf /tmp/fd && mkdir /tmp/fd && cp -r scripts data /tmp/fd/ && mkdir -p probe/out', { stdio: 'inherit' });
 try { execSync('node scripts/run.mjs', { cwd: '/tmp/fd', stdio: 'inherit', env: { ...process.env, NOW_MS: String(Date.parse('2026-10-07T13:40:00Z')) } }); } catch (e) { console.error(e.message); }
 execSync('cp -r /tmp/fd/data/snapshots /tmp/fd/data/digests /tmp/fd/data/predictions /tmp/fd/data/triggers probe/out/ 2>/dev/null || true; ls -R probe/out > probe/result.json', { stdio: 'inherit', shell: '/bin/bash' });
+// rerun 1791342885

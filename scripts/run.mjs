@@ -354,18 +354,66 @@ async function gemini(text, label) {
   }
   throw new Error('Gemini 不可用');
 }
-const NEWS_KEYS = /半导体|芯片|PCB|覆铜板|MLCC|光模块|英伟达|台积电|美联储|关税|出口管制|央行|降准|降息|证监会|科创|纳斯达克|美股|港股|A股|算力|AI|存储|汇率|国务院/;
-async function news() {
+const NEWS_KEYS = /半导体|芯片|晶圆|存储|DRAM|HBM|NAND|PCB|覆铜板|MLCC|电子元件|被动元件|光模块|光纤|光通信|算力|服务器|AI|人工智能|大模型|机器人|英伟达|台积电|AMD|博通|美光|三星|SK海力士|苹果|微软|谷歌|Meta|特斯拉|阿斯麦|ASML|高通|英特尔|应用材料|美股|纳指|纳斯达克|标普|道指|费城|中概|港股|恒生|恒指|A股|沪指|上证|深成|创业板|科创|北向|证监会|央行|人民银行|降准|降息|LPR|国务院|发改委|工信部|财政部|商务部|美联储|鲍威尔|非农|CPI|PCE|通胀|美债|收益率|美元|人民币|汇率|关税|出口管制|制裁|实体清单|地缘|停火|原油|黄金|IPO|减持|增持|回购/;
+const NEWS_DROP = /^【?(金十|快讯)?图示|PLUS专享|^$/;
+// 新闻：华尔街见闻 7×24（主）+ 新浪财经 7×24（备）+ 金十（补），覆盖上一 A 股收盘以来的全部快讯；全部带服务器发布时间
+async function news(sinceIso, untilIso) {
+  const lo = ms(sinceIso), hi = ms(untilIso), out = [], errs = [];
   try {
-    const t = await get(`https://np-listapi.eastmoney.com/comm/web/getFastNewsList?client=web&biz=web_724&fastColumn=102&sortEnd=&pageSize=100&req_trace=${Date.now()}`);
-    const list = JSON.parse(t)?.data?.fastNewsList || []; if (!list.length) throw new Error('空');
-    return list.map(n => ({ time: String(n.showTime).replace(' ', 'T') + '+08:00', text: `${n.title || ''}：${(n.summary || '').slice(0, 100)}` }));
-  } catch {
-    try {
-      const t = await get('https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=100&zhibo_id=152&tag_id=0&dire=f&dpc=1');
-      return (JSON.parse(t)?.result?.data?.feed?.list || []).map(n => ({ time: String(n.create_time).replace(' ', 'T') + '+08:00', text: String(n.rich_text).replace(/<[^>]+>/g, '').slice(0, 120) }));
-    } catch (e) { log('快讯抓取失败：' + e.message); return []; }
+    let cursor = '';
+    for (let p = 0; p < 8; p++) {
+      const j = JSON.parse(await get(`https://api-one-wscn.awtmt.com/apiv1/content/lives?channel=global-channel&limit=100${cursor ? '&cursor=' + cursor : ''}`));
+      const it = j?.data?.items || []; if (!it.length) break;
+      for (const n of it) out.push({ src: 'wscn', sid: n.id, time: new Date(n.display_time * 1000).toISOString(), text: String(n.content_text || n.title || '').replace(/\s+/g, ' ').trim(), source: '华尔街见闻', url: n.uri || null, score: n.score || 0 });
+      cursor = j.data.next_cursor; if (!cursor || it.at(-1).display_time * 1000 < lo) break;
+    }
+  } catch (e) { errs.push('华尔街见闻 ' + e.message); }
+  try {
+    for (let p = 1; p <= 12; p++) {
+      const j = JSON.parse(await get(`https://zhibo.sina.com.cn/api/zhibo/feed?page=${p}&page_size=100&zhibo_id=152&tag_id=0&dire=f&dpc=1`));
+      const it = j?.result?.data?.feed?.list || []; if (!it.length) break;
+      for (const n of it) out.push({ src: 'sina', sid: n.id, time: String(n.create_time).replace(' ', 'T') + '+08:00', text: String(n.rich_text || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(), source: '新浪财经', url: null, score: 0 });
+      if (ms(String(it.at(-1).create_time).replace(' ', 'T') + '+08:00') < lo) break;
+    }
+  } catch (e) { errs.push('新浪 ' + e.message); }
+  try {
+    const j = JSON.parse(await get('https://flash-api.jin10.com/get_flash_list?channel=-8200&vip=1', { headers: { 'x-app-id': 'bVBF4FyRTn5NJF5n', 'x-version': '1.0.0', referer: 'https://www.jin10.com/' } }));
+    for (const n of j?.data || []) { if (n.data?.lock) continue; out.push({ src: 'jin10', sid: n.id, time: String(n.time).replace(' ', 'T') + '+08:00', text: String(n.data?.content || '').replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(), source: '金十数据', url: null, score: n.important ? 1 : 0 }); }
+  } catch (e) { errs.push('金十 ' + e.message); }
+  if (errs.length) log('快讯源失败：' + errs.join('；'));
+  const seen = new Set(), res = [];
+  for (const n of out.sort((a, b) => ms(a.time) - ms(b.time))) {
+    const t = ms(n.time); if (!(t >= lo && t <= hi) || NEWS_DROP.test(n.text) || n.text.length < 12) continue;
+    const k = n.text.replace(/[【】\[\]（）()，。：:、\s"“”]/g, '').slice(0, 22); if (seen.has(k)) continue; seen.add(k);
+    res.push({ id: `NEWS@${n.src}:${n.sid}`, time: new Date(t).toISOString(), text: n.text.slice(0, 220), source: n.source, url: n.url, relevant: NEWS_KEYS.test(n.text), score: n.score });
   }
+  return res;
+}
+// 消息面摘要：只根据抓到的真实快讯写，每条必须引用快讯编号；不做涨跌判断
+async function newsDigest(T, items, asOf) {
+  const list = items.filter(i => i.kind === '消息');
+  if (list.length < 3) return null;
+  const txt = list.map(i => `[${i.id}] ${i.dataTime.slice(5, 16).replace('T', ' ')} ${i.text}`).join('\n');
+  const fundsTxt = funds.map(f => `${f.code} ${f.short}：${f.drivers.join('；')}`).join('\n');
+  const { out, modelName } = await gemini(`你是基金持有人的资讯助理。下面是北京时间 ${asOf} 之前抓到的财经快讯（上一个 A 股收盘以来），请整理成预测 ${T} 当天基金涨跌前需要知道的消息面要点。
+要求：
+- 只能使用下面列出的快讯，不得补充任何列表外的信息；每条要点必须在 refs 里写出所依据的快讯编号。
+- 按重要性排序，最多 8 条；合并重复报道；每条 60 字以内，写清楚事实和数字。
+- tag 只能是：海外市场、国内政策、行业动态、公司、宏观数据、地缘 之一。
+- funds 写可能受影响的基金代码（可以为空）；effect 写"偏利好""偏利空""影响不明"之一，只描述这条消息本身的性质，不预测基金当天涨跌。
+- overall 用一句话概括消息面（不超过 50 字），不预测涨跌。
+
+持仓基金：
+${fundsTxt}
+
+快讯：
+${txt}
+
+只输出 JSON：{"overall":"...","points":[{"text":"...","tag":"海外市场","refs":["NEWS@..."],"funds":["002910"],"effect":"偏利好"}]}`, `消息面摘要 ${T}`);
+  const ids = new Set(list.map(i => i.id)), codes = new Set(CODES), TAGS = ['海外市场', '国内政策', '行业动态', '公司', '宏观数据', '地缘'], EFF = ['偏利好', '偏利空', '影响不明'];
+  const points = (Array.isArray(out.points) ? out.points : []).map(p => ({ text: String(p.text || '').slice(0, 90), tag: TAGS.includes(p.tag) ? p.tag : '行业动态', refs: (p.refs || []).filter(r => ids.has(r)), funds: (p.funds || []).filter(c => codes.has(c)), effect: EFF.includes(p.effect) ? p.effect : '影响不明' })).filter(p => p.text && p.refs.length).slice(0, 8);
+  if (!points.length) return null;
+  return { overall: String(out.overall || '').slice(0, 80), points, modelName, promptVersion: 'news-1' };
 }
 async function externalView(sinceIso) {   // 外部观点：作为普通信号输入，前台不单独展示
   const t = await get('https://www.sina.cn/media/1896820725');
@@ -380,6 +428,8 @@ async function externalView(sinceIso) {   // 外部观点：作为普通信号�
 function windowNow() {
   const W = CFG.windows;
   if (hm >= W.evening[0] && hm <= W.evening[1]) { const T = CAL.nextTD(today); return addDays(today, 1) === T ? { batch: 'evening', T } : null; }
+  // GitHub 定时任务常延迟数小时：晚间批次顺延到凌晨（07:30 前）仍可生成，asOf 记录实际时间，不影响数据纪律
+  if (hm < W.morning[0] && CAL.isTD(today)) return { batch: 'evening', T: today };
   if (CAL.isTD(today) && hm >= W.morning[0] && ms(nowISO) < ms(deadlineOf(today))) return { batch: 'morning', T: today };
   return null;
 }
@@ -391,8 +441,9 @@ function snapshotItems(feat, newsList, asOfIso) {
     const name = (code ? `${FUND[code].short}${sub === 'prev' ? ' 上一净值日涨跌' : ' 锚定（' + FUND[code].anchor.name + '）'}` : VAR_NAMES[k] || k) + (ref.days > 1 ? `（${ref.from}起 ${ref.days} 个交易日累计）` : '');
     items.push({ id: ref.id, key: k, name, value, unit: '%', source: ref.source || null, dataTime: ref.date, cutoff: ref.cutoff, fetchedAt: nowISO, kind: '行情' });
   }
-  for (const n of newsList.filter(n => ms(n.time) <= ms(asOfIso) && NEWS_KEYS.test(n.text)).slice(0, 25))
-    items.push({ id: 'NEWS@' + n.time, name: '快讯', text: n.text, source: '东方财富快讯', dataTime: n.time, cutoff: n.time, fetchedAt: nowISO, kind: '消息' });
+  const rel = newsList.filter(n => n.relevant), pick = (rel.length >= 15 ? rel : newsList).slice(-80);
+  for (const n of pick)
+    items.push({ id: n.id, name: '快讯', text: n.text, source: n.source, url: n.url || undefined, dataTime: n.time, cutoff: n.time, fetchedAt: nowISO, kind: '消息' });
   return items;
 }
 function sigLine(key) {
@@ -406,10 +457,11 @@ async function prepare(T, batch) {
   let ext = null;
   try { ext = await externalView(at(CAL.prevTD(T), '15:00')); } catch (e) { console.error('外部观点：' + e.message); }
   const feat = features(T, asOf, { guxia: ext });
-  const items = snapshotItems(feat, await news(), asOf);
+  const items = snapshotItems(feat, await news(at(CAL.prevTD(T), '15:00'), asOf), asOf);
   if (ext != null) items.push({ id: 'EXT@' + asOf, name: '外部观点', value: ext, dataTime: asOf, cutoff: asOf, fetchedAt: nowISO, kind: '外部观点', hidden: true });
   const meta = { runId: RUN.id, trigger: RUN.trigger, generatedAt: nowISO };
   writeOnce(P('snapshots', T, `${batch}.json`), { date: T, batch, snapshotId: `${T}/${batch}`, asOf, ...meta, features: feat, items });
+  try { const dg = await newsDigest(T, items, asOf); if (dg) writeOnce(P('digests', T, `${batch}.json`), { date: T, batch, snapshotId: `${T}/${batch}`, asOf, ...meta, ...dg }); } catch (e) { log('消息面摘要失败：' + e.message); }
   const trig = { date: T, batch, snapshotId: `${T}/${batch}`, ...meta, funds: {} };
   for (const c of CODES) trig.funds[c] = defs.filter(d => statusOf(d.key) !== '淘汰' && fires(d, feat, c)).map(d => ({ signal: d.id, key: d.key, status: statusOf(d.key), triggered: true, inputs: Object.fromEntries(VARS.filter(v => v !== 'qdii' && new RegExp('\\b' + v + '\\b').test(d.when)).map(v => [v, feat.c[v] ?? feat.f[c][v] ?? null])) }));
   writeOnce(P('triggers', T, `${batch}.json`), trig);

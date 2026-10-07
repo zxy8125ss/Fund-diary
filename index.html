@@ -70,7 +70,8 @@ p{margin:0}
 .tbl tr.me td{font-weight:600}
 .scroll{overflow-x:auto}
 .tag{font-size:11.5px;padding:1px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
-.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-bad{background:var(--bad-soft);color:var(--bad)} .t-n{background:var(--soft);color:var(--sub)} .t-ac{background:var(--accent-soft);color:var(--accent)}
+.t-ok{background:var(--ok-soft);color:var(--ok)} .t-warn{background:var(--warn-soft);color:var(--warn)} .t-bad{background:var(--bad-soft);color:var(--bad)} .t-n{background:var(--soft);color:var(--sub)} .t-ac{background:var(--accent-soft);color:var(--accent)} .t-up{background:color-mix(in srgb,var(--up) 13%,transparent);color:var(--up)} .t-down{background:color-mix(in srgb,var(--down) 13%,transparent);color:var(--down)}
+ol.news{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.55} ol.news li{display:flex;flex-direction:column;gap:3px}
 ol.pts,ul.pts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.6}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px;margin:0}
 .kv dt{color:var(--sub)} .kv dd{margin:0}
@@ -176,7 +177,7 @@ details>summary{cursor:pointer}
     const limit=d.lock?d.lock.serverLockedAt:null;
     d.seen=limit?d.batches.filter(b=>Date.parse(b.snap.asOf)<=Date.parse(limit)).at(-1)||null:d.batches.at(-1)||null;
     d.snap=d.seen&&d.seen.snap;
-    d.trig=d.seen?await j(`data/triggers/${T}/${d.seen.batch}.json`):null;
+    [d.trig,d.digest]=d.seen?await Promise.all([j(`data/triggers/${T}/${d.seen.batch}.json`),j(`data/digests/${T}/${d.seen.batch}.json`)]):[null,null];
     return cache[T]=d;
   }
   async function sysPreds(d){   // 对照组：只用你锁定时已经生成的那个批次
@@ -219,7 +220,7 @@ details>summary{cursor:pointer}
       const v=u&&u.funds[f.code]?u.funds[f.code].value:null, a=res?res.actual[f.code]:null, sc=res&&res.scores.user&&res.scores.user[f.code];
       h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span><span class="v '+cls(v)+'">'+fmt(v)+'</span><span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit" aria-label="方向对">✓</span>':'<span class="miss" aria-label="方向错">✗</span>'):''):'<span class="chev" aria-hidden="true">›</span>')+'</span></button>';
     }
-    h+='</div>'+holdingsCard();
+    h+='</div>'+(d.snap&&!res?newsCard(d):'')+holdingsCard();
     $("v-pred").innerHTML=h;
     $("v-pred").querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const k=days.indexOf(cur)+(+b.dataset.nav);if(days[k]){cur=days[k];renderPred()}}));
     $("v-pred").querySelectorAll("[data-fund]").forEach(b=>b.addEventListener("click",()=>openFund(d,b.dataset.fund)));
@@ -310,13 +311,28 @@ details>summary{cursor:pointer}
     const items=d.snap.items.filter(it=>!it.hidden);
     const mk=items.filter(it=>it.kind==="行情"&&!String(it.key).includes(".")), nw=items.filter(it=>it.kind==="消息");
     return '<div class="card"><h2>市场数据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'快照 '+esc(hm(d.snap.asOf))+'，只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+mk.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td></tr>').join('')+'</tbody></table>'+
-      (nw.length?'<details><summary class="small">相关快讯（'+nw.length+'）</summary><ul class="pts" style="font-size:13px;margin-top:6px">'+nw.map(it=>'<li><span class="sub num">'+esc(hm(it.dataTime))+'</span> '+esc(it.text)+'</li>').join('')+'</ul></details>':'')+'</div>';
++'</div>';
+  }
+  function newsCard(d,open){
+    if(!d.snap)return '';
+    const nw=d.snap.items.filter(it=>it.kind==="消息"), dg=d.digest, fname=c=>(G.funds.find(f=>f.code===c)||{}).short||c;
+    if(!nw.length&&!dg)return '<div class="card"><h2>消息面</h2><span class="sub small">这一批没有抓到快讯。</span></div>';
+    const byId=Object.fromEntries(nw.map(it=>[it.id,it]));
+    const EF={"偏利好":"t-up","偏利空":"t-down","影响不明":"t-n"};
+    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>消息面</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+' '+esc(hm(d.snap.asOf))+' 前 · '+nw.length+' 条快讯</span></div>';
+    if(dg){
+      if(dg.overall)h+='<div style="font-size:14.5px;font-weight:600;line-height:1.55">'+esc(dg.overall)+'</div>';
+      h+='<ol class="news">'+dg.points.map(p=>{const r=byId[p.refs[0]];return '<li><div class="chips"><span class="tag t-ac">'+esc(p.tag)+'</span><span class="tag '+(EF[p.effect]||"t-n")+'">'+esc(p.effect)+'</span>'+(p.funds||[]).map(c=>'<span class="tag t-n">'+esc(fname(c))+'</span>').join('')+'</div><div>'+esc(p.text)+'</div>'+(r?'<span class="sub tiny">'+esc(r.source||"")+' '+esc(hm(r.dataTime))+(p.refs.length>1?' 等 '+p.refs.length+' 条':'')+'</span>':'')+'</li>'}).join('')+'</ol>';
+      h+='<span class="sub tiny">要点由 AI 根据下面的原始快讯整理，只做归纳不做涨跌判断；每条都能在原文里核对。</span>';
+    }
+    if(nw.length)h+='<details'+(open&&!dg?' open':'')+'><summary class="small">全部快讯（'+nw.length+'）</summary><ul class="pts" style="font-size:13px;margin-top:6px">'+nw.slice().reverse().map(it=>'<li><span class="sub num">'+esc(String(it.dataTime).slice(5,10).replace("-","/"))+' '+esc(hm(it.dataTime))+'</span> '+esc(it.text)+' <span class="sub tiny">'+esc(it.source||"")+'</span></li>').join('')+'</ul></details>';
+    return h+'</div>';
   }
   function step1(d){
     const frozen=!!draft.initialFrozenAt;
     let h=sheetHead("第 1 步 · 独立判断")+stepsBar(1);
     h+='<div class="note">这一步看不到 AI 草稿和规则模型。只根据数据和规律，先写下你自己的判断。'+(frozen?'你已经看过 AI 草稿，初判已经固定，不能再改。':'')+'</div>';
-    h+=marketCard(d);
+    h+=newsCard(d)+marketCard(d);
     h+='<div class="card">';
     for(const f of G.funds){
       const ff=d.snap.features.f[f.code]||{}, trig=visibleTrig(d.trig,f.code);
