@@ -711,6 +711,14 @@ try {
   const w = windowNow();
   if (w) await prepare(w.T, w.batch);
   else log('不在批次时间窗内，只做结算');
+  try {   // 最新消息面：随时可看（不进入预测快照，预测只用批次快照）
+    const nT = CAL.isTD(today) && hm < '15:00' ? today : CAL.nextTD(today), since = at(CAL.isTD(today) && hm >= '15:00' ? today : CAL.prevTD(nT), '15:00');
+    const list = await news(since, nowISO), rel = list.filter(n => n.relevant), base = rel.length >= 15 ? rel : list;
+    const keep = (base.length <= 150 ? base : [...base.filter(n => n.score > 0), ...base.filter(n => !(n.score > 0)).slice(-150)].slice(0, 150)).sort((a, b) => ms(a.time) - ms(b.time));
+    const items = keep.map(n => ({ id: n.id, name: '快讯', text: n.text, source: n.source, url: n.url || undefined, dataTime: n.time, cutoff: n.time, fetchedAt: nowISO, kind: '消息' }));
+    let digest = null; try { digest = await newsDigest(nT, items, nowISO); } catch (e) { log('最新消息面摘要失败：' + e.message); }
+    writeJ(P('news', 'latest.json'), { asOf: nowISO, since, forDate: nT, items, digest });
+  } catch (e) { log('最新消息面失败：' + e.message); }
 } catch (e) { log('运行出错：' + (e.stack || e.message).slice(0, 400)); process.exitCode = 1; }
 
 writeJ(stateF, state);

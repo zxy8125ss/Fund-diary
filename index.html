@@ -205,7 +205,7 @@ details>summary{cursor:pointer}
   async function renderPred(){
     const days=Object.keys(G.index.days).sort();
     if(!cur)cur=pickDay();
-    if(!cur){$("v-pred").innerHTML='<div class="empty">还没有预测日。下一个交易日前一晚 22:13，系统会准备好当天的数据。</div>'+holdingsCard();return}
+    if(!cur){const nT=G.latestNews&&G.latestNews.forDate;$("v-pred").innerHTML='<div class="card"><h2>'+(nT?'下一个预测日：'+esc(dlabel(nT)):'等待下一个交易日')+'</h2><span class="sub" style="font-size:14px;line-height:1.6">预测数据会在前一晚 22:13 后准备好，交易日早上 08:00 前后补充隔夜美股，09:15 截止提交。先看看最新消息面。</span></div>'+latestNewsCard()+holdingsCard();return}
     const d=await loadDay(cur), st=state(d), i=days.indexOf(cur), res=d.result;
     let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+st.k+'">'+esc(st.text)+'</span></div>';
     const u=d.lock?d.user:null;
@@ -221,7 +221,7 @@ details>summary{cursor:pointer}
       const v=u&&u.funds[f.code]?u.funds[f.code].value:null, a=res?res.actual[f.code]:null, sc=res&&res.scores.user&&res.scores.user[f.code];
       h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span><span class="v '+cls(v)+'">'+fmt(v)+'</span><span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit" aria-label="方向对">✓</span>':'<span class="miss" aria-label="方向错">✗</span>'):''):'<span class="chev" aria-hidden="true">›</span>')+'</span></button>';
     }
-    h+='</div>'+(d.snap&&!res?newsCard(d):'')+holdingsCard();
+    h+='</div>'+(d.snap&&!res?newsCard(d):(!res?latestNewsCard():''))+holdingsCard();
     $("v-pred").innerHTML=h;
     $("v-pred").querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const k=days.indexOf(cur)+(+b.dataset.nav);if(days[k]){cur=days[k];renderPred()}}));
     $("v-pred").querySelectorAll("[data-fund]").forEach(b=>b.addEventListener("click",()=>openFund(d,b.dataset.fund)));
@@ -314,13 +314,14 @@ details>summary{cursor:pointer}
     return '<div class="card"><h2>市场数据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'快照 '+esc(hm(d.snap.asOf))+'，只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+mk.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td></tr>').join('')+'</tbody></table>'+
 +'</div>';
   }
+  function latestNewsCard(){const L=G.latestNews;if(!L||!L.items)return '';return newsCard({snap:{items:L.items,asOf:L.asOf},digest:L.digest,seen:{batch:"latest"}});}
   function newsCard(d,open){
     if(!d.snap)return '';
     const nw=d.snap.items.filter(it=>it.kind==="消息"), dg=d.digest, fname=c=>(G.funds.find(f=>f.code===c)||{}).short||c;
     if(!nw.length&&!dg)return '<div class="card"><h2>消息面</h2><span class="sub small">这一批没有抓到快讯。</span></div>';
     const byId=Object.fromEntries(nw.map(it=>[it.id,it]));
     const EF={"偏利好":"t-up","偏利空":"t-down","影响不明":"t-n"};
-    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>消息面</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+' '+esc(hm(d.snap.asOf))+' 前 · '+nw.length+' 条快讯</span></div>';
+    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>消息面</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":d.seen.batch==="latest"?"最新 · 截至":"晚间")+' '+esc(hm(d.snap.asOf))+(d.seen.batch==="latest"?'':' 前')+' · '+nw.length+' 条快讯</span></div>';
     if(dg){
       if(dg.overall)h+='<div style="font-size:14.5px;font-weight:600;line-height:1.55">'+esc(dg.overall)+'</div>';
       h+='<ol class="news">'+dg.points.map(p=>{const r=byId[p.refs[0]];return '<li><div class="chips"><span class="tag t-ac">'+esc(p.tag)+'</span><span class="tag '+(EF[p.effect]||"t-n")+'">'+esc(p.effect)+'</span>'+(p.funds||[]).map(c=>'<span class="tag t-n">'+esc(fname(c))+'</span>').join('')+'</div><div>'+esc(p.text)+'</div>'+(r?'<span class="sub tiny">'+esc(r.source||"")+' '+esc(hm(r.dataTime))+(p.refs.length>1?' 等 '+p.refs.length+' 条':'')+'</span>':'')+'</li>'}).join('')+'</ol>';
@@ -521,12 +522,12 @@ details>summary{cursor:pointer}
   document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
   try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
   async function load(){
-    const [config,funds,holdings,index,signals,stats,modelLog,status,model]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current"].map(n=>j(`data/${n}.json`)));
+    const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest"].map(n=>j(`data/${n}.json`)));
     if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
-    G={config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
+    G={latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
     cache={};
     await renderPred();renderScore();renderLab();
-    $("foot").textContent=(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止（集合竞价之前）。仅作实验记录，不构成投资建议。';
+    $("foot").textContent='界面 v2.1（10-07） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止（集合竞价之前）。仅作实验记录，不构成投资建议。';
   }
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$("sheet").hidden)load()});
   load();
