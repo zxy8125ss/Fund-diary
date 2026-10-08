@@ -1,0 +1,32 @@
+{
+ "date": "2026-10-09",
+ "predictor": "bench_external_beta",
+ "batch": "evening",
+ "snapshotId": "2026-10-09/evening",
+ "asOf": "2026-10-09T03:53:28+08:00",
+ "runId": "37835307765",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-09T03:53:28+08:00",
+ "modelVersion": "v1.0",
+ "funds": {
+  "002910": {
+   "value": null
+  },
+  "005698": {
+   "value": null
+  },
+  "024481": {
+   "value": null
+  },
+  "015060": {
+   "value": null
+  },
+  "001672": {
+   "value": null
+  }
+ },
+ "overall": {
+  "value": null,
+  "method": "简单平均"
+ }
+}

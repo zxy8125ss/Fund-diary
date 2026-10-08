@@ -1,0 +1,191 @@
+{
+ "date": "2026-10-09",
+ "batch": "evening",
+ "snapshotId": "2026-10-09/evening",
+ "runId": "37835307765",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-09T03:53:28+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R012",
+    "key": "R012@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": 3.14
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -6.83
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -14.63
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -4.49
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.12
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -13.01
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.12
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -11.25
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -2
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.36
+    }
+   }
+  ]
+ }
+}

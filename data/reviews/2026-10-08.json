@@ -1,0 +1,102 @@
+{
+ "date": "2026-10-08",
+ "subject": "ai",
+ "createdAt": "2026-10-09T03:53:28+08:00",
+ "aiModel": null,
+ "right": [],
+ "wrong": [],
+ "bestSignal": null,
+ "misleading": null,
+ "nextTime": [],
+ "hindsight": [
+  {
+   "fund": "002910",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "科创50 可获得于 2026-09-30T15:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "002910",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "易方达供给改革 锚定（半导体） 可获得于 2026-09-30T15:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "纳斯达克100（2026-09-30起 5 个交易日累计） 可获得于 2026-10-07T05:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "费城半导体（2026-09-30起 5 个交易日累计） 可获得于 2026-10-07T05:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "华夏全球科技 上一净值日涨跌 可获得于 2026-09-30T21:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "024481",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "财通品质甄选 锚定（PCB） 可获得于 2026-09-30T15:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "024481",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "财通品质甄选 上一净值日涨跌 可获得于 2026-09-30T21:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "015060",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "华夏节能环保 锚定（元件） 可获得于 2026-09-30T15:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "015060",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "华夏节能环保 上一净值日涨跌 可获得于 2026-09-30T21:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "创业板指 可获得于 2026-09-30T15:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "国寿智慧生活 上一净值日涨跌 可获得于 2026-09-30T21:00:00+08:00，锁定于 2026-10-08T03:56:35+08:00",
+   "by": "rule"
+  }
+ ],
+ "ablation": []
+}
