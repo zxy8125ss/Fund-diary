@@ -1,0 +1,13 @@
+{
+ "key": "S001@v1",
+ "id": "S001",
+ "version": 1,
+ "name": "科创50短期超跌反弹",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "kc50_mom5 < -10",
+ "vote": 1,
+ "createdAt": "2026-10-13",
+ "proposedFrom": "2026-10-12"
+}

@@ -1,0 +1,13 @@
+{
+ "key": "S002@v1",
+ "id": "S002",
+ "version": 1,
+ "name": "波动率放大后的均值回归",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "vol20 > 0.03 && prev < -2",
+ "vote": -1,
+ "createdAt": "2026-10-13",
+ "proposedFrom": "2026-10-12"
+}
