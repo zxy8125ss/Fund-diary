@@ -1,0 +1,13 @@
+{
+ "key": "S004@v1",
+ "id": "S004",
+ "version": 1,
+ "name": "外盘大跌但A股超跌后的抵抗",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -2 && mom5 < -8",
+ "vote": 1,
+ "createdAt": "2026-10-14",
+ "proposedFrom": "2026-10-13"
+}

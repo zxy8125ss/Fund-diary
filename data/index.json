@@ -26,6 +26,14 @@
   "2026-10-13": {
    "batches": [
     "evening"
+   ],
+   "result": true,
+   "user": false,
+   "review": true
+  },
+  "2026-10-14": {
+   "batches": [
+    "evening"
    ]
   }
  }
