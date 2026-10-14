@@ -1,0 +1,13 @@
+{
+ "key": "S005@v1",
+ "id": "S005",
+ "version": 1,
+ "name": "美股费城半导体大跌且A股短线动量偏弱",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -2 && mom5 < 0",
+ "vote": -1,
+ "createdAt": "2026-10-15",
+ "proposedFrom": "2026-10-14"
+}

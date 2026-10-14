@@ -1,0 +1,91 @@
+{
+ "date": "2026-10-15",
+ "predictor": "ai",
+ "batch": "evening",
+ "snapshotId": "2026-10-15/evening",
+ "asOf": "2026-10-15T02:32:30+08:00",
+ "runId": "38616018625",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-15T02:32:30+08:00",
+ "aiVersion": "draft-3@2026-10-15",
+ "promptVersion": "draft-3",
+ "modelName": "gemini-3.5-flash-lite",
+ "funds": {
+  "002910": {
+   "value": -1.5,
+   "reasons": [
+    {
+     "text": "隔夜费城半导体指数大跌超4%，拖累半导体设备板块。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3178837"
+     ]
+    }
+   ],
+   "conclusion": "受美股费半指数大跌及半导体板块走弱影响，净值跟随下跌。"
+  },
+  "005698": {
+   "value": -1.2,
+   "reasons": [
+    {
+     "text": "纳斯达克100指数受CPI超预期及美债收益率攀升拖累跌超2%。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3178776"
+     ]
+    }
+   ],
+   "conclusion": "美股科技股普遍回调，QDII基金净值跟随下跌。"
+  },
+  "024481": {
+   "value": -2,
+   "reasons": [
+    {
+     "text": "重仓光通信与PCB上游，美股光通信及算力产业链走势疲弱。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3178752"
+     ]
+    }
+   ],
+   "conclusion": "海外算力及光通信板块情绪低迷，导致产品净值继续承压。"
+  },
+  "015060": {
+   "value": -1.8,
+   "reasons": [
+    {
+     "text": "重仓电子材料及光通信，受海外科技股大跌及高波动特征影响。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3178752"
+     ]
+    }
+   ],
+   "conclusion": "高弹性电子元件板块遭遇海外科技股下挫拖累，延续回撤。"
+  },
+  "001672": {
+   "value": -1.5,
+   "reasons": [
+    {
+     "text": "创业板指锚定及科技成长风格近期弱势，动量延续。",
+     "signals": [],
+     "dataRefs": [
+      "cyb@2026-10-13"
+     ]
+    }
+   ],
+   "conclusion": "科技成长风格维持调整态势，净值延续下行。"
+  }
+ },
+ "overall": {
+  "value": -1.67,
+  "method": "持仓加权",
+  "weights": {
+   "002910": 878.92,
+   "005698": 95,
+   "024481": 614.68,
+   "015060": 84.82,
+   "001672": 86.77
+  }
+ }
+}

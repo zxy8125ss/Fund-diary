@@ -1,0 +1,13 @@
+{
+ "key": "S006@v1",
+ "id": "S006",
+ "version": 1,
+ "name": "创业板连续走弱与纳指下跌共振",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1 && ndx_on < -0.5",
+ "vote": -1,
+ "createdAt": "2026-10-15",
+ "proposedFrom": "2026-10-14"
+}

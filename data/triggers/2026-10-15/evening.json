@@ -1,0 +1,249 @@
+{
+ "date": "2026-10-15",
+ "batch": "evening",
+ "snapshotId": "2026-10-15/evening",
+ "runId": "38616018625",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-15T02:32:30+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -8.74
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -12.86
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -2.35,
+     "vol20": 2.64
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -2.35
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -10.33
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -2.59
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -2.52,
+     "vol20": 2.6
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -2.52
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -9.1
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.25
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   }
+  ]
+ }
+}
