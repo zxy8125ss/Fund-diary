@@ -1,0 +1,13 @@
+{
+ "key": "S008@v1",
+ "id": "S008",
+ "version": 1,
+ "name": "纳斯达克大跌且前期动量向下",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "ndx_on < -1.5 && anc_mom3 < -3",
+ "vote": -1,
+ "createdAt": "2026-10-16",
+ "proposedFrom": "2026-10-15"
+}

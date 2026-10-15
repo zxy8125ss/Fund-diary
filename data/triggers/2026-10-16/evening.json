@@ -1,0 +1,381 @@
+{
+ "date": "2026-10-16",
+ "batch": "evening",
+ "snapshotId": "2026-10-16/evening",
+ "runId": "38783904584",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-16T02:14:05+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -7.8
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -2.6,
+     "vol20": 1.16
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -2.6
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -12.58
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -4.3
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -2.28
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.04
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -4.3,
+     "vol20": 2.4
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -4.3
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -12.13
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.76
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.76,
+     "vol20": 2.7
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -3.76
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -11.39
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.25
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -2.52
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 4.11
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.25,
+     "vol20": 2.66
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -3.25
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -10.32
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.98
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 2
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.25
+    }
+   },
+   {
+    "signal": "S001",
+    "key": "S001@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "kc50_mom5": -11.71
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.98,
+     "vol20": 2.07
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -2.97,
+     "prev": -3.98
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "date": "2026-10-16",
+ "predictor": "model",
+ "batch": "evening",
+ "snapshotId": "2026-10-16/evening",
+ "asOf": "2026-10-16T02:14:05+08:00",
+ "runId": "38783904584",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-16T02:14:05+08:00",
+ "modelVersion": "v1.0",
+ "funds": {
+  "002910": {
+   "value": 0,
+   "score": 0
+  },
+  "005698": {
+   "value": 0,
+   "score": 0
+  },
+  "024481": {
+   "value": 0,
+   "score": 0
+  },
+  "015060": {
+   "value": 0,
+   "score": 0
+  },
+  "001672": {
+   "value": 0,
+   "score": 0
+  }
+ },
+ "overall": {
+  "value": 0,
+  "method": "持仓加权",
+  "weights": {
+   "002910": 856.07,
+   "005698": 90.92,
+   "024481": 591.57,
+   "015060": 82.06,
+   "001672": 83.32
+  }
+ }
+}

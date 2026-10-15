@@ -43,6 +43,14 @@
    "batches": [
     "evening",
     "morning"
+   ],
+   "result": true,
+   "user": false,
+   "review": true
+  },
+  "2026-10-16": {
+   "batches": [
+    "evening"
    ]
   }
  }

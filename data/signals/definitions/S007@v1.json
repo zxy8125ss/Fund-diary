@@ -1,0 +1,13 @@
+{
+ "key": "S007@v1",
+ "id": "S007",
+ "version": 1,
+ "name": "美股半导体大跌叠加创业板弱势共振",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -2 && cyb_prev < -1",
+ "vote": -1,
+ "createdAt": "2026-10-16",
+ "proposedFrom": "2026-10-15"
+}
