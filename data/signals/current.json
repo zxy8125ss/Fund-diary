@@ -27,8 +27,8 @@
     "rate": 49.63,
     "lo": 28.73,
     "hi": 70.66,
-    "base": 50.92,
-    "p": 0.544,
+    "base": 50,
+    "p": 0.513,
     "signal_mean_forecast_mae": 1.88,
     "implied": 0.06
    },
@@ -41,8 +41,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 24,
-    "p": 0.713,
+    "base": 20.69,
+    "p": 0.695,
     "signal_mean_forecast_mae": 0.86,
     "implied": -2.75
    }
@@ -69,32 +69,32 @@
     "implied": -0.64
    },
    "holdout": {
-    "obs": 54,
-    "days": 13,
-    "hitObs": 27,
+    "obs": 58,
+    "days": 14,
+    "hitObs": 31,
     "up": 27,
-    "down": 27,
-    "rate": 47.82,
-    "lo": 24.46,
-    "hi": 72.18,
-    "base": 49.08,
-    "p": 0.536,
-    "signal_mean_forecast_mae": 1.99,
-    "implied": -0.68
+    "down": 31,
+    "rate": 51.55,
+    "lo": 28.02,
+    "hi": 74.41,
+    "base": 50,
+    "p": 0.454,
+    "signal_mean_forecast_mae": 2.06,
+    "implied": -0.87
    },
    "forward": {
-    "obs": 9,
-    "days": 2,
-    "hitObs": 4,
+    "obs": 13,
+    "days": 3,
+    "hitObs": 8,
     "up": 5,
-    "down": 4,
-    "rate": 40,
-    "lo": 6.31,
-    "hi": 86.84,
-    "base": 76,
-    "p": 0.883,
-    "signal_mean_forecast_mae": 1.55,
-    "implied": -0.52
+    "down": 8,
+    "rate": 60,
+    "lo": 17.25,
+    "hi": 91.52,
+    "base": 79.31,
+    "p": 0.796,
+    "signal_mean_forecast_mae": 1.77,
+    "implied": -1.41
    }
   },
   "bhPass": false
@@ -119,32 +119,32 @@
     "implied": -0.22
    },
    "holdout": {
-    "obs": 26,
-    "days": 10,
+    "obs": 29,
+    "days": 11,
     "hitObs": 8,
     "up": 8,
-    "down": 18,
-    "rate": 36.67,
-    "lo": 14.71,
-    "hi": 66.02,
-    "base": 50.92,
-    "p": 0.816,
-    "signal_mean_forecast_mae": 1.64,
-    "implied": -1.36
+    "down": 21,
+    "rate": 33.33,
+    "lo": 13.28,
+    "hi": 62.02,
+    "base": 50,
+    "p": 0.866,
+    "signal_mean_forecast_mae": 1.67,
+    "implied": -1.6
    },
    "forward": {
-    "obs": 15,
-    "days": 5,
+    "obs": 18,
+    "days": 6,
     "hitObs": 3,
     "up": 3,
-    "down": 12,
-    "rate": 20,
-    "lo": 3.62,
-    "hi": 62.45,
-    "base": 24,
-    "p": 0.583,
-    "signal_mean_forecast_mae": 1.33,
-    "implied": -2.24
+    "down": 15,
+    "rate": 16.67,
+    "lo": 3.01,
+    "hi": 56.35,
+    "base": 20.69,
+    "p": 0.596,
+    "signal_mean_forecast_mae": 1.31,
+    "implied": -2.47
    }
   },
   "bhPass": false
@@ -177,8 +177,8 @@
     "rate": 67.88,
     "lo": 39.05,
     "hi": 87.45,
-    "base": 49.08,
-    "p": 0.106,
+    "base": 50,
+    "p": 0.118,
     "signal_mean_forecast_mae": 1.84,
     "implied": 0.36
    },
@@ -191,7 +191,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 76,
+    "base": 79.31,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -227,8 +227,8 @@
     "rate": 55.56,
     "lo": 31.96,
     "hi": 76.89,
-    "base": 50.92,
-    "p": 0.36,
+    "base": 50,
+    "p": 0.333,
     "signal_mean_forecast_mae": 2.07,
     "implied": -0.52
    },
@@ -241,8 +241,8 @@
     "rate": 25,
     "lo": 4.56,
     "hi": 69.94,
-    "base": 24,
-    "p": 0.481,
+    "base": 20.69,
+    "p": 0.416,
     "signal_mean_forecast_mae": 2.34,
     "implied": -2.33
    }
@@ -277,7 +277,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 50.92,
+    "base": 50,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -291,7 +291,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 24,
+    "base": 20.69,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -327,7 +327,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 49.08,
+    "base": 50,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -341,7 +341,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 76,
+    "base": 79.31,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -377,7 +377,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 49.08,
+    "base": 50,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -391,7 +391,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 76,
+    "base": 79.31,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -427,7 +427,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 50.92,
+    "base": 50,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -441,7 +441,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 24,
+    "base": 20.69,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -477,8 +477,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 65.76,
-    "base": 50.92,
-    "p": 0.925,
+    "base": 50,
+    "p": 0.921,
     "signal_mean_forecast_mae": 1.66,
     "implied": -3.81
    },
@@ -491,8 +491,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 24,
-    "p": 0.713,
+    "base": 20.69,
+    "p": 0.695,
     "signal_mean_forecast_mae": 0.86,
     "implied": -2.75
    }
@@ -519,32 +519,32 @@
     "implied": 0.4
    },
    "holdout": {
-    "obs": 13,
-    "days": 12,
+    "obs": 14,
+    "days": 13,
     "hitObs": 7,
     "up": 7,
-    "down": 6,
-    "rate": 58.33,
-    "lo": 31.95,
-    "hi": 80.67,
-    "base": 50.92,
-    "p": 0.304,
-    "signal_mean_forecast_mae": 1.68,
-    "implied": -0.23
+    "down": 7,
+    "rate": 53.85,
+    "lo": 29.14,
+    "hi": 76.79,
+    "base": 50,
+    "p": 0.391,
+    "signal_mean_forecast_mae": 1.78,
+    "implied": -0.44
    },
    "forward": {
-    "obs": 3,
-    "days": 2,
+    "obs": 4,
+    "days": 3,
     "hitObs": 0,
     "up": 0,
-    "down": 3,
+    "down": 4,
     "rate": 0,
     "lo": 0,
-    "hi": 65.76,
-    "base": 24,
-    "p": 0.787,
-    "signal_mean_forecast_mae": 0.9,
-    "implied": -3.22
+    "hi": 56.15,
+    "base": 20.69,
+    "p": 0.812,
+    "signal_mean_forecast_mae": 0.68,
+    "implied": -3.23
    }
   },
   "bhPass": false
@@ -569,32 +569,32 @@
     "implied": 0.23
    },
    "holdout": {
-    "obs": 19,
-    "days": 17,
-    "hitObs": 9,
+    "obs": 20,
+    "days": 18,
+    "hitObs": 10,
     "up": 10,
-    "down": 9,
-    "rate": 44.12,
-    "lo": 23.86,
-    "hi": 66.55,
-    "base": 49.08,
-    "p": 0.659,
-    "signal_mean_forecast_mae": 1.63,
-    "implied": 0.47
+    "down": 10,
+    "rate": 47.22,
+    "lo": 26.77,
+    "hi": 68.65,
+    "base": 50,
+    "p": 0.593,
+    "signal_mean_forecast_mae": 1.69,
+    "implied": 0.32
    },
    "forward": {
-    "obs": 4,
-    "days": 3,
-    "hitObs": 3,
+    "obs": 5,
+    "days": 4,
+    "hitObs": 4,
     "up": 1,
-    "down": 3,
-    "rate": 66.67,
-    "lo": 20.77,
-    "hi": 93.85,
-    "base": 76,
-    "p": 0.647,
-    "signal_mean_forecast_mae": 1.03,
-    "implied": -0.68
+    "down": 4,
+    "rate": 75,
+    "lo": 30.06,
+    "hi": 95.44,
+    "base": 79.31,
+    "p": 0.584,
+    "signal_mean_forecast_mae": 1,
+    "implied": -1.06
    }
   },
   "bhPass": false
@@ -627,8 +627,8 @@
     "rate": 51.11,
     "lo": 23.44,
     "hi": 78.12,
-    "base": 49.08,
-    "p": 0.452,
+    "base": 50,
+    "p": 0.473,
     "signal_mean_forecast_mae": 2.73,
     "implied": -0.17
    },
@@ -641,8 +641,8 @@
     "rate": 100,
     "lo": 20.65,
     "hi": 100,
-    "base": 76,
-    "p": 0.287,
+    "base": 79.31,
+    "p": 0.305,
     "signal_mean_forecast_mae": 1.04,
     "implied": -3.29
    }
@@ -677,8 +677,8 @@
     "rate": 37.5,
     "lo": 9.19,
     "hi": 78.06,
-    "base": 50.92,
-    "p": 0.704,
+    "base": 50,
+    "p": 0.691,
     "signal_mean_forecast_mae": 2.5,
     "implied": 0.37
    },
@@ -691,8 +691,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 24,
-    "p": 0.713,
+    "base": 20.69,
+    "p": 0.695,
     "signal_mean_forecast_mae": 1.12,
     "implied": -3.1
    }
@@ -727,8 +727,8 @@
     "rate": 47.5,
     "lo": 19.86,
     "hi": 76.77,
-    "base": 50.92,
-    "p": 0.577,
+    "base": 50,
+    "p": 0.556,
     "signal_mean_forecast_mae": 2.08,
     "implied": 0.25
    },
@@ -741,8 +741,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 24,
-    "p": 0.713,
+    "base": 20.69,
+    "p": 0.695,
     "signal_mean_forecast_mae": 0.86,
     "implied": -2.75
    }
@@ -769,32 +769,32 @@
     "implied": -0.72
    },
    "holdout": {
-    "obs": 23,
-    "days": 5,
-    "hitObs": 16,
+    "obs": 27,
+    "days": 6,
+    "hitObs": 20,
     "up": 7,
-    "down": 16,
-    "rate": 66,
-    "lo": 27.06,
-    "hi": 91.04,
-    "base": 49.08,
-    "p": 0.225,
-    "signal_mean_forecast_mae": 2.52,
-    "implied": -1.89
+    "down": 20,
+    "rate": 71.67,
+    "lo": 33.81,
+    "hi": 92.61,
+    "base": 50,
+    "p": 0.144,
+    "signal_mean_forecast_mae": 2.38,
+    "implied": -2.12
    },
    "forward": {
-    "obs": 5,
-    "days": 1,
-    "hitObs": 4,
+    "obs": 9,
+    "days": 2,
+    "hitObs": 8,
     "up": 1,
-    "down": 4,
-    "rate": 80,
-    "lo": 13.35,
-    "hi": 99.05,
-    "base": 76,
-    "p": 0.463,
-    "signal_mean_forecast_mae": 1.25,
-    "implied": -1.54
+    "down": 8,
+    "rate": 90,
+    "lo": 27.86,
+    "hi": 99.53,
+    "base": 79.31,
+    "p": 0.355,
+    "signal_mean_forecast_mae": 1.16,
+    "implied": -2.36
    }
   },
   "bhPass": false
@@ -827,8 +827,8 @@
     "rate": 52.11,
     "lo": 29.12,
     "hi": 74.24,
-    "base": 50.92,
-    "p": 0.463,
+    "base": 50,
+    "p": 0.435,
     "signal_mean_forecast_mae": 2.12,
     "implied": 0.22
    },
@@ -841,7 +841,7 @@
     "rate": null,
     "lo": null,
     "hi": null,
-    "base": 24,
+    "base": 20.69,
     "p": null,
     "signal_mean_forecast_mae": null,
     "implied": null
@@ -869,32 +869,32 @@
     "implied": 0.72
    },
    "holdout": {
-    "obs": 49,
-    "days": 17,
-    "hitObs": 28,
+    "obs": 52,
+    "days": 18,
+    "hitObs": 31,
     "up": 21,
-    "down": 28,
-    "rate": 55.39,
-    "lo": 33.03,
-    "hi": 75.76,
-    "base": 49.08,
-    "p": 0.301,
-    "signal_mean_forecast_mae": 2.17,
-    "implied": -0.58
+    "down": 31,
+    "rate": 57.87,
+    "lo": 35.73,
+    "hi": 77.24,
+    "base": 50,
+    "p": 0.252,
+    "signal_mean_forecast_mae": 2.19,
+    "implied": -0.74
    },
    "forward": {
-    "obs": 17,
-    "days": 5,
-    "hitObs": 12,
+    "obs": 20,
+    "days": 6,
+    "hitObs": 15,
     "up": 5,
-    "down": 12,
-    "rate": 75,
-    "lo": 33.6,
-    "hi": 94.68,
-    "base": 76,
-    "p": 0.521,
-    "signal_mean_forecast_mae": 1.59,
-    "implied": -1.67
+    "down": 15,
+    "rate": 79.17,
+    "lo": 39.97,
+    "hi": 95.59,
+    "base": 79.31,
+    "p": 0.503,
+    "signal_mean_forecast_mae": 1.54,
+    "implied": -1.93
    }
   },
   "bhPass": false
@@ -927,8 +927,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 50.92,
-    "p": 0.846,
+    "base": 50,
+    "p": 0.841,
     "signal_mean_forecast_mae": 1.04,
     "implied": -3.29
    },
@@ -941,8 +941,8 @@
     "rate": 0,
     "lo": 0,
     "hi": 79.35,
-    "base": 24,
-    "p": 0.713,
+    "base": 20.69,
+    "p": 0.695,
     "signal_mean_forecast_mae": 1.04,
     "implied": -3.29
    }
@@ -970,32 +970,32 @@
     "implied": 1.07
    },
    "holdout": {
-    "obs": 23,
-    "days": 5,
+    "obs": 27,
+    "days": 6,
     "hitObs": 5,
     "up": 5,
-    "down": 18,
-    "rate": 24,
-    "lo": 4.96,
-    "hi": 65.63,
-    "base": 50.92,
-    "p": 0.886,
-    "signal_mean_forecast_mae": 1.47,
-    "implied": -1.55
+    "down": 22,
+    "rate": 20,
+    "lo": 4.11,
+    "hi": 59.31,
+    "base": 50,
+    "p": 0.929,
+    "signal_mean_forecast_mae": 1.49,
+    "implied": -1.82
    },
    "forward": {
-    "obs": 5,
-    "days": 1,
+    "obs": 9,
+    "days": 2,
     "hitObs": 0,
     "up": 0,
-    "down": 5,
+    "down": 9,
     "rate": 0,
     "lo": 0,
-    "hi": 79.35,
+    "hi": 65.76,
     "base": 0,
     "p": null,
-    "signal_mean_forecast_mae": 0.79,
-    "implied": -2.42
+    "signal_mean_forecast_mae": 0.86,
+    "implied": -2.86
    }
   },
   "bhPass": false
@@ -1020,32 +1020,32 @@
     "implied": 1.07
    },
    "holdout": {
-    "obs": 41,
-    "days": 19,
-    "hitObs": 20,
+    "obs": 43,
+    "days": 20,
+    "hitObs": 22,
     "up": 21,
-    "down": 20,
-    "rate": 45.61,
-    "lo": 25.91,
-    "hi": 66.79,
-    "base": 49.08,
-    "p": 0.619,
-    "signal_mean_forecast_mae": 2.33,
-    "implied": -0.52
+    "down": 22,
+    "rate": 48.33,
+    "lo": 28.54,
+    "hi": 68.66,
+    "base": 50,
+    "p": 0.559,
+    "signal_mean_forecast_mae": 2.38,
+    "implied": -0.66
    },
    "forward": {
-    "obs": 1,
-    "days": 1,
-    "hitObs": 1,
+    "obs": 3,
+    "days": 2,
+    "hitObs": 3,
     "up": 0,
-    "down": 1,
+    "down": 3,
     "rate": 100,
-    "lo": 20.65,
+    "lo": 34.24,
     "hi": 100,
     "base": 100,
     "p": null,
-    "signal_mean_forecast_mae": 0,
-    "implied": -4.3
+    "signal_mean_forecast_mae": 0.35,
+    "implied": -3.77
    }
   },
   "bhPass": false
@@ -1070,32 +1070,32 @@
     "implied": 0.16
    },
    "holdout": {
-    "obs": 22,
-    "days": 7,
+    "obs": 24,
+    "days": 8,
     "hitObs": 12,
     "up": 12,
-    "down": 10,
-    "rate": 47.62,
-    "lo": 18.72,
-    "hi": 78.2,
-    "base": 50.92,
-    "p": 0.569,
-    "signal_mean_forecast_mae": 2.21,
-    "implied": -0.95
+    "down": 12,
+    "rate": 41.67,
+    "lo": 16.16,
+    "hi": 72.58,
+    "base": 50,
+    "p": 0.681,
+    "signal_mean_forecast_mae": 2.27,
+    "implied": -1.16
    },
    "forward": {
-    "obs": 0,
-    "days": 0,
+    "obs": 2,
+    "days": 1,
     "hitObs": 0,
     "up": 0,
-    "down": 0,
-    "rate": null,
-    "lo": null,
-    "hi": null,
-    "base": null,
+    "down": 2,
+    "rate": 0,
+    "lo": 0,
+    "hi": 79.35,
+    "base": 0,
     "p": null,
-    "signal_mean_forecast_mae": null,
-    "implied": null
+    "signal_mean_forecast_mae": 0.25,
+    "implied": -3.5
    }
   },
   "bhPass": false
@@ -1120,32 +1120,32 @@
     "implied": -0.67
    },
    "holdout": {
-    "obs": 9,
-    "days": 3,
+    "obs": 12,
+    "days": 4,
     "hitObs": 4,
     "up": 4,
-    "down": 5,
-    "rate": 44.44,
-    "lo": 10.2,
-    "hi": 84.93,
-    "base": 50.92,
-    "p": 0.589,
-    "signal_mean_forecast_mae": 1.31,
-    "implied": -0.62
+    "down": 8,
+    "rate": 33.33,
+    "lo": 7.51,
+    "hi": 75.49,
+    "base": 50,
+    "p": 0.748,
+    "signal_mean_forecast_mae": 1.74,
+    "implied": -1.38
    },
    "forward": {
-    "obs": 0,
-    "days": 0,
+    "obs": 3,
+    "days": 1,
     "hitObs": 0,
     "up": 0,
-    "down": 0,
-    "rate": null,
-    "lo": null,
-    "hi": null,
-    "base": null,
+    "down": 3,
+    "rate": 0,
+    "lo": 0,
+    "hi": 79.35,
+    "base": 0,
     "p": null,
-    "signal_mean_forecast_mae": null,
-    "implied": null
+    "signal_mean_forecast_mae": 0.28,
+    "implied": -3.66
    }
   },
   "bhPass": false
@@ -1170,18 +1170,18 @@
     "implied": -1.01
    },
    "holdout": {
-    "obs": 26,
-    "days": 8,
-    "hitObs": 10,
+    "obs": 30,
+    "days": 9,
+    "hitObs": 14,
     "up": 16,
-    "down": 10,
-    "rate": 43.33,
-    "lo": 17.19,
-    "hi": 73.8,
-    "base": 49.08,
-    "p": 0.628,
-    "signal_mean_forecast_mae": 1.24,
-    "implied": 0.05
+    "down": 14,
+    "rate": 49.63,
+    "lo": 22.39,
+    "hi": 77.09,
+    "base": 50,
+    "p": 0.509,
+    "signal_mean_forecast_mae": 1.57,
+    "implied": -0.41
    },
    "forward": {
     "obs": 0,
@@ -1220,18 +1220,18 @@
     "implied": -0.37
    },
    "holdout": {
-    "obs": 38,
-    "days": 8,
-    "hitObs": 13,
+    "obs": 42,
+    "days": 9,
+    "hitObs": 17,
     "up": 25,
-    "down": 13,
-    "rate": 33.75,
-    "lo": 11.58,
-    "hi": 66.47,
-    "base": 49.08,
-    "p": 0.807,
-    "signal_mean_forecast_mae": 1.26,
-    "implied": 0.42
+    "down": 17,
+    "rate": 41.11,
+    "lo": 16.73,
+    "hi": 70.81,
+    "base": 50,
+    "p": 0.703,
+    "signal_mean_forecast_mae": 1.54,
+    "implied": 0.05
    },
    "forward": {
     "obs": 0,
@@ -1270,18 +1270,18 @@
     "implied": -0.44
    },
    "holdout": {
-    "obs": 34,
-    "days": 7,
-    "hitObs": 13,
+    "obs": 38,
+    "days": 8,
+    "hitObs": 17,
     "up": 21,
-    "down": 13,
-    "rate": 38.57,
-    "lo": 13.36,
-    "hi": 71.88,
-    "base": 49.08,
-    "p": 0.711,
-    "signal_mean_forecast_mae": 1.11,
-    "implied": 0.09
+    "down": 17,
+    "rate": 46.25,
+    "lo": 19.04,
+    "hi": 75.89,
+    "base": 50,
+    "p": 0.584,
+    "signal_mean_forecast_mae": 1.4,
+    "implied": -0.27
    },
    "forward": {
     "obs": 0,
@@ -1320,18 +1320,18 @@
     "implied": -3.02
    },
    "holdout": {
-    "obs": 0,
-    "days": 0,
-    "hitObs": 0,
+    "obs": 3,
+    "days": 1,
+    "hitObs": 3,
     "up": 0,
-    "down": 0,
-    "rate": null,
-    "lo": null,
-    "hi": null,
-    "base": 49.08,
-    "p": null,
-    "signal_mean_forecast_mae": null,
-    "implied": null
+    "down": 3,
+    "rate": 100,
+    "lo": 20.65,
+    "hi": 100,
+    "base": 50,
+    "p": 0.159,
+    "signal_mean_forecast_mae": 0.56,
+    "implied": -3.45
    },
    "forward": {
     "obs": 0,
