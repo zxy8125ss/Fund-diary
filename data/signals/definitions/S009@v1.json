@@ -1,0 +1,13 @@
+{
+ "key": "S009@v1",
+ "id": "S009",
+ "version": 1,
+ "name": "科创超跌叠加外盘微弱",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "kc50_mom5 < -8 && sox_on < 0",
+ "vote": -1,
+ "createdAt": "2026-10-17",
+ "proposedFrom": "2026-10-16"
+}

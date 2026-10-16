@@ -1,0 +1,13 @@
+{
+ "key": "S010@v1",
+ "id": "S010",
+ "version": 1,
+ "name": "创业板走弱且锚定破位",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1 && anc_mom3 < -3",
+ "vote": -1,
+ "createdAt": "2026-10-17",
+ "proposedFrom": "2026-10-16"
+}
