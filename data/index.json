@@ -56,6 +56,11 @@
    "result": true,
    "user": false,
    "review": true
+  },
+  "2026-10-19": {
+   "batches": [
+    "evening"
+   ]
   }
  }
 }
