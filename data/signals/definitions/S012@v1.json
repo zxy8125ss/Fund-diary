@@ -1,0 +1,13 @@
+{
+ "key": "S012@v1",
+ "id": "S012",
+ "version": 1,
+ "name": "周一A股科技超跌修复与外盘背离",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "wd == 1 && mom5 < -6 && sox_on < -1.5",
+ "vote": 1,
+ "createdAt": "2026-10-20",
+ "proposedFrom": "2026-10-19"
+}

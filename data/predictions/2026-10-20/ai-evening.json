@@ -1,0 +1,94 @@
+{
+ "date": "2026-10-20",
+ "predictor": "ai",
+ "batch": "evening",
+ "snapshotId": "2026-10-20/evening",
+ "asOf": "2026-10-20T03:51:02+08:00",
+ "runId": "39314375205",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-20T03:51:02+08:00",
+ "aiVersion": "draft-3@2026-10-20",
+ "promptVersion": "draft-3",
+ "modelName": "gemini-3.5-flash-lite",
+ "funds": {
+  "002910": {
+   "value": 0.5,
+   "reasons": [
+    {
+     "text": "上证指数收涨0.39%，半导体设备隔夜盘前表现较好。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3180927",
+      "NEWS@wscn:3181041"
+     ]
+    }
+   ],
+   "conclusion": "半导体设备板块回暖，预计净值温和上涨。"
+  },
+  "005698": {
+   "value": 1.8,
+   "reasons": [
+    {
+     "text": "美股纳斯达克100指数大涨约1.5%至2%，科技股反弹。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3181266",
+      "NEWS@wscn:3181301"
+     ]
+    }
+   ],
+   "conclusion": "纳斯达克强劲反弹，QDII科技基金跟随上涨。"
+  },
+  "024481": {
+   "value": 1.2,
+   "reasons": [
+    {
+     "text": "海外存储与光通信板块大涨，PCB及光模块链条情绪提振。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3181247"
+     ]
+    }
+   ],
+   "conclusion": "上游紧缺物料锚定走强，基金有望企稳回升。"
+  },
+  "015060": {
+   "value": 1.5,
+   "reasons": [
+    {
+     "text": "光纤与电子元件需求持续向好，海外光通信股票大涨带动。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3180979",
+      "NEWS@wscn:3181247"
+     ]
+    }
+   ],
+   "conclusion": "光纤及电子元件表现较强，弹性品种跟随反弹。"
+  },
+  "001672": {
+   "value": -0.5,
+   "reasons": [
+    {
+     "text": "创业板指上一交易日收跌0.94%，科技成长风格仍受压制。",
+     "signals": [],
+     "dataRefs": [
+      "NEWS@wscn:3180927"
+     ]
+    }
+   ],
+   "conclusion": "创业板指偏弱拖累，预计净值小幅下跌。"
+  }
+ },
+ "overall": {
+  "value": 0.8,
+  "method": "持仓加权",
+  "weights": {
+   "002910": 855.78,
+   "005698": 85.34,
+   "024481": 566.58,
+   "015060": 78.83,
+   "001672": 83
+  }
+ }
+}

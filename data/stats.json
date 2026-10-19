@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-19T13:21:11+08:00",
+ "updatedAt": "2026-10-20T03:51:02+08:00",
  "sampleUnit": "交易日 × 基金",
  "predictors": {
   "user": {
@@ -11,46 +11,46 @@
    "lockedDays": 0
   },
   "bench_external_raw": {
-   "obs": 24,
-   "days": 5,
-   "hit": 11,
-   "rate": 45.83,
-   "mae": 2.975
-  },
-  "bench_external_beta": {
-   "obs": 24,
-   "days": 5,
-   "hit": 8,
-   "rate": 33.33,
-   "mae": 2.38
-  },
-  "bench_prev": {
-   "obs": 34,
-   "days": 7,
-   "hit": 20,
-   "rate": 58.82,
-   "mae": 2.03
-  },
-  "bench_zero": {
-   "obs": 34,
-   "days": 7,
-   "hit": 0,
-   "rate": 0,
-   "mae": 2.278
-  },
-  "model": {
-   "obs": 34,
-   "days": 7,
-   "hit": 0,
-   "rate": 0,
-   "mae": 2.278
-  },
-  "ai": {
    "obs": 29,
    "days": 6,
-   "hit": 21,
-   "rate": 72.41,
-   "mae": 1.791
+   "hit": 14,
+   "rate": 48.28,
+   "mae": 2.92
+  },
+  "bench_external_beta": {
+   "obs": 29,
+   "days": 6,
+   "hit": 11,
+   "rate": 37.93,
+   "mae": 2.223
+  },
+  "bench_prev": {
+   "obs": 39,
+   "days": 8,
+   "hit": 24,
+   "rate": 61.54,
+   "mae": 1.843
+  },
+  "bench_zero": {
+   "obs": 39,
+   "days": 8,
+   "hit": 0,
+   "rate": 0,
+   "mae": 2.194
+  },
+  "model": {
+   "obs": 39,
+   "days": 8,
+   "hit": 0,
+   "rate": 0,
+   "mae": 2.194
+  },
+  "ai": {
+   "obs": 34,
+   "days": 7,
+   "hit": 24,
+   "rate": 70.59,
+   "mae": 1.712
   }
  },
  "compare": {
@@ -60,7 +60,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.975,
+     "bench": 2.92,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -69,7 +69,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 45.83,
+     "bench": 48.28,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -85,7 +85,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.38,
+     "bench": 2.223,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -94,7 +94,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 33.33,
+     "bench": 37.93,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -110,7 +110,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.03,
+     "bench": 1.843,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -119,7 +119,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 58.82,
+     "bench": 61.54,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -135,7 +135,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.278,
+     "bench": 2.194,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -160,7 +160,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.278,
+     "bench": 2.194,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -185,7 +185,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 1.791,
+     "bench": 1.712,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -194,7 +194,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 72.41,
+     "bench": 70.59,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -208,104 +208,104 @@
   },
   "model": {
    "bench_external_raw": {
-    "obs": 24,
-    "days": 5,
+    "obs": 29,
+    "days": 6,
     "mae": {
-     "mine": 2.278,
-     "bench": 2.975,
-     "improvePct": 23.43,
-     "meanGain": 0.639,
+     "mine": 2.194,
+     "bench": 2.92,
+     "improvePct": 24.86,
+     "meanGain": 0.766,
      "ci95": [
-      -1.054,
-      2.647
+      -0.736,
+      2.384
      ],
-     "signFlipP": 0.358,
+     "signFlipP": 0.248,
      "alwaysValidP": 1
     },
     "direction": {
      "mine": 0,
-     "bench": 45.83,
-     "liftPP": -45.83,
+     "bench": 48.28,
+     "liftPP": -48.28,
      "wins": 0,
-     "losses": 11,
+     "losses": 14,
      "both": 0,
-     "neither": 13,
+     "neither": 15,
      "ci95": [
-      -82,
-      -12
+      -78.333,
+      -20
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_external_beta": {
-    "obs": 24,
-    "days": 5,
+    "obs": 29,
+    "days": 6,
     "mae": {
-     "mine": 2.278,
-     "bench": 2.38,
-     "improvePct": 4.29,
-     "meanGain": 0.083,
+     "mine": 2.194,
+     "bench": 2.223,
+     "improvePct": 1.3,
+     "meanGain": 0.043,
      "ci95": [
-      -0.428,
-      0.626
+      -0.377,
+      0.485
      ],
-     "signFlipP": 0.426,
+     "signFlipP": 0.451,
      "alwaysValidP": 1
     },
     "direction": {
      "mine": 0,
-     "bench": 33.33,
-     "liftPP": -33.33,
+     "bench": 37.93,
+     "liftPP": -37.93,
      "wins": 0,
-     "losses": 8,
+     "losses": 11,
      "both": 0,
-     "neither": 16,
+     "neither": 18,
      "ci95": [
-      -75,
-      0
+      -72.5,
+      -10
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_prev": {
-    "obs": 34,
-    "days": 7,
+    "obs": 39,
+    "days": 8,
     "mae": {
-     "mine": 2.278,
-     "bench": 2.03,
-     "improvePct": -12.22,
-     "meanGain": -0.213,
+     "mine": 2.194,
+     "bench": 1.843,
+     "improvePct": -19.05,
+     "meanGain": -0.363,
      "ci95": [
-      -1.221,
-      0.997
+      -1.156,
+      0.624
      ],
-     "signFlipP": 0.641,
+     "signFlipP": 0.76,
      "alwaysValidP": 1
     },
     "direction": {
      "mine": 0,
-     "bench": 58.82,
-     "liftPP": -58.82,
+     "bench": 61.54,
+     "liftPP": -61.54,
      "wins": 0,
-     "losses": 20,
+     "losses": 24,
      "both": 0,
-     "neither": 14,
+     "neither": 15,
      "ci95": [
-      -82.857,
-      -34.286
+      -81.875,
+      -39.375
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_zero": {
-    "obs": 34,
-    "days": 7,
+    "obs": 39,
+    "days": 8,
     "mae": {
-     "mine": 2.278,
-     "bench": 2.278,
+     "mine": 2.194,
+     "bench": 2.194,
      "improvePct": 0,
      "meanGain": 0,
      "ci95": [
@@ -322,7 +322,7 @@
      "wins": 0,
      "losses": 0,
      "both": 0,
-     "neither": 34,
+     "neither": 39,
      "ci95": [
       0,
       0
@@ -334,127 +334,127 @@
   },
   "ai": {
    "bench_external_raw": {
-    "obs": 24,
-    "days": 5,
+    "obs": 29,
+    "days": 6,
     "mae": {
-     "mine": 1.791,
-     "bench": 2.975,
-     "improvePct": 39.8,
-     "meanGain": 1.032,
+     "mine": 1.712,
+     "bench": 2.92,
+     "improvePct": 41.37,
+     "meanGain": 1.157,
      "ci95": [
-      -0.034,
-      2.945
+      0.076,
+      2.751
      ],
-     "signFlipP": 0.093,
-     "alwaysValidP": 0.995
+     "signFlipP": 0.047,
+     "alwaysValidP": 0.949
     },
     "direction": {
-     "mine": 72.41,
-     "bench": 45.83,
-     "liftPP": 26.58,
+     "mine": 70.59,
+     "bench": 48.28,
+     "liftPP": 22.31,
      "wins": 5,
      "losses": 0,
-     "both": 11,
-     "neither": 8,
+     "both": 14,
+     "neither": 10,
      "ci95": [
       0,
-      53
+      43.333
      ],
-     "signFlipP": 0.238,
-     "alwaysValidP": 0.97
+     "signFlipP": 0.245,
+     "alwaysValidP": 0.974
     }
    },
    "bench_external_beta": {
-    "obs": 24,
-    "days": 5,
+    "obs": 29,
+    "days": 6,
     "mae": {
-     "mine": 1.791,
-     "bench": 2.38,
-     "improvePct": 24.75,
-     "meanGain": 0.476,
+     "mine": 1.712,
+     "bench": 2.223,
+     "improvePct": 22.99,
+     "meanGain": 0.434,
      "ci95": [
-      -0.417,
-      1.367
+      -0.324,
+      1.2
      ],
-     "signFlipP": 0.155,
+     "signFlipP": 0.141,
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 72.41,
-     "bench": 33.33,
-     "liftPP": 39.08,
+     "mine": 70.59,
+     "bench": 37.93,
+     "liftPP": 32.66,
      "wins": 8,
      "losses": 0,
-     "both": 8,
-     "neither": 8,
+     "both": 11,
+     "neither": 10,
      "ci95": [
-      5,
-      61
+      3.333,
+      53.333
      ],
-     "signFlipP": 0.121,
-     "alwaysValidP": 0.885
+     "signFlipP": 0.125,
+     "alwaysValidP": 0.895
     }
    },
    "bench_prev": {
-    "obs": 29,
-    "days": 6,
+    "obs": 34,
+    "days": 7,
     "mae": {
-     "mine": 1.791,
-     "bench": 2.03,
-     "improvePct": 11.77,
-     "meanGain": 0.445,
+     "mine": 1.712,
+     "bench": 1.843,
+     "improvePct": 7.11,
+     "meanGain": 0.233,
      "ci95": [
-      -0.486,
-      1.086
+      -0.519,
+      0.83
      ],
-     "signFlipP": 0.176,
+     "signFlipP": 0.287,
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 72.41,
-     "bench": 58.82,
-     "liftPP": 13.59,
+     "mine": 70.59,
+     "bench": 61.54,
+     "liftPP": 9.05,
      "wins": 7,
-     "losses": 2,
-     "both": 14,
-     "neither": 6,
+     "losses": 3,
+     "both": 17,
+     "neither": 7,
      "ci95": [
-      -6.667,
-      43.333
+      -8.571,
+      37.143
      ],
-     "signFlipP": 0.243,
-     "alwaysValidP": 0.984
+     "signFlipP": 0.343,
+     "alwaysValidP": 1
     }
    },
    "bench_zero": {
-    "obs": 29,
-    "days": 6,
+    "obs": 34,
+    "days": 7,
     "mae": {
-     "mine": 1.791,
-     "bench": 2.278,
-     "improvePct": 21.38,
-     "meanGain": 0.514,
+     "mine": 1.712,
+     "bench": 2.194,
+     "improvePct": 21.97,
+     "meanGain": 0.495,
      "ci95": [
-      -0.42,
-      1.432
+      -0.368,
+      1.273
      ],
-     "signFlipP": 0.191,
-     "alwaysValidP": 1
+     "signFlipP": 0.176,
+     "alwaysValidP": 0.994
     },
     "direction": {
-     "mine": 72.41,
+     "mine": 70.59,
      "bench": 0,
-     "liftPP": 72.41,
-     "wins": 21,
+     "liftPP": 70.59,
+     "wins": 24,
      "losses": 0,
      "both": 0,
-     "neither": 8,
+     "neither": 10,
      "ci95": [
-      43.333,
-      96.667
+      45,
+      90.714
      ],
-     "signFlipP": 0.03,
-     "alwaysValidP": 0.406
+     "signFlipP": 0.016,
+     "alwaysValidP": 0.221
     }
    }
   }
@@ -487,34 +487,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 5,
-    "rate": 60,
-    "mae": 2.332
+    "obs": 6,
+    "rate": 50,
+    "mae": 2.68
    },
    "bench_external_beta": {
-    "obs": 5,
-    "rate": 40,
-    "mae": 1.282
+    "obs": 6,
+    "rate": 33.33,
+    "mae": 1.32
    },
    "bench_prev": {
-    "obs": 7,
-    "rate": 28.57,
-    "mae": 1.973
+    "obs": 8,
+    "rate": 25,
+    "mae": 1.878
    },
    "bench_zero": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 1.197
+    "mae": 1.121
    },
    "model": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 1.197
+    "mae": 1.121
    },
    "ai": {
-    "obs": 6,
-    "rate": 83.33,
-    "mae": 0.743
+    "obs": 7,
+    "rate": 71.43,
+    "mae": 0.893
    }
   },
   "005698": {
@@ -524,34 +524,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 4,
-    "rate": 25,
-    "mae": 3.145
+    "obs": 5,
+    "rate": 20,
+    "mae": 3.132
    },
    "bench_external_beta": {
-    "obs": 4,
-    "rate": 25,
-    "mae": 2.742
+    "obs": 5,
+    "rate": 20,
+    "mae": 2.818
    },
    "bench_prev": {
-    "obs": 6,
-    "rate": 50,
-    "mae": 1.96
+    "obs": 7,
+    "rate": 57.14,
+    "mae": 1.847
    },
    "bench_zero": {
-    "obs": 6,
+    "obs": 7,
     "rate": 0,
-    "mae": 2.68
+    "mae": 2.744
    },
    "model": {
-    "obs": 6,
+    "obs": 7,
     "rate": 0,
-    "mae": 2.68
+    "mae": 2.744
    },
    "ai": {
-    "obs": 5,
-    "rate": 40,
-    "mae": 2.992
+    "obs": 6,
+    "rate": 33.33,
+    "mae": 2.998
    }
   },
   "024481": {
@@ -561,34 +561,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 5,
-    "rate": 60,
-    "mae": 3.974
+    "obs": 6,
+    "rate": 66.67,
+    "mae": 3.607
    },
    "bench_external_beta": {
-    "obs": 5,
-    "rate": 40,
-    "mae": 3.492
+    "obs": 6,
+    "rate": 50,
+    "mae": 3.1
    },
    "bench_prev": {
-    "obs": 7,
-    "rate": 71.43,
-    "mae": 2.709
+    "obs": 8,
+    "rate": 75,
+    "mae": 2.389
    },
    "bench_zero": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 3.267
+    "mae": 3.116
    },
    "model": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 3.267
+    "mae": 3.116
    },
    "ai": {
-    "obs": 6,
-    "rate": 83.33,
-    "mae": 2.133
+    "obs": 7,
+    "rate": 85.71,
+    "mae": 1.909
    }
   },
   "015060": {
@@ -598,34 +598,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 5,
-    "rate": 60,
-    "mae": 3.072
+    "obs": 6,
+    "rate": 66.67,
+    "mae": 2.847
    },
    "bench_external_beta": {
-    "obs": 5,
-    "rate": 40,
-    "mae": 2.386
+    "obs": 6,
+    "rate": 50,
+    "mae": 2.187
    },
    "bench_prev": {
-    "obs": 7,
-    "rate": 71.43,
-    "mae": 1.617
+    "obs": 8,
+    "rate": 75,
+    "mae": 1.446
    },
    "bench_zero": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 2.306
+    "mae": 2.281
    },
    "model": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 2.306
+    "mae": 2.281
    },
    "ai": {
-    "obs": 6,
-    "rate": 83.33,
-    "mae": 1.293
+    "obs": 7,
+    "rate": 85.71,
+    "mae": 1.153
    }
   },
   "001672": {
@@ -635,34 +635,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 5,
-    "rate": 20,
-    "mae": 2.386
+    "obs": 6,
+    "rate": 33.33,
+    "mae": 2.368
    },
    "bench_external_beta": {
-    "obs": 5,
-    "rate": 20,
-    "mae": 2.072
+    "obs": 6,
+    "rate": 33.33,
+    "mae": 1.79
    },
    "bench_prev": {
-    "obs": 7,
-    "rate": 71.43,
-    "mae": 1.883
+    "obs": 8,
+    "rate": 75,
+    "mae": 1.654
    },
    "bench_zero": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 1.999
+    "mae": 1.776
    },
    "model": {
-    "obs": 7,
+    "obs": 8,
     "rate": 0,
-    "mae": 1.999
+    "mae": 1.776
    },
    "ai": {
-    "obs": 6,
-    "rate": 66.67,
-    "mae": 1.995
+    "obs": 7,
+    "rate": 71.43,
+    "mae": 1.793
    }
   }
  },
@@ -685,10 +685,10 @@
  },
  "models": {
   "v1.0": {
-   "obs": 34,
+   "obs": 39,
    "hit": 0,
    "rate": 0,
-   "mae": 2.278
+   "mae": 2.194
   }
  },
  "aiVersions": {
@@ -738,13 +738,22 @@
    "mae": 1.018
   },
   "draft-3@2026-10-16": {
-   "obs": 4,
+   "obs": 5,
    "hit": 4,
    "modelNames": [
     "gemini-3.5-flash-lite"
    ],
-   "rate": 100,
-   "mae": 0.845
+   "rate": 80,
+   "mae": 1.282
+  },
+  "draft-3@2026-10-19": {
+   "obs": 4,
+   "hit": 3,
+   "modelNames": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rate": 75,
+   "mae": 0.81
   }
  },
  "reliable": [

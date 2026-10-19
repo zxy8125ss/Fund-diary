@@ -2,11 +2,12 @@
  "date": "2026-10-16",
  "actual": {
   "002910": -0.62,
+  "005698": -3.13,
   "024481": -2.21,
   "015060": -1.86,
   "001672": -0.17
  },
- "scoredAt": "2026-10-17T01:59:18+08:00",
+ "scoredAt": "2026-10-20T03:51:02+08:00",
  "comparisonCutoff": "2026-10-16T09:15:00+08:00",
  "scores": {
   "ai": {
@@ -17,6 +18,14 @@
     "dirActual": "跌",
     "hit": true,
     "absErr": 0.88
+   },
+   "005698": {
+    "pred": -0.1,
+    "actual": -3.13,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.03
    },
    "024481": {
     "pred": -2,
@@ -52,6 +61,14 @@
     "hit": false,
     "absErr": 0.62
    },
+   "005698": {
+    "pred": 0,
+    "actual": -3.13,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.13
+   },
    "024481": {
     "pred": 0,
     "actual": -2.21,
@@ -85,6 +102,14 @@
     "dirActual": "跌",
     "hit": true,
     "absErr": 0.26
+   },
+   "005698": {
+    "pred": -0.05,
+    "actual": -3.13,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.08
    },
    "024481": {
     "pred": -0.88,
@@ -120,6 +145,14 @@
     "hit": true,
     "absErr": 0.41
    },
+   "005698": {
+    "pred": -0.01,
+    "actual": -3.13,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.12
+   },
    "024481": {
     "pred": -0.21,
     "actual": -2.21,
@@ -154,6 +187,14 @@
     "hit": true,
     "absErr": 1.98
    },
+   "005698": {
+    "pred": -4.3,
+    "actual": -3.13,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 1.17
+   },
    "024481": {
     "pred": -3.76,
     "actual": -2.21,
@@ -187,6 +228,14 @@
     "dirActual": "跌",
     "hit": false,
     "absErr": 0.62
+   },
+   "005698": {
+    "pred": 0,
+    "actual": -3.13,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.13
    },
    "024481": {
     "pred": 0,
@@ -270,6 +319,19 @@
    },
    "source": "天天基金",
    "reason": "首次结算"
+  },
+  {
+   "v": 2,
+   "at": "2026-10-20T03:51:02+08:00",
+   "actual": {
+    "002910": -0.62,
+    "005698": -3.13,
+    "024481": -2.21,
+    "015060": -1.86,
+    "001672": -0.17
+   },
+   "source": "天天基金",
+   "reason": "净值补齐（QDII 晚到）"
   }
  ]
 }
