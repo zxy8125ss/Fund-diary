@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-20T20:21:33+08:00",
+ "updatedAt": "2026-10-20T20:47:20+08:00",
  "sampleUnit": "交易日 × 基金",
  "predictors": {
   "user": {
@@ -782,6 +782,7 @@
   "gateOpen": false,
   "verdict": "insufficient"
  },
+ "playbook": {},
  "aiLive": {
   "since": "2026-10-21",
   "obs": 0,
