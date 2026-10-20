@@ -13,7 +13,7 @@ on:
     - cron: '47 0 * * 1-5'    # 北京 08:47 补偿
   push:
     branches: [main]
-    paths: ['scripts/**', '.github/workflows/**', 'data/config.json', 'data/funds.json', 'data/calendar.json']
+    paths: ['scripts/**', '.github/workflows/**', 'data/config.json', 'data/funds.json', 'data/calendar.json', 'data/kick.txt']
   workflow_dispatch: {}
 
 permissions:
