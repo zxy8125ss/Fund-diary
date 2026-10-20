@@ -56,6 +56,14 @@ async function yahoo(sym) {
   if (!Object.keys(map).length) throw new Error('空');
   return map;
 }
+// 腾讯行情（A 股、港股日线；GitHub 上可访问，更新比 Yahoo 及时）
+const txSym = y => { let m; if ((m = /^(\d{6})\.SS$/.exec(y))) return 'sh' + m[1]; if ((m = /^(\d{6})\.SZ$/.exec(y))) return 'sz' + m[1]; if (y === '^HSTECH') return 'hkHSTECH'; if ((m = /^(\d{4})\.HK$/.exec(y))) return 'hk0' + m[1]; return null; };
+async function tencent(sym) {
+  const j = JSON.parse(await get(`https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${sym},day,,,330,qfq`));
+  const d = j?.data?.[sym]; const rows = d?.qfqday || d?.day || []; if (rows.length < 2) throw new Error('空');
+  const map = {}; for (let i = 1; i < rows.length; i++) { const a = +rows[i - 1][2], b = +rows[i][2]; if (a > 0 && b > 0) map[rows[i][0]] = +((b / a - 1) * 100).toFixed(2); }
+  return map;
+}
 async function navHist(code) {
   try {
     const t = await get(`https://fund.eastmoney.com/pingzhongdata/${code}.js?v=${Date.now()}`);
@@ -86,6 +94,7 @@ async function boardSecid(name) {
   return boardCodes[name] || boardCodes[Object.keys(boardCodes).find(n => n.includes(name))] || null;
 }
 async function fetchAny(name, yahooSyms, emSecid) {
+  for (const s of yahooSyms || []) { const t = txSym(s); if (!t) continue; try { return { map: await tencent(t), source: '腾讯 ' + t }; } catch (e) { console.error(`${name} 腾讯 ${t}：${e.message}`); } }
   for (const s of yahooSyms || []) { try { return { map: await yahoo(s), source: 'Yahoo ' + s }; } catch (e) { console.error(`${name} Yahoo ${s}：${e.message}`); } }
   if (emSecid) { try { return { map: await emKline(emSecid), source: '东方财富 ' + emSecid }; } catch (e) { console.error(`${name} 东财：${e.message}`); } }
   return { map: {}, source: null };
