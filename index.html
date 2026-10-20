@@ -241,15 +241,15 @@ details>summary{cursor:pointer}
     const cell=(x)=>x?'<span class="num '+cls(x.value)+'" style="font-weight:600">'+fmt(x.value)+'</span>'+(x.lo!=null?'<div class="sub tiny num">'+f2(x.lo)+'~'+f2(x.hi)+'</div>':''):'<span class="sub">–</span>';
     const act=(code)=>{
       if(res&&res.actual[code]!=null){const sc=res.scores.ai&&res.scores.ai[code];return '<span class="num '+cls(res.actual[code])+'" style="font-weight:600">'+fmt(res.actual[code])+'</span>'+(sc?'<div class="tiny">'+(sc.hit?'<span class="hit">方向对</span>':'<span class="miss">方向错</span>')+'</div>':'')}
-      const L=live&&live[code];if(L)return '<span class="num '+cls(L.v)+'">'+fmt(L.v)+'</span><div class="sub tiny">'+(L.closed?'收盘估算':'估 '+esc(L.time))+'</div>';
+      const L=live&&live[code];if(L)return '<span class="num '+cls(L.v)+'">'+fmt(L.v)+'</span><div class="sub tiny">参考 · '+esc(L.name)+(L.closed?' 收盘':' '+esc(L.time))+'</div>';
       const f=G.funds.find(x=>x.code===code);return '<span class="sub tiny">'+(cur>t||(cur===t&&!res)?(f.qdii?'次日晚公布':'收盘后'):(f.qdii?'次日晚公布':'待公布'))+'</span>';
     };
     const ov=ai&&ai.overall, nov=nai&&nai.overall;
     const actAll=res?portfolio(res.actual):(live?portfolio(Object.fromEntries(Object.entries(live).map(([c,x])=>[c,x.v]))):null);
     h+='<div class="card"><h2>预测与实际</h2><div class="scroll"><table class="tbl pt"><thead><tr><th>基金</th><th>今日预测</th><th>实际</th><th>'+(nT?esc(nT.slice(5).replace("-","/")):'明日')+' 预测</th></tr></thead><tbody>'+
       G.funds.map(f=>'<tr data-fund="'+f.code+'"><td class="t">'+esc(f.short)+'</td><td>'+cell(ai&&ai.funds[f.code])+'</td><td>'+act(f.code)+'</td><td>'+cell(nai&&nai.funds[f.code])+'</td></tr>').join('')+
-      '<tr class="me"><td class="t">科技仓</td><td>'+cell(ov)+'</td><td>'+(actAll!=null?'<span class="num '+cls(actAll)+'" style="font-weight:600">'+fmt(actAll)+'</span>'+(!res?'<div class="sub tiny">估算</div>':''):'<span class="sub">–</span>')+'</td><td>'+cell(nov)+'</td></tr></tbody></table></div>'+
-      '<span class="sub tiny" style="line-height:1.6">小字是预测区间。实际＝基金公布的净值涨跌；交易时间显示盘中估算，15:00 收盘后停止更新，晚上净值公布后换成真实值（QDII 次日晚公布）。'+(nai&&nai.batch!=="morning"?'明日预测是初版，早上 08:00 前后结合隔夜美股定稿。':'')+'点一行看详情。</span></div>';
+      '<tr class="me"><td class="t">科技仓</td><td>'+cell(ov)+'</td><td>'+(actAll!=null?'<span class="num '+cls(actAll)+'" style="font-weight:600">'+fmt(actAll)+'</span>'+(!res?'<div class="sub tiny">参考</div>':''):'<span class="sub">–</span>')+'</td><td>'+cell(nov)+'</td></tr></tbody></table></div>'+
+      '<span class="sub tiny" style="line-height:1.6">小字是预测区间。实际＝基金公布的净值涨跌，晚上公布（QDII 次日晚）。公布前显示「参考」＝这只基金跟踪的指数/ETF 的盘中涨跌，15:00 收盘后停止更新；平台的基金估值已被监管叫停，这里不是基金估值。'+(nai&&nai.batch!=="morning"?'明日预测是初版，早上 08:00 前后结合隔夜美股定稿。':'')+'点一行看详情。</span></div>';
     if(res&&res.scores.ai){const xs=Object.values(res.scores.ai),hit=xs.filter(s=>s.hit).length,inr=xs.filter(s=>s.inRange).length,rn=xs.filter(s=>s.inRange!=null).length;h+='<div class="card strip"><span>今日方向对 <b class="num">'+hit+'/'+xs.length+'</b></span>'+(rn?'<span>落在区间 <b class="num">'+inr+'/'+rn+'</b></span>':'')+'<span>平均误差 <b class="num">'+f2(xs.reduce((s,x)=>s+x.absErr,0)/xs.length)+'</b></span></div>'}
     h+=tradeCard(focus.d,focus.ai,focus.tag);
     h+=basisSection(focus);
@@ -261,13 +261,18 @@ details>summary{cursor:pointer}
     if(live&&Object.values(live).some(x=>!x.closed))liveTimer=setTimeout(()=>{if($("sheet").hidden&&!document.hidden)renderPred()},60000);
   }
   let liveTimer=null, liveCache=null;
-  function jsonp(code){return new Promise(res=>{const s=document.createElement("script");const done=v=>{window.jsonpgz=undefined;s.remove();res(v)};window.jsonpgz=x=>done(x);s.onerror=()=>done(null);setTimeout(()=>done(null),6000);s.src="https://fundgz.1234567.com.cn/js/"+code+".js?rt="+Date.now();document.head.appendChild(s)})}
-  async function liveEst(){   // 天天基金盘中估算（手机端直接读取），只在交易日 09:30 之后显示
-    const now=bjNow(), hhmm=now.toISOString().slice(11,16);
+  const LIVE={"002910":["sh512480","半导体ETF"],"024481":["sh515260","电子ETF"],"015060":["sh515260","电子ETF"],"001672":["sz399006","创业板指"]};
+  function loadQuotes(syms){return new Promise(res=>{const s=document.createElement("script");s.charset="gbk";const done=()=>{s.remove();res()};s.onload=done;s.onerror=done;setTimeout(done,6000);s.src="https://qt.gtimg.cn/q="+syms.join(",")+"&r="+Date.now();document.head.appendChild(s)})}
+  async function liveEst(){   // 盘中参考：各基金锚定指数/ETF 的实时涨跌（不是基金估值），交易日 09:30 之后显示，收盘即停
+    const hhmm=bjNow().toISOString().slice(11,16);
     if(hhmm<"09:30")return null;
     if(liveCache&&Date.now()-liveCache.at<55000)return liveCache.v;
+    const syms=[...new Set(Object.values(LIVE).map(x=>x[0]))];
+    await loadQuotes(syms);
     const out={};
-    for(const f of G.funds){const x=await jsonp(f.code);if(x&&x.gszzl!=null&&String(x.gztime||"").slice(0,10)===todayBJ())out[f.code]={v:+x.gszzl,time:String(x.gztime).slice(11,16),closed:String(x.gztime).slice(11,16)>="15:00"||hhmm>="15:00"}}
+    for(const [code,[sym,name]] of Object.entries(LIVE)){const v=window["v_"+sym];if(!v)continue;const f=v.split("~"),ts=f[30]||"",pct=+f[32];
+      if(!Number.isFinite(pct)||ts.slice(0,8)!==todayBJ().replace(/-/g,""))continue;
+      const tm=ts.slice(8,10)+":"+ts.slice(10,12);out[code]={v:pct,time:tm,name,closed:tm>="15:00"||hhmm>="15:00"}}
     liveCache={at:Date.now(),v:Object.keys(out).length?out:null};
     return liveCache.v;
   }
