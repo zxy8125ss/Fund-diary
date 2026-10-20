@@ -53,6 +53,13 @@ p{margin:0}
 .list{background:var(--card);border-radius:14px;overflow:hidden}
 .row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:13px 16px;border:none;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;cursor:pointer;min-height:52px}
 .row:last-child{border-bottom:none}
+.row .nm .rg{display:block;font-family:var(--f-num);font-weight:400;margin-top:1px}
+.strip{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;flex-wrap:wrap}
+.trades{display:flex;flex-direction:column}
+.tr{display:flex;flex-direction:column;gap:3px;padding:9px 0;border-top:1px solid var(--line)}
+.trh{display:flex;align-items:center;gap:8px;min-width:0}
+.trh b{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi b{white-space:nowrap;font-size:17px}
 .row .nm{font-size:15.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .v{font-family:var(--f-num);font-size:18px;font-weight:600;text-align:right;min-width:76px}
 .row .a{font-family:var(--f-num);font-size:13px;text-align:right;min-width:70px}
@@ -140,6 +147,7 @@ details>summary{cursor:pointer}
   const f2=v=>v==null||isNaN(v)?"–":Number(v).toFixed(2);
   const pp=v=>v==null||isNaN(v)?"–":Number(v).toFixed(1)+"%";
   const cls=v=>v==null?"sub":v>0?"up":v<0?"down":"mid";
+  const clsM=v=>v>0.004?"up":v<-0.004?"down":"sub";
   const WD="日一二三四五六";
   const dlabel=d=>{const t=new Date(d+"T00:00:00Z");return String(t.getUTCMonth()+1).padStart(2,"0")+"."+String(t.getUTCDate()).padStart(2,"0")+" 周"+WD[t.getUTCDay()]};
   const md=iso=>{const t=Date.parse(iso);return isNaN(t)?"":new Date(t+8*3600e3).toISOString().slice(5,10).replace("-","/")};
@@ -196,88 +204,98 @@ details>summary{cursor:pointer}
     return {k:"open",text:"待填写 · "+G.config.deadline+" 截止"};
   }
 
-  // ---------- 预测 ----------
+  // ---------- 预测（AI 每天给出区间 + 具体值 + 逻辑，并做模拟操作） ----------
   function pickDay(){
     const days=Object.keys(G.index.days).sort(), t=todayBJ();
     return days.find(x=>x>=t&&!G.index.days[x].result)||days.filter(x=>!G.index.days[x].result).at(-1)||days.at(-1)||null;
   }
-  let pollTimer=null;
+  async function aiOf(d){   // 正式版本：截止时间前最后一版；还没到截止就显示最新一版
+    if(d.ai!==undefined)return d.ai;
+    const lim=Date.parse(deadlineOf(d.T)), bs=d.batches.filter(b=>Date.parse(b.snap.asOf)<=lim);
+    const b=(bs.at(-1)||d.batches.at(-1)||{}).batch;
+    d.ai=b?await j(`data/predictions/${d.T}/ai-${b}.json`):null;
+    d.paperDay=d.result?await j(`data/paper/days/${d.T}.json`):null;
+    return d.ai;
+  }
+  const rangeTxt=(x)=>x&&x.lo!=null?f2(x.lo)+' ~ '+f2(x.hi)+'%':'';
+  const ACT={"买入":"t-up","卖出":"t-down","不动":"t-n"};
+  const yuan=v=>v==null||isNaN(v)?"–":"¥"+Number(v).toFixed(2);
+  const syuan=v=>v==null||isNaN(v)?"–":(v>0?"+":v<0?"−":"")+"¥"+Math.abs(Number(v)).toFixed(2);
   async function renderPred(){
     const days=Object.keys(G.index.days).sort();
     if(!cur)cur=pickDay();
-    if(!cur){const nT=G.latestNews&&G.latestNews.forDate;$("v-pred").innerHTML='<div class="card"><h2>'+(nT?'下一个预测日：'+esc(dlabel(nT)):'等待下一个交易日')+'</h2><span class="sub" style="font-size:14px;line-height:1.6">预测数据会在前一晚 22:13 后准备好，交易日早上 08:00 前后补充隔夜美股，09:15 截止提交。先看看最新消息面。</span></div>'+latestNewsCard()+holdingsCard();return}
-    const d=await loadDay(cur), st=state(d), i=days.indexOf(cur), res=d.result;
-    let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+st.k+'">'+esc(st.text)+'</span></div>';
-    const u=d.lock?d.user:null;
-    const actAll=res?portfolio(res.actual):null;
-    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>科技仓</h2>'+(res?'<span class="sub small">实际 <b class="num '+cls(actAll)+'">'+fmt(actAll)+'</b></span>':'')+'</div>';
-    if(u){h+='<span class="big '+cls(u.overall&&u.overall.value)+'">'+fmt(u.overall&&u.overall.value)+'</span><span class="sub tiny">由 5 只基金预测按持仓金额加权自动计算</span>'}
-    else if(st.k==="open"&&store.get("fd-pending-"+d.T))h+='<span style="font-size:14px;line-height:1.6">已经在 GitHub 提交，系统正在公证（通常 1 分钟内）。锁定时间以 GitHub 服务器收到的时间为准。</span><button class="btn btn-g" id="reopen">没提交成功？重新打开提交页</button>';
-    else if(st.k==="open")h+='<span class="sub" style="font-size:14px;line-height:1.6">'+(d.seen?'今天的数据已经准备好。先独立判断，再看 AI 草稿定稿，'+esc(G.config.deadline)+' 前提交。':'数据还在准备中（前一晚 22:13、当天 08:07 各生成一次）。')+'</span>'+(d.seen?'<button class="btn btn-p" id="go-form">'+(store.get("fd-draft-"+d.T)?'继续填写':'开始预测')+'</button>':'');
-    else if(d.user&&!d.lock)h+='<span class="sub" style="font-size:14px">这份预测没有经过公证（可能是旧版 app 提交的），不计入成绩。</span>';
-    else h+='<span class="sub" style="font-size:14px">这一天没有提交预测，只统计基准、规则模型和 AI 的成绩。</span>';
+    if(!cur){$("v-pred").innerHTML='<div class="card"><h2>等待下一个交易日</h2><span class="sub" style="font-size:14px;line-height:1.6">AI 会在前一晚 22:13 后给出初版预测，交易日早上 08:00 前后结合隔夜美股定稿。</span></div>'+paperCard()+latestNewsCard();return}
+    const d=await loadDay(cur), i=days.indexOf(cur), res=d.result, ai=await aiOf(d);
+    const pill=res?{k:"lock",t:"已出结果"}:ai?{k:"open",t:"AI 已预测 "+hm(ai.asOf)+(ai.batch==="morning"?" · 定稿":" · 初版")}:{k:"miss",t:"等待 AI 预测"};
+    let h='<div class="top"><div class="datenav"><button class="icon" data-nav="-1" aria-label="前一天"'+(i<=0?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><h1>'+esc(dlabel(cur))+'</h1><button class="icon" data-nav="1" aria-label="后一天"'+(i>=days.length-1?' disabled':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div><span class="pill p-'+pill.k+'">'+esc(pill.t)+'</span></div>';
+    const actAll=res?portfolio(res.actual):null, ov=ai&&ai.overall;
+    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>科技仓 · AI 预测</h2>'+(res?'<span class="sub small" style="white-space:nowrap">实际 <b class="num '+cls(actAll)+'">'+fmt(actAll)+'</b></span>':'')+'</div>';
+    if(ai){
+      h+='<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span class="big '+cls(ov&&ov.value)+'">'+fmt(ov&&ov.value)+'</span>'+(ov&&ov.lo!=null?'<span class="sub small num">区间 '+rangeTxt(ov)+'</span>':'')+'</div>';
+      if(ov&&ov.logic&&ov.logic.length)h+='<ol class="pts">'+ov.logic.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>';
+      h+='<span class="sub tiny">五只基金预测按持仓金额加权。'+(ai.batch==="morning"?'早间定稿（含隔夜美股）。':'晚间初版，早上 08:00 前后会结合隔夜美股定稿。')+'</span>';
+    }else h+='<span class="sub" style="font-size:14px;line-height:1.6">数据还在准备中（前一晚 22:13、当天早上 08:00 前后各生成一次）。</span>';
     h+='</div><div class="list">';
     for(const f of G.funds){
-      const v=u&&u.funds[f.code]?u.funds[f.code].value:null, a=res?res.actual[f.code]:null, sc=res&&res.scores.user&&res.scores.user[f.code];
-      h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'</span><span class="v '+cls(v)+'">'+fmt(v)+'</span><span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit" aria-label="方向对">✓</span>':'<span class="miss" aria-label="方向错">✗</span>'):''):'<span class="chev" aria-hidden="true">›</span>')+'</span></button>';
+      const x=ai&&ai.funds[f.code], a=res?res.actual[f.code]:null, sc=res&&res.scores.ai&&res.scores.ai[f.code];
+      h+='<button class="row" data-fund="'+f.code+'"><span class="nm">'+esc(f.short)+'<span class="sub tiny rg">'+esc(rangeTxt(x))+'</span></span><span class="v '+cls(x&&x.value)+'">'+fmt(x&&x.value)+'</span><span class="a">'+(a!=null?'<span class="'+cls(a)+'">'+fmt(a)+'</span> '+(sc?(sc.hit?'<span class="hit" aria-label="方向对">✓</span>':'<span class="miss" aria-label="方向错">✗</span>'):''):'<span class="chev" aria-hidden="true">›</span>')+'</span></button>';
     }
-    h+='</div>'+(d.snap&&!res?newsCard(d):(!res?latestNewsCard():''))+holdingsCard();
+    h+='</div>';
+    if(res&&res.scores.ai){const xs=Object.values(res.scores.ai),hit=xs.filter(s=>s.hit).length,inr=xs.filter(s=>s.inRange).length,rn=xs.filter(s=>s.inRange!=null).length;h+='<div class="card strip"><span>方向对 <b class="num">'+hit+'/'+xs.length+'</b></span>'+(rn?'<span>落在区间 <b class="num">'+inr+'/'+rn+'</b></span>':'')+'<span>平均误差 <b class="num">'+f2(xs.reduce((s,x)=>s+x.absErr,0)/xs.length)+'</b></span></div>'}
+    h+=tradeCard(d,ai)+paperCard()+(d.snap&&!res?newsCard(d):(!res?latestNewsCard():''))+holdingsCard();
     $("v-pred").innerHTML=h;
     $("v-pred").querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const k=days.indexOf(cur)+(+b.dataset.nav);if(days[k]){cur=days[k];renderPred()}}));
     $("v-pred").querySelectorAll("[data-fund]").forEach(b=>b.addEventListener("click",()=>openFund(d,b.dataset.fund)));
-    const gf=$("go-form");if(gf)gf.addEventListener("click",()=>openForm(d));
-    const ro=$("reopen");if(ro)ro.addEventListener("click",()=>{store.del("fd-pending-"+d.T);openForm(d,3)});
-    clearTimeout(pollTimer);
-    if(store.get("fd-pending-"+d.T)&&!d.lock)pollTimer=setTimeout(async()=>{cache[d.T]=null;await renderPred();const x=cache[d.T];if(x&&x.lock)toast(x.lock.onTime?"🔒 已锁定 "+hm(x.lock.serverLockedAt):"已记录，但超过截止时间")},15000);
+  }
+  function tradeCard(d,ai){
+    if(!ai||!ai.trades)return '';
+    const ex=d.paperDay, byEx=ex?Object.fromEntries((ex.executed||[]).map(e=>[e.code,e])):{};
+    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>今日模拟操作</h2><span class="sub tiny">'+(ex?'已按 '+esc(d.T.slice(5))+' 净值成交':'15:00 前下单，按当天净值成交')+'</span></div>';
+    if(ai.tradeSummary)h+='<div style="font-size:14px;line-height:1.6">'+esc(ai.tradeSummary)+'</div>';
+    h+='<div class="trades">'+G.funds.map(f=>{const t=ai.trades[f.code]||{action:"不动"},e=byEx[f.code];
+      const amt=t.action==="买入"?yuan(t.amount):t.action==="卖出"?'卖 '+Math.round(t.ratio*100)+'%（约 '+yuan(t.estAmount)+'）':'';
+      return '<div class="tr"><div class="trh"><span class="tag '+(ACT[t.action]||"t-n")+'">'+esc(t.action)+'</span><b>'+esc(f.short)+'</b><span class="num small" style="margin-left:auto;white-space:nowrap">'+esc(amt)+'</span></div>'+(t.reason?'<div class="sub small">'+esc(t.reason)+'</div>':'')+(e?'<div class="tiny num" style="color:var(--sub)">成交 '+yuan(e.amount)+(e.fee?' · 手续费 '+yuan(e.fee):'')+(e.availableFrom?' · '+esc(e.availableFrom.slice(5))+' 到账':'')+(e.note?' · '+esc(e.note):'')+'</div>':'')+'</div>'}).join('')+'</div></div>';
+    return h;
+  }
+  function paperCard(){
+    const A=G.paper; if(!A)return '<div class="card"><h2>模拟账户</h2><span class="sub small" style="line-height:1.6">'+esc(G.config.paper?'从 '+G.config.paper.start.slice(5).replace("-","月")+'日开始：现有持仓 + 同额虚拟现金，AI 每天决定买卖，和「一直持有不动」比谁赚得多。':'')+'</span></div>';
+    const L=A.history.at(-1), init=Object.values(A.init.holdings).reduce((a,b)=>a+b,0)+A.init.cash;
+    if(!L)return '<div class="card"><h2>模拟账户</h2><div class="kpis"><div class="kpi"><span class="sub tiny">起始资金</span><b>'+yuan(init)+'</b></div><div class="kpi"><span class="sub tiny">现金</span><b>'+yuan(A.cash)+'</b></div></div><span class="sub tiny">'+esc(A.start.slice(5))+' 开始，第一天收盘结算后出结果。</span></div>';
+    return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>模拟账户</h2><span class="sub tiny">截至 '+esc(L.date.slice(5))+' 净值</span></div><div class="kpis"><div class="kpi"><span class="sub tiny">AI 操作</span><b class="'+clsM(L.pnl)+'">'+syuan(L.pnl)+'</b><span class="sub tiny">总资产 '+yuan(L.total)+'</span></div><div class="kpi"><span class="sub tiny">一直不动</span><b class="'+clsM(L.holdPnl)+'">'+syuan(L.holdPnl)+'</b><span class="sub tiny">总资产 '+yuan(L.hold)+'</span></div><div class="kpi"><span class="sub tiny">AI 多赚</span><b class="'+clsM(L.excess)+'">'+syuan(L.excess)+'</b><span class="sub tiny">'+A.history.length+' 个交易日</span></div></div></div>';
   }
   function holdingsCard(){
     const w=weights(),t=Object.values(w).reduce((a,b)=>a+b,0),pn=G.funds.reduce((s,f)=>s+(+((G.holdings[f.code]||f.holding||{}).pnl)||0),0);
-    return '<details class="card"><summary style="display:flex;justify-content:space-between;font-weight:600;font-size:14px"><span>持仓 ¥'+t.toFixed(2)+'</span><span class="num '+cls(pn)+'">'+pn.toFixed(2)+'</span></summary><table class="tbl"><thead><tr><th>基金</th><th>金额</th><th>权重</th><th>持有收益</th></tr></thead><tbody>'+
+    return '<details class="card"><summary style="display:flex;justify-content:space-between;font-weight:600;font-size:14px"><span>我的真实持仓 ¥'+t.toFixed(2)+'</span><span class="num '+cls(pn)+'">'+pn.toFixed(2)+'</span></summary><table class="tbl"><thead><tr><th>基金</th><th>金额</th><th>权重</th><th>持有收益</th></tr></thead><tbody>'+
       G.funds.map(f=>{const x=G.holdings[f.code]||f.holding||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+Number(x.amount||0).toFixed(2)+'</td><td>'+(t?(w[f.code]/t*100).toFixed(0)+'%':'–')+'</td><td class="'+cls(x.pnl)+'">'+Number(x.pnl||0).toFixed(2)+'</td></tr>'}).join('')+
-      '</tbody></table><span class="sub tiny">权重用于自动计算科技仓预测。金额按每日净值滚动；加减仓需要在仓库 data/state/holdings.json 里修改。</span></details>';
+      '</tbody></table><span class="sub tiny">按每日净值自动滚动；权重用于计算科技仓整体预测。</span></details>';
   }
 
   // ---------- 单只基金详情 ----------
   async function openFund(d,code){
-    const f=G.funds.find(x=>x.code===code), u=d.lock?d.user:null, uf=u&&u.funds[code], res=d.result, sc=res&&res.scores.user&&res.scores.user[code];
-    const checks=(res&&res.userChecks&&res.userChecks[code])||(u&&u.checks&&u.checks[code])||[];
-    const revealed=!!d.lock||Date.now()>Date.parse(deadlineOf(d.T));
+    const f=G.funds.find(x=>x.code===code), ai=await aiOf(d), x=ai&&ai.funds[code], res=d.result, sc=res&&res.scores.ai&&res.scores.ai[code], t=ai&&ai.trades&&ai.trades[code];
     let h=sheetHead(f.short);
-    h+='<div class="card"><dl class="kv"><dt>预测值</dt><dd class="num '+cls(uf&&uf.value)+'" style="font-size:20px;font-weight:600">'+fmt(uf&&uf.value)+'</dd>'+
-      '<dt>实际值</dt><dd class="num '+cls(res&&res.actual[code])+'">'+(res&&res.actual[code]!=null?fmt(res.actual[code]):(f.qdii?'QDII 净值次日晚公布':'收盘后公布'))+'</dd>'+
-      (sc?'<dt>结果</dt><dd>'+(sc.hit?'<span class="hit">方向对 ✓</span>':'<span class="miss">方向错 ✗</span>')+'　误差 <span class="num">'+f2(sc.absErr)+'</span></dd>':'')+
-      (u&&u.initial&&u.initial[code]!=null?'<dt>看草稿前</dt><dd class="num">'+fmt(u.initial[code])+'</dd>':'')+'</dl>'+
-      (uf&&uf.conclusion?'<div style="font-weight:600">结论：'+esc(uf.conclusion)+'</div>':'')+'</div>';
-    if(uf&&(uf.reasons||[]).length){
-      h+='<div class="card"><h2>预测理由</h2><ol class="pts">'+uf.reasons.map((r,i)=>{const c=checks[i]||{signals:[],data:[]};
-        return '<li>'+esc(r.text)+'<div class="chips" style="margin-top:4px">'+c.signals.map(x=>'<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.id+" "+x.verdict)+'</span>').join('')+c.data.map(x=>'<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(dataName(d,x.id)+" · "+x.verdict)+'</span>').join('')+(!c.signals.length&&!c.data.length?'<span class="tag t-n">主观判断</span>':'')+'</div></li>'}).join('')+'</ol></div>';
-    }
+    h+='<div class="card"><dl class="kv"><dt>AI 预测</dt><dd class="num '+cls(x&&x.value)+'" style="font-size:20px;font-weight:600">'+fmt(x&&x.value)+'</dd>'+
+      (x&&x.lo!=null?'<dt>预测区间</dt><dd class="num">'+rangeTxt(x)+'</dd>':'')+
+      '<dt>实际</dt><dd class="num '+cls(res&&res.actual[code])+'">'+(res&&res.actual[code]!=null?fmt(res.actual[code]):(f.qdii?'QDII 净值次日晚公布':'收盘后公布'))+'</dd>'+
+      (sc?'<dt>结果</dt><dd>'+(sc.hit?'<span class="hit">方向对 ✓</span>':'<span class="miss">方向错 ✗</span>')+(sc.inRange!=null?'　'+(sc.inRange?'<span class="hit">在区间内</span>':'<span class="miss">超出区间</span>'):'')+'　误差 <span class="num">'+f2(sc.absErr)+'</span></dd>':'')+
+      (t?'<dt>今日操作</dt><dd><span class="tag '+(ACT[t.action]||"t-n")+'">'+esc(t.action)+'</span> '+esc(t.action==="买入"?yuan(t.amount):t.action==="卖出"?Math.round(t.ratio*100)+'%':'')+'</dd>':'')+'</dl>'+
+      (x&&x.conclusion?'<div style="font-weight:600">结论：'+esc(x.conclusion)+'</div>':'')+'</div>';
+    if(x&&(x.reasons||[]).length)h+='<div class="card"><h2>预测逻辑</h2><ol class="pts">'+x.reasons.map(r=>'<li>'+esc(r.text)+((r.signals||[]).length||(r.dataRefs||[]).length?'<div class="chips" style="margin-top:4px">'+(r.signals||[]).map(id=>{const s=sig(id);return '<span class="tag '+(STATUS_TAG[s&&s.status]||"t-n")+'">'+esc(id+(s?" · "+s.status:""))+'</span>'}).join('')+(r.dataRefs||[]).map(id=>'<span class="tag t-n">'+esc(dataName(d,id))+'</span>').join('')+'</div>':'')+'</li>').join('')+'</ol>'+(t&&t.reason?'<div class="small"><b>操作理由：</b>'+esc(t.reason)+'</div>':'')+'</div>';
     const items=d.snap?d.snap.items.filter(it=>!it.hidden&&it.kind==="行情"&&(!String(it.key).includes(".")||String(it.key).startsWith(code))):[];
-    if(items.length)h+='<div class="card"><h2>市场依据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'快照（'+esc(hm(d.snap.asOf))+'），只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+items.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td><td class="sub tiny" style="white-space:nowrap">'+esc(String(it.dataTime).slice(5,10))+'</td></tr>').join('')+'</tbody></table></div>';
+    if(items.length)h+='<div class="card"><h2>市场数据</h2><span class="sub tiny">'+esc(d.seen.batch==="morning"?"早间":"晚间")+'数据（'+esc(hm(d.snap.asOf))+'），只含当时已经可以获得的数据</span><table class="tbl"><tbody>'+items.map(it=>'<tr><td class="t">'+esc(it.name)+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td><td class="sub tiny" style="white-space:nowrap">'+esc(String(it.dataTime).slice(5,10))+'</td></tr>').join('')+'</tbody></table></div>';
     const trig=visibleTrig(d.trig,code);
-    h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigHist(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table><span class="sub tiny">「历史有效」且「今天触发」才算有效依据。</span>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
-    if(revealed){
-      const S=await sysPreds(d);
-      const ks=["ai","model","bench_external_raw","bench_external_beta","bench_prev","bench_zero"];
-      h+='<div class="card"><h2>对照组</h2><span class="sub tiny">都是你锁定之前生成的版本</span><table class="tbl"><tbody>'+ks.map(k=>{const x=S[k]&&S[k].funds[code];const s2=res&&res.scores[k]&&res.scores[k][code];return '<tr><td class="t">'+NAMES[k]+'</td><td class="'+cls(x&&x.value)+'">'+fmt(x&&x.value)+'</td><td>'+(s2?(k==="bench_zero"?'':(s2.hit?'<span class="hit">✓</span> ':'<span class="miss">✗</span> '))+'<span class="sub">'+f2(s2.absErr)+'</span>':'')+'</td></tr>'}).join('')+'</tbody></table>'+
-        (S.ai&&S.ai.funds[code]&&(S.ai.funds[code].reasons||[]).length?'<details><summary class="small sub">AI 草稿的理由</summary><ol class="pts" style="margin-top:6px;font-size:13px">'+S.ai.funds[code].reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol></details>':'')+'</div>';
-    }
+    h+='<div class="card"><h2>今天触发的规律</h2>'+(trig.length?'<table class="tbl"><tbody>'+trig.map(t=>{const s=sig(t.signal);return '<tr><td class="t">'+esc(t.signal+" "+(s?s.name:""))+'<div class="sub tiny">'+esc(sigHist(s))+'</div></td><td><span class="tag '+(STATUS_TAG[t.status]||"t-n")+'">'+esc(t.status)+'</span></td></tr>'}).join('')+'</tbody></table>':'<span class="sub small">没有规律被触发。</span>')+'</div>';
+    const S=await sysPreds(d);
+    const ks=["model","bench_external_raw","bench_external_beta","bench_prev","bench_zero"];
+    h+='<div class="card"><h2>对照组</h2><table class="tbl"><tbody>'+ks.map(k=>{const y=S[k]&&S[k].funds[code];const s2=res&&res.scores[k]&&res.scores[k][code];return '<tr><td class="t">'+NAMES[k]+'</td><td class="'+cls(y&&y.value)+'">'+fmt(y&&y.value)+'</td><td>'+(s2?(k==="bench_zero"?'':(s2.hit?'<span class="hit">✓</span> ':'<span class="miss">✗</span> '))+'<span class="sub">'+f2(s2.absErr)+'</span>':'')+'</td></tr>'}).join('')+'</tbody></table></div>';
     if(d.review){
-      const rv=d.review, hs=(rv.hindsight||[]).filter(x=>x.fund===code), ab=(rv.ablation||[]).filter(x=>x.fund===code);
-      h+='<div class="card"><h2>复盘'+(rv.subject==="ai"?' <span class="sub small" style="font-weight:400">（当天没有你的预测，复盘的是 AI）</span>':'')+'</h2>'+
-        list("判断正确",rv.right)+list("判断错误",rv.wrong)+
+      const rv=d.review;
+      h+='<div class="card"><h2>复盘</h2>'+list("判断正确",rv.right)+list("判断错误",rv.wrong)+
         (rv.bestSignal&&rv.bestSignal.why?'<div class="small"><b>最有价值的信号：</b>'+esc((rv.bestSignal.id?rv.bestSignal.id+" ":"")+rv.bestSignal.why)+'</div>':'')+
         (rv.misleading&&rv.misleading.why?'<div class="small"><b>最误导的信号：</b>'+esc((rv.misleading.id?rv.misleading.id+" ":"")+rv.misleading.why)+'</div>':'')+
-        list("下次怎么改",rv.nextTime)+
-        (hs.length?'<div class="small"><b>我是不是在找事后理由？</b>'+hs.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.evidence||x.why||"")+(x.by==="ai"?'（AI 辅助判断）':'')+'</span></div>').join('')+'</div>':'')+
-        (ab.length?'<div class="small"><b>删掉这条理由，结论还一样吗？</b>'+ab.map(x=>'<div>理由 '+(x.reason+1)+'：<span class="tag '+(VERDICT[x.verdict]||"t-n")+'">'+esc(x.verdict)+'</span> <span class="sub">'+esc(x.detail||x.why||"")+(x.by==="ai"?'（AI 辅助判断）':'')+'</span></div>').join('')+'</div>':'')+'</div>';
-    }
-    if(d.lock){
-      h+='<div class="card"><h2>修正意见</h2><span class="sub tiny" style="line-height:1.6">原始预测永久保留；修正意见只用于复盘，不参与评分。在锁定那条 Issue 下评论即可，开头写「基金：'+code+'」会归到这只基金。</span><div id="am-list" class="small sub">读取中…</div><a class="btn btn-g" target="_blank" rel="noopener" href="https://github.com/'+OWNER+'/'+REPO+'/issues/'+d.lock.issueNumber+'">去 Issue 写修正意见</a></div>';
-      h+='<div class="card"><h2>锁定凭证</h2><dl class="kv small"><dt>服务器时间</dt><dd class="num">'+esc(String(d.lock.serverLockedAt).replace("T"," ").slice(0,19))+'</dd><dt>截止时间</dt><dd class="num">'+esc(String(d.lock.deadline).replace("T"," ").slice(0,16))+'</dd><dt>依据快照</dt><dd class="num">'+esc(d.lock.snapshotId||"–")+'</dd><dt>预测哈希</dt><dd class="num" style="word-break:break-all">'+esc(d.lock.predictionHash)+'</dd><dt>Issue</dt><dd><a href="https://github.com/'+OWNER+'/'+REPO+'/issues/'+d.lock.issueNumber+'" target="_blank" rel="noopener">#'+d.lock.issueNumber+'</a></dd></dl></div>';
+        list("下次怎么改",rv.nextTime)+'</div>';
     }
     showSheet(h);
-    if(d.lock)amendments(d.T,code).then(xs=>{const el=$("am-list");if(el)el.innerHTML=xs.length?'<ul class="pts">'+xs.map(a=>'<li style="color:var(--ink)">'+esc(a.text)+' <span class="sub tiny">'+esc(String(a.createdAt).replace("T"," ").slice(5,16))+'</span></li>').join('')+'</ul>':'暂无'});
   }
   const list=(t,xs)=>xs&&xs.length?'<div class="small"><b>'+t+'</b><ul class="pts" style="font-size:13.5px">'+xs.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>':'';
   function dataName(d,id){const it=d.snap&&d.snap.items.find(i=>i.id===id);return it?(it.kind==="消息"?"快讯 "+hm(it.dataTime):it.name):id}
@@ -444,49 +462,40 @@ details>summary{cursor:pointer}
 
   // ---------- 成绩 ----------
   function renderScore(){
-    const S=G.stats;
-    if(!S||!S.predictors){$("v-score").innerHTML='<div class="empty">暂无统计</div>';return}
-    const P=S.predictors, U=P.user, C=S.conclusion||{}, cmp=(S.compare&&S.compare.user)||{};
+    const S=G.stats||{}, P=S.predictors||{}, A=G.paper, L=A&&A.history.at(-1), LV=S.aiLive||{}, C=S.conclusionAi||{}, cmp=(S.compare&&S.compare.ai)||{};
+    let h='<div class="top"><h1>成绩</h1><span class="sub small">AI 能不能赚钱</span></div>';
+    // 1) 模拟账户
+    if(A&&L){
+      const vt=L.excess>0?'目前 AI 操作比一直不动多赚 '+syuan(L.excess).replace("+",""):L.excess<0?'目前 AI 操作比一直不动少赚 '+syuan(-L.excess).replace("+",""):'目前和一直不动打平';
+      h+='<div class="card"><span class="sub small">AI 模拟操作 vs 一直持有不动</span><span class="verdict">'+esc(vt)+'</span><span class="small sub" style="line-height:1.6">'+esc(A.start.slice(5))+' 起 '+A.history.length+' 个交易日；起始 '+yuan(Object.values(A.init.holdings).reduce((a,b)=>a+b,0)+A.init.cash)+'（持仓 + 同额现金）。'+(A.history.length<20?'交易日还少，结果主要是运气，至少看满一个月。':'')+'</span>'+
+        '<div class="kpis"><div class="kpi"><span class="sub tiny">AI 操作</span><b class="'+clsM(L.pnl)+'">'+syuan(L.pnl)+'</b></div><div class="kpi"><span class="sub tiny">一直不动</span><b class="'+clsM(L.holdPnl)+'">'+syuan(L.holdPnl)+'</b></div><div class="kpi"><span class="sub tiny">已付手续费</span><b>'+yuan(A.history.reduce((s,x)=>s+(x.fees||0),0))+'</b><span class="sub tiny">'+A.history.reduce((s,x)=>s+(x.trades||0),0)+' 笔交易</span></div></div>'+chart(A.history)+'</div>';
+      h+='<div class="card"><h2>账户流水</h2><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th>AI 总资产</th><th>不动</th><th>多赚</th><th>交易</th></tr></thead><tbody>'+[...A.history].reverse().slice(0,30).map(x=>'<tr><td>'+esc(x.date.slice(5))+'</td><td>'+f2(x.total)+'</td><td>'+f2(x.hold)+'</td><td class="'+clsM(x.excess)+'">'+syuan(x.excess)+'</td><td>'+(x.trades||0)+(x.fees?'<div class="sub tiny">费 '+f2(x.fees)+'</div>':'')+'</td></tr>').join('')+'</tbody></table></div><span class="sub tiny" style="line-height:1.6">'+esc(G.config.paper?G.config.paper.note:'')+'</span></div>';
+    }else h+=paperCard();
+    // 2) 预测准不准
+    h+='<div class="card"><h2>预测准不准</h2><span class="sub tiny">'+esc((LV.since||"").slice(5))+' 起的新版预测（区间 + 具体值）</span><div class="kpis"><div class="kpi"><span class="sub tiny">方向命中</span><b>'+pp(LV.rate)+'</b><span class="sub tiny">'+(LV.obs||0)+' 个（'+(LV.days||0)+' 天）</span></div><div class="kpi"><span class="sub tiny">落在区间</span><b>'+pp(LV.rangeRate)+'</b><span class="sub tiny">'+(LV.rangeObs||0)+' 个</span></div><div class="kpi"><span class="sub tiny">平均误差</span><b>'+(LV.mae!=null?f2(LV.mae)+'%':'–')+'</b></div></div><span class="sub tiny" style="line-height:1.6">方向分三态：涨 &gt; +'+G.config.flatBand+'%，跌 &lt; −'+G.config.flatBand+'%，其余为平。一个样本＝一天 × 一只基金。</span></div>';
     const bD=C.bestDirectionBenchmark, bM=C.bestMaeBenchmark, cD=bD&&cmp[bD], cM=bM&&cmp[bM];
-    let h='<div class="top"><h1>成绩</h1><span class="sub small">样本单位：交易日 × 基金</span></div>';
-    const vt=C.verdict==="evidence"?"当前有统计证据支持：你的预测能力优于最佳简单基准。":C.verdict==="no_evidence"?"尚无足够证据证明你的预测能力优于简单基准。":U.obs?"样本不足，暂不下结论。":"还没有成绩。";
-    const vs=C.verdict==="insufficient"||!U.obs?(U.obs?"已有 "+U.obs+" 个观测（"+U.days+" 个交易日）。满 "+G.config.preregistration.minObsForConclusion+" 个观测才开放结论；即使满了，也要通过统计检验才能说「优于」。":"第一份预测锁定、收盘结算后开始统计。"):"结论来自事先登记的两项主要检验（方向、MAE），按交易日聚类，用随时有效的序贯检验，Holm 校正，α = "+G.config.preregistration.alpha+"。";
-    h+='<div class="card"><span class="sub small">我到底有没有预测能力？</span><span class="verdict">'+esc(vt)+'</span><span class="small" style="line-height:1.6">'+esc(vs)+'</span>'+
-      '<div class="kpis"><div class="kpi"><span class="sub tiny">正式预测</span><b>'+(U.lockedDays||0)+' 天</b></div><div class="kpi"><span class="sub tiny">有效观测</span><b>'+U.obs+'</b><span class="sub tiny">'+U.days+' 个交易日</span></div><div class="kpi"><span class="sub tiny">方向命中</span><b>'+pp(U.rate)+'</b></div></div>'+
-      '<div class="kpis"><div class="kpi"><span class="sub tiny">MAE</span><b>'+(U.mae!=null?f2(U.mae)+'%':'–')+'</b></div><div class="kpi"><span class="sub tiny">方向提升</span><b>'+(cD&&cD.direction.liftPP!=null?(cD.direction.liftPP>0?"+":"")+cD.direction.liftPP.toFixed(1)+'pp':'–')+'</b><span class="sub tiny">vs '+esc(bD?NAMES[bD]:"–")+'</span></div><div class="kpi"><span class="sub tiny">MAE 改善</span><b>'+(cM&&cM.mae.improvePct!=null?(cM.mae.improvePct>0?"+":"")+cM.mae.improvePct.toFixed(1)+'%':'–')+'</b><span class="sub tiny">vs '+esc(bM?NAMES[bM]:"–")+'</span></div></div></div>';
-    if(U.obs&&(cD||cM)){
-      const row=(lab,x,k)=>!x?'':'<tr><td class="t">'+lab+'</td><td>'+(x[k].ci95?f2(x[k].ci95[0])+' ~ '+f2(x[k].ci95[1]):'样本不足')+'</td><td>'+(x[k].alwaysValidP??'–')+'</td></tr>';
-      const e=(C.endpoints||[]);
-      h+='<div class="card"><h2>主要检验</h2><dl class="kv small"><dt>最佳方向基准</dt><dd>'+esc(bD?NAMES[bD]:"–")+'（'+pp(bD&&P[bD].rate)+'）</dd><dt>最佳 MAE 基准</dt><dd>'+esc(bM?NAMES[bM]:"–")+'（'+(bM?f2(P[bM].mae)+'%':'–')+'）</dd>'+(cD?'<dt>方向对比</dt><dd>我对它错 '+cD.direction.wins+' 次，我错它对 '+cD.direction.losses+' 次</dd>':'')+'</dl>'+
-        '<div class="scroll"><table class="tbl"><thead><tr><th>检验</th><th>按日聚类 95% 区间</th><th>随时有效 p</th></tr></thead><tbody>'+row("方向（百分点）",cD,"direction")+row("MAE（百分点）",cM,"mae")+'</tbody></table></div>'+
-        '<span class="sub tiny" style="line-height:1.6">区间是「我比基准好多少」，全部大于 0 才说明更好。p 值每天都可以看，不会因为反复查看而虚高；'+e.map(x=>x.id+(x.level!=null?' 门槛 '+x.level:'')+(x.reject?' ✓ 通过':'')).join('，')+'。</span></div>';
-    }
-    h+='<div class="card"><h2>同场比较</h2><div class="scroll"><table class="tbl"><thead><tr><th>预测方</th><th>方向命中</th><th>MAE</th><th>观测</th></tr></thead><tbody>'+
-      ["user","bench_external_raw","bench_external_beta","bench_prev","bench_zero","model","ai"].map(k=>{const x=P[k]||{};return '<tr class="'+(k==="user"?"me":"")+'"><td class="t">'+NAMES[k]+(k==="model"||k==="ai"?' <span class="sub tiny">对照</span>':'')+'</td><td>'+(k==="bench_zero"?'<span class="sub tiny">不参与</span>':pp(x.rate))+'</td><td>'+(x.mae!=null?f2(x.mae)+'%':'–')+'</td><td>'+(x.obs||0)+'</td></tr>'}).join('')+
-      '</tbody></table></div><span class="sub tiny" style="line-height:1.6">方向分三态：涨 &gt; +'+G.config.flatBand+'%，跌 &lt; −'+G.config.flatBand+'%，其余为平；预测和实际用同一规则。永远 0% 天然预测「平」，只比 MAE。和规则模型、AI 的对比属于探索性，不能据此说「显著」。</span>'+
-      '<details><summary class="small sub">基准怎么算</summary><ul class="pts small" style="margin-top:6px">'+Object.entries(LONG).map(([k,t])=>'<li>'+esc(t)+'</li>').join('')+'<li>外盘：QDII 和国寿看纳指100，其余看费城半导体，按上一个 A 股收盘之后累计。</li></ul></details></div>';
-    const E=S.evidence;
-    if(E&&(E.clean.obs||E.flagged.obs||E.subjective.obs))h+='<div class="card"><h2>我靠的是有效信息，还是直觉？</h2><table class="tbl"><thead><tr><th>依据类型</th><th>观测</th><th>方向命中</th><th>MAE</th></tr></thead><tbody>'+[["clean","依据都通过检查"],["subjective","纯主观"],["flagged","含未触发 / 无效 / 事后依据"]].map(([k,t])=>'<tr><td class="t">'+t+'</td><td>'+E[k].obs+'</td><td>'+pp(E[k].rate)+'</td><td>'+(E[k].mae!=null?f2(E[k].mae):'–')+'</td></tr>').join('')+'</tbody></table></div>';
-    h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>我 命中</th><th>我 MAE</th><th>外盘 Beta MAE</th></tr></thead><tbody>'+G.funds.map(f=>{const b=(S.byFund||{})[f.code]||{};const u=b.user||{},x=b.bench_external_beta||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+pp(u.rate)+'</td><td>'+(u.mae!=null?f2(u.mae):'–')+'</td><td>'+(x.mae!=null?f2(x.mae):'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
-    const av=Object.entries(S.aiVersions||{});
-    if(av.length)h+='<div class="card"><h2>AI 各版本（探索性）</h2><table class="tbl"><thead><tr><th>版本</th><th>观测</th><th>命中</th><th>MAE</th></tr></thead><tbody>'+av.map(([v,x])=>'<tr><td class="t">'+esc(v)+'<div class="sub tiny">'+esc((x.modelNames||[]).join("、"))+'</div></td><td>'+x.obs+'</td><td>'+pp(x.rate)+'</td><td>'+f2(x.mae)+'</td></tr>').join('')+'</tbody></table></div>';
+    const vt=C.verdict==="evidence"?"有统计证据：AI 预测优于最好的简单方法。":C.verdict==="no_evidence"?"还没有证据说明 AI 比简单方法强。":"样本不足，暂不下结论。";
+    h+='<div class="card"><h2>和简单方法比（全部历史）</h2><span style="font-weight:600;font-size:14.5px">'+esc(vt)+'</span><span class="sub tiny" style="line-height:1.6">满 '+G.config.preregistration.minObsForConclusion+' 个样本才下结论，并且要通过按交易日聚类的统计检验。'+(cD&&cD.direction.liftPP!=null?'方向比「'+NAMES[bD]+'」'+(cD.direction.liftPP>=0?'高 ':'低 ')+Math.abs(cD.direction.liftPP).toFixed(1)+' 个百分点；':'')+(cM&&cM.mae.improvePct!=null?'误差比「'+NAMES[bM]+'」'+(cM.mae.improvePct>=0?'小 ':'大 ')+Math.abs(cM.mae.improvePct).toFixed(1)+'%。':'')+'</span>'+
+      '<div class="scroll"><table class="tbl"><thead><tr><th>预测方</th><th>方向命中</th><th>平均误差</th><th>样本</th></tr></thead><tbody>'+
+      ["ai","model","bench_external_raw","bench_external_beta","bench_prev","bench_zero"].map(k=>{const x=P[k]||{};return '<tr class="'+(k==="ai"?"me":"")+'"><td class="t">'+NAMES[k]+'</td><td>'+(k==="bench_zero"?'<span class="sub tiny">不参与</span>':pp(x.rate))+'</td><td>'+(x.mae!=null?f2(x.mae)+'%':'–')+'</td><td>'+(x.obs||0)+'</td></tr>'}).join('')+'</tbody></table></div>'+
+      '<details><summary class="small sub">简单方法怎么算</summary><ul class="pts small" style="margin-top:6px">'+Object.entries(LONG).map(([k,t])=>'<li>'+esc(t)+'</li>').join('')+'<li>规则模型：只用历史上被证明有效的规律。</li></ul></details></div>';
+    h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>AI 命中</th><th>AI 误差</th><th>外盘 Beta 误差</th></tr></thead><tbody>'+G.funds.map(f=>{const b=(S.byFund||{})[f.code]||{};const u=b.ai||{},x=b.bench_external_beta||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+pp(u.rate)+'</td><td>'+(u.mae!=null?f2(u.mae):'–')+'</td><td>'+(x.mae!=null?f2(x.mae):'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
     $("v-score").innerHTML=h+'<div id="ledger"></div>';
     renderLedger();
+  }
+  function chart(hist){
+    if(!hist||hist.length<2)return '';
+    const W=320,H=120,p=6,xs=hist.map(x=>x.pnl),ys=hist.map(x=>x.holdPnl),all=[...xs,...ys,0],mn=Math.min(...all),mx=Math.max(...all),sp=mx-mn||1;
+    const X=i=>p+i*(W-2*p)/(hist.length-1),Y=v=>H-p-(v-mn)/sp*(H-2*p),path=a=>a.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+    return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto" role="img" aria-label="累计盈亏走势"><line x1="'+p+'" x2="'+(W-p)+'" y1="'+Y(0).toFixed(1)+'" y2="'+Y(0).toFixed(1)+'" stroke="var(--line)" stroke-dasharray="3 3"/><path d="'+path(ys)+'" fill="none" stroke="var(--sub)" stroke-width="1.6"/><path d="'+path(xs)+'" fill="none" stroke="var(--accent)" stroke-width="2.2"/></svg><div class="sub tiny"><span style="color:var(--accent)">━</span> AI 操作累计盈亏　<span>━</span> 一直不动</div>';
   }
   async function renderLedger(){
     const days=Object.keys(G.index.days).filter(d=>G.index.days[d].result).sort().reverse();
     if(!days.length)return;
     const rs=(await Promise.all(days.slice(0,10).map(T=>j(`data/results/${T}.json`)))).filter(Boolean);
-    let h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2>流水账</h2><button class="link" id="csv">下载 CSV</button></div><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>我</th><th>实际</th><th></th><th>误差</th></tr></thead><tbody>';
-    for(const r of rs)for(const f of G.funds){const s=r.scores.user&&r.scores.user[f.code];const a=r.actual[f.code];h+='<tr><td>'+r.date.slice(5)+'</td><td class="t">'+esc(f.short)+'</td><td class="'+cls(s&&s.pred)+'">'+(s?fmt(s.pred):'<span class="sub tiny">'+esc(USTATUS[(r.meta.user||{}).status]||"")+'</span>')+'</td><td class="'+cls(a)+'">'+fmt(a)+'</td><td>'+(s?(s.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>'):'')+'</td><td>'+(s?f2(s.absErr):'')+'</td></tr>'}
-    $("ledger").innerHTML=h+'</tbody></table></div><span class="sub tiny">锁定时间以 GitHub 服务器收到 Issue 的时间为准；每份预测都有哈希凭证。</span></div>';
-    $("csv").addEventListener("click",async()=>{
-      const all=(await Promise.all(days.map(T=>j(`data/results/${T}.json`)))).filter(Boolean).sort((a,b)=>a.date.localeCompare(b.date));
-      const ks=["user","bench_external_raw","bench_external_beta","bench_prev","bench_zero","model","ai"];
-      const lines=[["日期","基金代码","基金","实际%",...ks.map(k=>NAMES[k]+"%"),"我的状态","锁定时间"].join(",")];
-      for(const r of all)for(const f of G.funds)lines.push([r.date,f.code,f.short,r.actual[f.code]??"",...ks.map(k=>(r.scores[k]&&r.scores[k][f.code]?r.scores[k][f.code].pred:"")),(r.meta.user||{}).status||"",(r.meta.user||{}).serverLockedAt||""].join(","));
-      const url=URL.createObjectURL(new Blob(["﻿"+lines.join("\n")],{type:"text/csv"}));const a=document.createElement("a");a.href=url;a.download="基金日记.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
-    });
+    let h='<div class="card"><h2>预测流水</h2><div class="scroll"><table class="tbl"><thead><tr><th>日期</th><th style="text-align:left">基金</th><th>AI</th><th>实际</th><th></th></tr></thead><tbody>';
+    for(const r of rs)for(const f of G.funds){const s=r.scores.ai&&r.scores.ai[f.code];const a=r.actual[f.code];h+='<tr><td>'+r.date.slice(5)+'</td><td class="t">'+esc(f.short)+'</td><td class="'+cls(s&&s.pred)+'">'+(s?fmt(s.pred)+(s.lo!=null?'<div class="sub tiny">'+f2(s.lo)+'~'+f2(s.hi)+'</div>':''):'–')+'</td><td class="'+cls(a)+'">'+fmt(a)+'</td><td>'+(s?(s.hit?'<span class="hit">✓</span>':'<span class="miss">✗</span>')+(s.inRange!=null?'<div class="tiny '+(s.inRange?'hit':'miss')+'">'+(s.inRange?'区间内':'区间外')+'</div>':''):'')+'</td></tr>'}
+    $("ledger").innerHTML=h+'</tbody></table></div><span class="sub tiny">每份预测在当天 09:15 前生成并存档，之后不能修改。</span></div>';
   }
 
   // ---------- 实验室 ----------
@@ -522,16 +531,21 @@ details>summary{cursor:pointer}
   document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
   try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
   async function load(){
-    const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest"].map(n=>j(`data/${n}.json`)));
+    const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews,paper]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest","paper/account"].map(n=>j(`data/${n}.json`)));
     if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
-    G={latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
+    G={paper,latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
     cache={};
     await renderPred();renderScore();renderLab();
-    $("foot").textContent='界面 v2.1（10-07） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'每晚 22:13 结算并准备下一交易日数据，交易日 08:07 补充隔夜美股，'+config.deadline+' 截止（集合竞价之前）。仅作实验记录，不构成投资建议。';
+    $("foot").textContent='界面 v2.2（10-20） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'AI 每晚 22:13 后给出初版预测，交易日 08:00 前后定稿并决定模拟操作，'+config.deadline+' 截止。仅作实验记录，不构成投资建议。';
   }
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$("sheet").hidden)load()});
   load();
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if('serviceWorker' in navigator){   // 自动更新：发现新版本就直接换上（详情页打开时等关闭再换）
+    let reloading=false;const swap=()=>{if(reloading)return;if(!$("sheet").hidden){setTimeout(swap,3000);return}reloading=true;location.reload()};
+    const had=!!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)swap()});
+    navigator.serviceWorker.register('sw.js').then(reg=>{document.addEventListener('visibilitychange',()=>{if(!document.hidden)reg.update().catch(()=>{})})}).catch(()=>{});
+  }
 })();
 </script>
 </body>

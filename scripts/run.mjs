@@ -7,7 +7,7 @@ import { ROOT, P, exists, readJ, writeJ, writeOnce, appendLine, CFG, toBJ, ms, a
 
 const KEY = process.env.GEMINI_API_KEY || '';
 const MODELS = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.6-flash', 'gemini-3.5-flash-lite'].filter(Boolean))];
-const PROMPT_VERSION = 'draft-3';
+const PROMPT_VERSION = 'draft-4';
 const funds = readJ(P('funds.json'));
 const holdings = readJ(P('state', 'holdings.json'), {});
 for (const f of funds) f.holding = holdings[f.code] || f.holding;
@@ -470,6 +470,7 @@ async function prepare(T, batch) {
   const sys = { model: {}, bench_external_raw: {}, bench_external_beta: {}, bench_prev: {}, bench_zero: {} };
   for (const c of CODES) { sys.model[c] = { value: modelValue(model, feat, c), score: modelScore(model, feat, c) }; const b = benchValues(model, feat, c); for (const k in b) sys[k][c] = { value: b[k] }; }
   for (const k of Object.keys(sys)) writeOnce(P('predictions', T, `${k}-${batch}.json`), { date: T, predictor: k, batch, snapshotId: `${T}/${batch}`, asOf, ...meta, modelVersion: model.version, funds: sys[k], overall: portfolio(sys[k]) });
+  try { paperInit(T); } catch (e) { log('模拟账户初始化失败：' + e.message); }
   try {
     const ai = await aiDraft(T, feat, items, trig);
     writeOnce(P('predictions', T, `ai-${batch}.json`), { date: T, predictor: 'ai', batch, snapshotId: `${T}/${batch}`, asOf, ...meta, aiVersion: `${PROMPT_VERSION}@${today}`, promptVersion: PROMPT_VERSION, modelName: ai.modelName, ...ai.body });
@@ -478,34 +479,121 @@ async function prepare(T, batch) {
   log(`${T} ${batch} 批次：快照 ${items.length} 条，草稿已生成`);
 }
 async function aiDraft(T, feat, items, trig) {
-  const data = items.filter(i => !i.hidden).map(i => `[${i.id}] ${i.name}${i.value != null ? ' ' + pct(i.value) : ''}${i.text ? '：' + i.text : ''}（数据时间 ${i.dataTime}）`).join('\n');
+  const data = items.filter(i => !i.hidden).map(i => `[${i.id}] ${i.name}${i.value != null ? ' ' + pct(i.value) : ''}${i.text ? '：' + i.text : ''}（${String(i.dataTime).slice(5, 16).replace('T', ' ')}）`).join('\n');
   const fundsTxt = funds.map(f => {
     const t = trig.funds[f.code] || [];
     const valid = t.filter(x => x.status === '有效').map(x => sigLine(x.key)), other = t.filter(x => x.status !== '有效' && defs.find(d => d.key === x.key)?.sourceType !== '外部观点').map(x => sigLine(x.key));
-    return `${f.code} ${f.name}（${f.type}${f.qdii ? '；QDII，T日净值对应海外T日收盘' : ''}）\n  特征：${f.drivers.join('；')}\n  近20日波动 ${feat.f[f.code].vol20 ?? '–'}%，上一日 ${pct(feat.f[f.code].prev)}，近5日 ${pct(feat.f[f.code].mom5)}，锚定 ${pct(feat.f[f.code].anc)}，锚定近3日 ${pct(feat.f[f.code].anc_mom3)}\n  今天触发且历史有效（可作依据）：${valid.join('；') || '无'}\n  今天触发但未被证明有效（不能作依据）：${other.join('；') || '无'}`;
+    return `${f.code} ${f.name}（${f.type}${f.qdii ? '；QDII，T日净值对应海外T日收盘' : ''}）\n  特征：${f.drivers.join('；')}\n  近20日波动 ${feat.f[f.code].vol20 ?? '–'}%，上一日 ${pct(feat.f[f.code].prev)}，近5日 ${pct(feat.f[f.code].mom5)}，锚定 ${pct(feat.f[f.code].anc)}，锚定近3日 ${pct(feat.f[f.code].anc_mom3)}\n  今天触发且历史有效：${valid.join('；') || '无'}\n  今天触发但未被证明有效（只能作参考，不能当主要依据）：${other.join('；') || '无'}`;
   }).join('\n');
-  const { out, modelName } = await gemini(`你是这五只基金的持有人，以投资人身份预测 ${T} 各基金的净值涨跌幅。现在是北京时间 ${nowISO}，只能使用下面列出的、此刻已经可以获得的数据。
-评分：方向（涨>+${CFG.flatBand}%，跌<-${CFG.flatBand}%，其余为平）和绝对误差。每只基金只给一个数值，不给区间和概率。
+  const pv = paperView(T);
+  const acctTxt = pv ? `模拟账户（${T} 开盘前的估算）：可用现金 ¥${pv.cash}，待到账 ¥${pv.pending}，总资产约 ¥${pv.total}
+${funds.map(f => { const p = pv.pos[f.code]; return `  ${f.code} ${f.short}：市值约 ¥${p.value}${p.tiers.length ? '，今天卖出按先买先卖：' + p.tiers.map(t => `¥${t.value} 收 ${t.fee}%`).join('，') : '，空仓'}`; }).join('\n')}
+交易规则：今天 15:00 前下单，按今天收盘后的净值成交；买入不收费；卖出按持有天数收赎回费（不满 7 天 1.5%，不满 30 天 0.5%，满 30 天免费），卖出的钱下一个交易日才到账；单笔不少于 ¥${CFG.paper.minTrade}；买入合计不超过可用现金。
+目标：比"一直持有不动"赚得更多。没有足够把握时就不动，频繁买卖会被手续费吃掉。` : '模拟账户尚未开始，trades 留空。';
+  const { out, modelName } = await gemini(`你是这五只基金的持有人兼基金经理，以投资人身份预测 ${T} 各基金的净值涨跌幅，并决定今天的模拟操作。现在是北京时间 ${nowISO}，只能使用下面列出的、此刻已经可以获得的数据和新闻。
 
-可用数据（[编号] 名称 数值，数据时间）：
+可用数据和新闻（[编号] 名称 数值或内容，时间）：
 ${data}
 
 各基金：
 ${fundsTxt}
 
-规则：
-- 只有「今天触发且历史有效」的规律可以作为依据，引用时写出编号和历史命中率。
-- 没触发的规律不能说"触发了"；未被证明有效的规律不能当理由。
-- 每条理由尽量引用数据编号（dataRefs）。主观判断要写明是主观判断。
-- 依据互相矛盾时写明，并把数值往0收。
-- 独立判断；五只基金的差别要有理由。
+${acctTxt}
 
-只输出 JSON：{"funds":{"代码":{"value":0.8,"reasons":[{"text":"40字内","signals":["R001"],"dataRefs":["..."]}],"conclusion":"一句话"}}}`, `AI 草稿 ${T}`);
+要求：
+- 每只基金给一个具体预测值 value（%），和一个你认为大概率会落入的区间 [lo, hi]（%），lo ≤ value ≤ hi；区间宽度要反映你的把握程度和这只基金的日波动。
+- logic 分点写清预测逻辑（3～5 条，每条 50 字内）：隔夜外盘、相关板块/个股新闻、国内政策与情绪、技术面/近期走势，哪个起主导、哪些相互抵消。引用数据或新闻编号写在 dataRefs，引用规律编号写在 signals。
+- 只用列出的新闻，不要编造；主观判断写明是主观判断。
+- conclusion 一句话结论。
+- overall.logic 写科技仓整体（五只合起来）2～4 条判断逻辑。
+- trades：每只基金一个操作，action 只能是"买入""卖出""不动"；买入写 amount（元），卖出写 ratio（卖出该基金持仓的比例，0～1）；reason 写理由（40 字内，要算上手续费）。tradeSummary 一句话说明今天的操作思路。
+
+只输出 JSON：{"funds":{"代码":{"value":0.8,"lo":0.2,"hi":1.4,"logic":[{"text":"...","signals":["R001"],"dataRefs":["..."]}],"conclusion":"..."}},"overall":{"logic":["..."]},"trades":{"代码":{"action":"不动","amount":0,"ratio":0,"reason":"..."}},"tradeSummary":"..."}`, `AI 预测 ${T}`);
   const fx = {};
   const ids = new Set(defs.map(d => d.id));
-  const clean = rs => (Array.isArray(rs) ? rs : []).slice(0, 5).map(r => ({ text: String(r.text || '').slice(0, 90), signals: (r.signals || []).filter(id => ids.has(id)), dataRefs: (r.dataRefs || []).filter(id => items.some(i => i.id === id)) })).filter(r => r.text);
-  for (const c of CODES) { const p = out.funds?.[c]; const v = +p?.value; if (!Number.isFinite(v)) continue; fx[c] = { value: r2(clampV(v)), reasons: clean(p.reasons), conclusion: String(p.conclusion || '').slice(0, 80) }; }
-  return { modelName, body: { funds: fx, overall: portfolio(fx) } };
+  const clean = rs => (Array.isArray(rs) ? rs : []).slice(0, 6).map(r => (typeof r === 'string' ? { text: r } : r)).map(r => ({ text: String(r.text || '').slice(0, 100), signals: (r.signals || []).filter(id => ids.has(id)), dataRefs: (r.dataRefs || []).filter(id => items.some(i => i.id === id)) })).filter(r => r.text);
+  for (const c of CODES) {
+    const p = out.funds?.[c]; const v = +p?.value; if (!Number.isFinite(v)) continue;
+    let lo = +p.lo, hi = +p.hi; const vv = r2(clampV(v));
+    if (!Number.isFinite(lo) || !Number.isFinite(hi)) { lo = vv - 1; hi = vv + 1; }
+    if (lo > hi) [lo, hi] = [hi, lo];
+    lo = Math.min(lo, vv); hi = Math.max(hi, vv);
+    const reasons = clean(p.logic || p.reasons);
+    fx[c] = { value: vv, lo: r2(clampV(lo)), hi: r2(clampV(hi)), reasons, conclusion: String(p.conclusion || '').slice(0, 80) };
+  }
+  const trades = {};
+  if (pv) {
+    let budget = pv.cash;
+    for (const c of CODES) {
+      const t = out.trades?.[c] || {}; const act = ['买入', '卖出'].includes(t.action) ? t.action : '不动';
+      if (act === '买入') { const amt = Math.floor(Math.min(+t.amount || 0, budget)); if (amt >= CFG.paper.minTrade) { trades[c] = { action: '买入', amount: amt, reason: String(t.reason || '').slice(0, 80) }; budget -= amt; continue; } }
+      if (act === '卖出') { const ratio = Math.max(0, Math.min(1, +t.ratio || 0)); if (ratio > 0 && pv.pos[c].value * ratio >= CFG.paper.minTrade) { trades[c] = { action: '卖出', ratio: r3(ratio), estAmount: r2(pv.pos[c].value * ratio), reason: String(t.reason || '').slice(0, 80) }; continue; } }
+      trades[c] = { action: '不动', reason: String(t.reason || '').slice(0, 80) };
+    }
+  }
+  const ov = portfolio(fx);
+  { const L = portfolio(Object.fromEntries(Object.entries(fx).map(([c, x]) => [c, { value: x.lo }]))), H = portfolio(Object.fromEntries(Object.entries(fx).map(([c, x]) => [c, { value: x.hi }]))); ov.lo = L.value; ov.hi = H.value; }
+  ov.logic = (Array.isArray(out.overall?.logic) ? out.overall.logic : []).map(x => String(typeof x === 'string' ? x : x.text || '').slice(0, 100)).filter(Boolean).slice(0, 4);
+  return { modelName, body: { funds: fx, overall: ov, ...(pv ? { trades, tradeSummary: String(out.tradeSummary || '').slice(0, 120), accountView: pv } : {}) } };
+}
+// ---------- 6b. 模拟账户：AI 每天的买卖决定按真实申赎规则执行，对照"一直持有不动" ----------
+const paperF = P('paper', 'account.json');
+const sum0 = a => a.reduce((s, x) => s + (+x || 0), 0);
+const dayDiff = (a, b) => Math.round((ms(at(b, '12:00')) - ms(at(a, '12:00'))) / 864e5);
+function feeRate(lotDate, T) { if (lotDate === 'init') return 0; const d = dayDiff(lotDate, T); for (const [days, rate] of CFG.paper.fees) if (d < days) return rate; return 0; }
+function paperInit(T) {
+  if (exists(paperF) || T < CFG.paper.start) return;
+  const pos = {}; let tot = 0;
+  for (const f of funds) { const a = r2(Math.max(0, f.holding?.amount || 0)); pos[f.code] = { lots: a ? [{ date: 'init', value: a }] : [] }; tot += a; }
+  const cash = r2(tot * CFG.paper.cashRatio);
+  writeJ(paperF, { start: T, createdAt: nowISO, rules: CFG.paper.note, init: { holdings: Object.fromEntries(CODES.map(c => [c, pos[c].lots[0]?.value || 0])), cash }, cash, pending: [], positions: pos, hold: { values: Object.fromEntries(CODES.map(c => [c, pos[c].lots[0]?.value || 0])), cash }, lastDate: null, history: [] });
+  log(`模拟账户开始：持仓 ¥${r2(tot)} + 现金 ¥${cash}`);
+}
+function paperView(T) {   // 决策时的估算视图：已结算的状态 − 已下单未结算的买入
+  const A = readJ(paperF, null); if (!A) return null;
+  let cash = A.cash; const pending = sum0(A.pending.filter(p => p.availableFrom > T).map(p => p.amount));
+  for (const p of A.pending) if (p.availableFrom <= T) cash += p.amount;
+  for (const D of pdaysAfter(A.lastDate, T)) { const tr = sysPrediction(D, 'ai', deadlineOf(D))?.trades || {}; for (const t of Object.values(tr)) if (t.action === '买入') cash -= t.amount; }
+  const pos = {};
+  for (const c of CODES) { const lots = A.positions[c].lots; const ages = lots.map(l => l.date === 'init' ? 999 : dayDiff(l.date, T)); pos[c] = { value: r2(sum0(lots.map(l => l.value))), tiers: lots.map(l => ({ value: r2(l.value), fee: feeRate(l.date, T) })) }; }
+  return { asOf: A.lastDate, cash: r2(Math.max(0, cash)), pending: r2(pending), total: r2(Math.max(0, cash) + pending + sum0(Object.values(pos).map(p => p.value))), pos };
+}
+function pdaysAfter(last, before) { const dir = P('predictions'); return (exists(dir) ? fs.readdirSync(dir) : []).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d) && (!last || d > last) && d < before).sort(); }
+function paperRun() {
+  const A = readJ(paperF, null); if (!A) return;
+  for (const T of pdaysAfter(A.lastDate, addDays(today, 1)).filter(d => d >= A.start)) {
+    const res = readJ(P('results', T + '.json'), null); if (!res) break;
+    const later = fs.readdirSync(P('results')).filter(f => f.endsWith('.json') && f.slice(0, 10) > T).length;
+    const r = {}; let wait = false;
+    for (const c of CODES) { const v = res.actual[c]; if (v != null) r[c] = v; else if (later >= 2) r[c] = 0; else wait = true; }
+    if (wait) break;
+    const dec = sysPrediction(T, 'ai', deadlineOf(T)), tr = dec?.trades || {}, exec = [];
+    for (const p of A.pending.filter(p => p.availableFrom <= T)) A.cash = r2(A.cash + p.amount);
+    A.pending = A.pending.filter(p => p.availableFrom > T);
+    for (const c of CODES) {
+      for (const l of A.positions[c].lots) l.value = r2(l.value * (1 + r[c] / 100));
+      A.hold.values[c] = r2(A.hold.values[c] * (1 + r[c] / 100));
+    }
+    for (const c of CODES) {
+      const t = tr[c]; if (!t || t.action !== '卖出') continue;
+      const lots = A.positions[c].lots, total = sum0(lots.map(l => l.value)); let need = r2(total * t.ratio), fee = 0, sold = 0;
+      while (need > 0.005 && lots.length) { const l = lots[0], x = Math.min(l.value, need); fee += x * feeRate(l.date, T) / 100; sold += x; l.value = r2(l.value - x); need = r2(need - x); if (l.value < 0.01) lots.shift(); }
+      const proceeds = r2(sold - fee);
+      if (sold > 0) { A.pending.push({ amount: proceeds, availableFrom: CAL.nextTD(T), from: T, code: c }); exec.push({ code: c, action: '卖出', amount: r2(sold), fee: r2(fee), proceeds, availableFrom: CAL.nextTD(T), reason: t.reason }); }
+    }
+    let buys = CODES.filter(c => tr[c]?.action === '买入').map(c => [c, tr[c].amount]); const want = sum0(buys.map(x => x[1]));
+    const scale = want > A.cash ? A.cash / want : 1;
+    for (const [c, amt0] of buys) { const amt = r2(amt0 * scale); if (amt < 1) continue; A.cash = r2(A.cash - amt); A.positions[c].lots.push({ date: T, value: amt }); exec.push({ code: c, action: '买入', amount: amt, fee: 0, reason: tr[c].reason, ...(scale < 1 ? { note: '现金不足，按比例缩减' } : {}) }); }
+    const posVal = r2(sum0(CODES.map(c => sum0(A.positions[c].lots.map(l => l.value))))), pend = r2(sum0(A.pending.map(p => p.amount)));
+    const total = r2(posVal + A.cash + pend), hold = r2(sum0(Object.values(A.hold.values)) + A.hold.cash), init = r2(sum0(Object.values(A.init.holdings)) + A.init.cash);
+    const fees = r2(sum0(exec.map(e => e.fee || 0)));
+    const row = { date: T, total, hold, pnl: r2(total - init), holdPnl: r2(hold - init), excess: r2(total - hold), cash: A.cash, pending: pend, positions: Object.fromEntries(CODES.map(c => [c, r2(sum0(A.positions[c].lots.map(l => l.value)))])), fees, trades: exec.length, decisionBatch: dec?.batch || null };
+    writeJ(P('paper', 'days', T + '.json'), { ...row, actual: r, decided: tr, tradeSummary: dec?.tradeSummary || null, executed: exec, decisionAsOf: dec?.asOf || null });
+    A.history.push(row); A.lastDate = T;
+    log(`${T} 模拟账户：总资产 ¥${total}（一直不动 ¥${hold}，差 ${row.excess}）`);
+  }
+  A.updatedAt = nowISO;
+  writeJ(paperF, A);
 }
 // 科技仓整体 = 按持仓金额加权的平均
 function portfolio(fx) {
@@ -551,6 +639,7 @@ function scoreDay(T, actual) {
       const v = p.funds?.[c]?.value, a = actual[c];
       if (v == null || a == null) continue;
       scores[k][c] = { pred: v, actual: a, dirPred: tri(v), dirActual: tri(a), hit: tri(v) === tri(a), absErr: r2(Math.abs(v - a)) };
+      const lo = p.funds[c].lo, hi = p.funds[c].hi; if (lo != null && hi != null) Object.assign(scores[k][c], { lo, hi, inRange: a >= lo && a <= hi });
     }
   }
   return { preds, scores, meta, limit };
@@ -656,7 +745,7 @@ function alwaysValidP(dayVals, rho) {
 function computeStats() {
   const dir = P('results');
   const results = exists(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort().map(f => readJ(path.join(dir, f))) : [];
-  const agg = k => { let n = 0, hit = 0, e = 0; const days = new Set(); for (const r of results) for (const s of Object.values(r.scores[k] || {})) { n++; hit += s.hit; e += s.absErr; days.add(r.date); } return { obs: n, days: days.size, hit, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null }; };
+  const agg = k => { let n = 0, hit = 0, e = 0, rn = 0, rin = 0; const days = new Set(); for (const r of results) for (const s of Object.values(r.scores[k] || {})) { n++; hit += s.hit; e += s.absErr; days.add(r.date); if (s.inRange != null) { rn++; rin += s.inRange; } } return { obs: n, days: days.size, hit, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null, ...(rn ? { rangeObs: rn, rangeHit: rin, rangeRate: r2(rin / rn * 100) } : {}) }; };
   const out = { updatedAt: nowISO, sampleUnit: '交易日 × 基金', predictors: {}, compare: {}, conclusion: null, byFund: {}, evidence: null, models: {}, aiVersions: {} };
   for (const k of PREDICTORS) out.predictors[k] = agg(k);
   out.predictors.user.lockedDays = results.filter(r => ['ok', 'modified_scored_first'].includes(r.meta.user?.status)).length;
@@ -676,12 +765,17 @@ function computeStats() {
   const bestDir = CFG.benchmarks.directionPool.filter(k => out.predictors[k].obs).sort((x, y) => out.predictors[y].rate - out.predictors[x].rate)[0] || null;
   const bestMae = CFG.benchmarks.maePool.filter(k => out.predictors[k].obs).sort((x, y) => out.predictors[x].mae - out.predictors[y].mae)[0] || null;
   const pr = CFG.preregistration;
-  const ends = [{ id: 'MAE', bench: bestMae, p: bestMae ? out.compare.user[bestMae]?.mae.alwaysValidP : null }, { id: 'DIR', bench: bestDir, p: bestDir ? out.compare.user[bestDir]?.direction.alwaysValidP : null }];
-  const sorted = ends.filter(e => e.p != null).sort((x, y) => x.p - y.p); let stop = false;
-  sorted.forEach((e, i) => { const lvl = pr.alpha / (sorted.length - i); e.level = r3(lvl); e.reject = !stop && e.p <= lvl; if (!e.reject) stop = true; });   // Holm
-  const U = out.predictors.user;
-  out.conclusion = { bestDirectionBenchmark: bestDir, bestMaeBenchmark: bestMae, endpoints: ends, obs: U.obs, days: U.days, gateOpen: U.obs >= pr.minObsForConclusion,
-    verdict: U.obs < pr.minObsForConclusion ? 'insufficient' : ends.some(e => e.reject) ? 'evidence' : 'no_evidence' };
+  const concl = subj => {
+    const ends = [{ id: 'MAE', bench: bestMae, p: bestMae ? out.compare[subj][bestMae]?.mae.alwaysValidP : null }, { id: 'DIR', bench: bestDir, p: bestDir ? out.compare[subj][bestDir]?.direction.alwaysValidP : null }];
+    const sorted = ends.filter(e => e.p != null).sort((x, y) => x.p - y.p); let stop = false;
+    sorted.forEach((e, i) => { const lvl = pr.alpha / (sorted.length - i); e.level = r3(lvl); e.reject = !stop && e.p <= lvl; if (!e.reject) stop = true; });   // Holm
+    const U = out.predictors[subj];
+    return { subject: subj, bestDirectionBenchmark: bestDir, bestMaeBenchmark: bestMae, endpoints: ends, obs: U.obs, days: U.days, gateOpen: U.obs >= pr.minObsForConclusion,
+      verdict: U.obs < pr.minObsForConclusion ? 'insufficient' : ends.some(e => e.reject) ? 'evidence' : 'no_evidence' };
+  };
+  out.conclusion = concl('user');
+  out.conclusionAi = concl('ai');
+  { const lives = results.filter(r => r.date >= CFG.paper.start); out.aiLive = { since: CFG.paper.start, ...(() => { let n = 0, hit = 0, e = 0, rn = 0, rin = 0; for (const r of lives) for (const x of Object.values(r.scores.ai || {})) { n++; hit += x.hit; e += x.absErr; if (x.inRange != null) { rn++; rin += x.inRange; } } return { obs: n, days: lives.length, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null, rangeObs: rn, rangeRate: rn ? r2(rin / rn * 100) : null }; })() }; }
   for (const c of CODES) out.byFund[c] = Object.fromEntries(PREDICTORS.map(k => { let n = 0, hit = 0, e = 0; for (const r of results) { const s = r.scores[k]?.[c]; if (s) { n++; hit += s.hit; e += s.absErr; } } return [k, { obs: n, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null }]; }));
   const g = { clean: [], flagged: [], subjective: [] };
   for (const r of results) for (const c of CODES) {
@@ -708,6 +802,7 @@ try {
   const pdays = exists(pdir) ? fs.readdirSync(pdir).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= today).sort() : [];
   for (const T of pdays) await settle(T);
   tryUpgrade();
+  try { paperRun(); } catch (e) { log('模拟账户结算失败：' + (e.stack || e.message).slice(0, 300)); }
   const w = windowNow();
   if (w) await prepare(w.T, w.batch);
   else log('不在批次时间窗内，只做结算');
