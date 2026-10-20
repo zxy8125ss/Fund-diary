@@ -244,7 +244,7 @@ details>summary{cursor:pointer}
     const cell=(x)=>x?'<span class="num '+cls(x.value)+'" style="font-weight:600">'+fmt(x.value)+'</span>'+(x.lo!=null?'<div class="sub tiny num">'+f2(x.lo)+'~'+f2(x.hi)+'</div>':''):'<span class="sub">–</span>';
     const act=(code)=>{
       if(res&&res.actual[code]!=null){const sc=res.scores.ai&&res.scores.ai[code];return '<span class="num '+cls(res.actual[code])+'" style="font-weight:600">'+fmt(res.actual[code])+'</span>'+(sc?'<div class="tiny">'+(sc.hit?'<span class="hit">方向对</span>':'<span class="miss">方向错</span>')+'</div>':'')}
-      const L=live&&live[code];if(L)return '<span class="num '+cls(L.v)+'">'+fmt(L.v)+'</span><div class="sub tiny">参考 · '+esc(L.name)+(L.closed?' 收盘':' '+esc(L.time))+'</div>';
+      const L=live&&live[code];if(L)return '<span class="num '+cls(L.v)+'">'+fmt(L.v)+'</span><div class="sub tiny">'+(L.closed?'参考':'参考 '+esc(L.time))+'</div>';
       const f=G.funds.find(x=>x.code===code);return '<span class="sub tiny">'+(cur>t||(cur===t&&!res)?(f.qdii?'次日晚公布':'收盘后'):(f.qdii?'次日晚公布':'待公布'))+'</span>';
     };
     const ov=ai&&ai.overall, nov=nai&&nai.overall;
