@@ -487,6 +487,75 @@ async function prepare(T, batch) {
   const day = (index.days[T] ||= { batches: [] }); if (!day.batches.includes(batch)) day.batches.push(batch);
   log(`${T} ${batch} 批次：快照 ${items.length} 条，草稿已生成`);
 }
+// ---------- 5b. AI 交易手册：AI 自己的预测与买卖逻辑，每天复盘后修订，留版本和修改记录 ----------
+const PB = P('playbook', 'current.json');
+function pbStats() {   // 每条手册规则被引用后的实际表现（新版预测起）
+  const st = {}; const dir = P('results');
+  for (const f of (exists(dir) ? fs.readdirSync(dir) : []).filter(f => f.endsWith('.json')).sort()) {
+    const r = readJ(path.join(dir, f)); if (r.date < CFG.paper.start) continue;
+    const p = sysPrediction(r.date, 'ai', deadlineOf(r.date)); if (!p) continue;
+    for (const [c, x] of Object.entries(p.funds || {})) { const sc = r.scores.ai?.[c]; if (!sc) continue;
+      const ids = new Set((x.reasons || []).flatMap(q => q.rules || []));
+      for (const id of ids) { const o = (st[id] ||= { uses: 0, hits: 0, inRange: 0, days: new Set() }); o.uses++; o.hits += sc.hit ? 1 : 0; o.inRange += sc.inRange ? 1 : 0; o.days.add(r.date); } }
+    const tr = p.trades || {}; for (const t of Object.values(tr)) for (const id of t.rules || []) { (st[id] ||= { uses: 0, hits: 0, inRange: 0, days: new Set() }).trades = ((st[id].trades) || 0) + 1; }
+  }
+  return Object.fromEntries(Object.entries(st).map(([k, o]) => [k, { uses: o.uses, hits: o.hits, rate: o.uses ? r2(o.hits / o.uses * 100) : null, inRange: o.inRange, days: o.days.size, trades: o.trades || 0 }]));
+}
+function pbText(pb, stats) {
+  return pb.rules.filter(r => r.status !== '已删除').map(r => { const s = stats[r.id]; return `${r.id}【${r.kind}】${r.text}（${s ? `已引用 ${s.uses} 次，方向对 ${s.rate}%` : '尚未引用'}）`; }).join('\n');
+}
+function pbStatus(stats, id) { const s = stats[id]; if (!s || s.uses < 5) return '试用中'; if (s.rate >= 60) return '有效'; if (s.rate < 45) return '存疑'; return '一般'; }
+async function pbBootstrap() {
+  if (exists(PB)) return;
+  const sig = defs.filter(d => statusOf(d.key) !== '淘汰' && d.sourceType !== '外部观点').map(d => { const R = state[d.key]?.stats?.research || {}, H = state[d.key]?.stats?.holdout || {}; return `${d.id} ${d.name}：研究集 ${R.rate ?? '–'}%（${R.days ?? 0}天，基准 ${R.base ?? '–'}%），留出集 ${H.rate ?? '–'}%（${H.days ?? 0}天）`; }).join('\n');
+  const dir = P('results'); const recent = (exists(dir) ? fs.readdirSync(dir) : []).filter(f => f.endsWith('.json')).sort().slice(-10).map(f => readJ(path.join(dir, f)));
+  const rec = recent.map(r => `${r.date}：` + funds.map(f => { const sc = r.scores.ai?.[f.code]; return `${f.short} 预测${sc ? pct(sc.pred) : '–'} 实际${pct(r.actual[f.code])}`; }).join('；')).join('\n');
+  const fundsTxt = funds.map(f => `${f.code} ${f.name}：${f.drivers.join('；')}`).join('\n');
+  const { out, modelName } = await gemini(`你是这五只基金的持有人兼基金经理。请写出你自己的第一版「交易手册」：你用来预测这五只基金每日涨跌、并决定买卖的规则。之后每天会按实际结果检验和修订。
+要求：6～10 条；kind 为"预测"或"操作"；每条具体、可检验（写清条件和结论，如"隔夜费城半导体涨超 2% 且……时，半导体类基金次日大概率上涨，幅度约为……"）；操作规则要考虑手续费（不满 7 天卖出 1.5%，不满 30 天 0.5%）；why 写依据。
+
+五只基金：
+${fundsTxt}
+
+规律库的历史统计：
+${sig}
+
+最近 10 个交易日 AI 草稿预测 vs 实际：
+${rec}
+
+只输出 JSON：{"rules":[{"kind":"预测","text":"...","why":"..."}],"summary":"一句话概括你的交易风格"}`, '交易手册 v1');
+  const rules = (out.rules || []).slice(0, 10).map((r, i) => ({ id: 'P' + String(i + 1).padStart(2, '0'), kind: r.kind === '操作' ? '操作' : '预测', text: String(r.text || '').slice(0, 140), why: String(r.why || '').slice(0, 140), addedAt: today, addedFrom: 'v1 初始', status: '试用中' })).filter(r => r.text);
+  if (!rules.length) throw new Error('手册为空');
+  const pb = { version: 1, updatedAt: nowISO, summary: String(out.summary || '').slice(0, 100), modelName, rules };
+  writeJ(PB, pb); writeJ(P('playbook', 'history', 'v1.json'), pb);
+  writeJ(P('playbook', 'changelog.json'), [{ version: 1, date: today, from: null, summary: '初始版本', changes: rules.map(r => ({ op: '新增', id: r.id, text: r.text, reason: r.why })) }]);
+  log(`交易手册 v1：${rules.length} 条`);
+}
+function pbApply(T, changes) {   // 复盘提出的修订：每天最多 2 处，必须写理由
+  const pb = readJ(PB, null); if (!pb || !changes?.length) return null;
+  const applied = [];
+  for (const c of changes.slice(0, 2)) {
+    const op = c.op, reason = String(c.reason || '').slice(0, 160); if (!reason) continue;
+    if (op === '新增' && c.text) { const id = 'P' + String(Math.max(0, ...pb.rules.map(r => +r.id.slice(1) || 0)) + 1).padStart(2, '0'); pb.rules.push({ id, kind: c.kind === '操作' ? '操作' : '预测', text: String(c.text).slice(0, 140), why: reason, addedAt: today, addedFrom: T, status: '试用中' }); applied.push({ op, id, text: c.text, reason }); }
+    else if (op === '修改') { const r = pb.rules.find(x => x.id === c.id && x.status !== '已删除'); if (r && c.text) { applied.push({ op, id: r.id, before: r.text, text: String(c.text).slice(0, 140), reason }); r.text = String(c.text).slice(0, 140); r.editedAt = today; } }
+    else if (op === '删除') { const r = pb.rules.find(x => x.id === c.id && x.status !== '已删除'); if (r) { r.status = '已删除'; r.removedAt = today; applied.push({ op, id: r.id, before: r.text, reason }); } }
+  }
+  if (!applied.length) return null;
+  pb.version++; pb.updatedAt = nowISO;
+  writeJ(PB, pb); writeJ(P('playbook', 'history', `v${pb.version}.json`), pb);
+  const log2 = readJ(P('playbook', 'changelog.json'), []); log2.push({ version: pb.version, date: today, from: T, changes: applied }); writeJ(P('playbook', 'changelog.json'), log2);
+  log(`交易手册 v${pb.version}：${applied.map(a => a.op + a.id).join('、')}`);
+  return { version: pb.version, changes: applied };
+}
+function tradeHindsight() {   // 已执行的操作事后表现：从成交日收盘到最新净值的累计涨跌
+  const A = readJ(paperF, null); if (!A) return [];
+  const out = []; const dir = P('paper', 'days');
+  for (const f of (exists(dir) ? fs.readdirSync(dir) : []).sort().slice(-15)) {
+    const D = readJ(path.join(dir, f));
+    for (const e of D.executed || []) { let g = 1; for (const d of NAV[e.code].dates.filter(x => x > D.date)) g *= 1 + NAV[e.code].map[d] / 100; out.push({ date: D.date, code: e.code, action: e.action, amount: e.amount, fee: e.fee, after: r2((g - 1) * 100) }); }
+  }
+  return out;
+}
 async function aiDraft(T, feat, items, trig) {
   const data = items.filter(i => !i.hidden).map(i => `[${i.id}] ${i.name}${i.value != null ? ' ' + pct(i.value) : ''}${i.text ? '：' + i.text : ''}（${String(i.dataTime).slice(5, 16).replace('T', ' ')}）`).join('\n');
   const fundsTxt = funds.map(f => {
@@ -495,6 +564,8 @@ async function aiDraft(T, feat, items, trig) {
     return `${f.code} ${f.name}（${f.type}${f.qdii ? '；QDII，T日净值对应海外T日收盘' : ''}）\n  特征：${f.drivers.join('；')}\n  近20日波动 ${feat.f[f.code].vol20 ?? '–'}%，上一日 ${pct(feat.f[f.code].prev)}，近5日 ${pct(feat.f[f.code].mom5)}，锚定 ${pct(feat.f[f.code].anc)}，锚定近3日 ${pct(feat.f[f.code].anc_mom3)}\n  今天触发且历史有效：${valid.join('；') || '无'}\n  今天触发但未被证明有效（只能作参考，不能当主要依据）：${other.join('；') || '无'}`;
   }).join('\n');
   const pv = paperView(T);
+  const pbk = readJ(PB, null), pbS = pbk ? pbStats() : {};
+  const pbTxt = pbk ? `你的交易手册 v${pbk.version}（你自己总结并在持续修订的规则）：\n${pbText(pbk, pbS)}\n` : '';
   const acctTxt = pv ? `模拟账户（${T} 开盘前的估算）：可用现金 ¥${pv.cash}，待到账 ¥${pv.pending}，总资产约 ¥${pv.total}
 ${funds.map(f => { const p = pv.pos[f.code]; return `  ${f.code} ${f.short}：市值约 ¥${p.value}${p.tiers.length ? '，今天卖出按先买先卖：' + p.tiers.map(t => `¥${t.value} 收 ${t.fee}%`).join('，') : '，空仓'}`; }).join('\n')}
 交易规则：今天 15:00 前下单，按今天收盘后的净值成交；买入不收费；卖出按持有天数收赎回费（不满 7 天 1.5%，不满 30 天 0.5%，满 30 天免费），卖出的钱下一个交易日才到账；单笔不少于 ¥${CFG.paper.minTrade}；买入合计不超过可用现金。
@@ -509,7 +580,9 @@ ${fundsTxt}
 
 ${acctTxt}
 
+${pbTxt}
 要求：
+- 先按交易手册判断，再结合当天新闻；用到手册规则时在 rules 里写规则编号，和手册冲突时写明为什么今天例外。
 - 每只基金给一个具体预测值 value（%），和一个你认为大概率会落入的区间 [lo, hi]（%），lo ≤ value ≤ hi；区间宽度要反映你的把握程度和这只基金的日波动。
 - logic 分点写清预测逻辑（3～5 条，每条 50 字内）：隔夜外盘、相关板块/个股新闻、国内政策与情绪、技术面/近期走势，哪个起主导、哪些相互抵消。引用数据或新闻编号写在 dataRefs，引用规律编号写在 signals。
 - 只用列出的新闻，不要编造；主观判断写明是主观判断。
@@ -517,10 +590,10 @@ ${acctTxt}
 - overall.logic 写科技仓整体（五只合起来）2～4 条判断逻辑。
 - trades：每只基金一个操作，action 只能是"买入""卖出""不动"；买入写 amount（元），卖出写 ratio（卖出该基金持仓的比例，0～1）；reason 写理由（40 字内，要算上手续费）。tradeSummary 一句话说明今天的操作思路。
 
-只输出 JSON：{"funds":{"代码":{"value":0.8,"lo":0.2,"hi":1.4,"logic":[{"text":"...","signals":["R001"],"dataRefs":["..."]}],"conclusion":"..."}},"overall":{"logic":["..."]},"trades":{"代码":{"action":"不动","amount":0,"ratio":0,"reason":"..."}},"tradeSummary":"..."}`, `AI 预测 ${T}`);
+只输出 JSON：{"funds":{"代码":{"value":0.8,"lo":0.2,"hi":1.4,"logic":[{"text":"...","rules":["P01"],"signals":["R001"],"dataRefs":["..."]}],"conclusion":"..."}},"overall":{"logic":["..."]},"trades":{"代码":{"action":"不动","amount":0,"ratio":0,"rules":["P05"],"reason":"..."}},"tradeSummary":"..."}`, `AI 预测 ${T}`);
   const fx = {};
   const ids = new Set(defs.map(d => d.id));
-  const clean = rs => (Array.isArray(rs) ? rs : []).slice(0, 6).map(r => (typeof r === 'string' ? { text: r } : r)).map(r => ({ text: String(r.text || '').slice(0, 100), signals: (r.signals || []).filter(id => ids.has(id)), dataRefs: (r.dataRefs || []).filter(id => items.some(i => i.id === id)) })).filter(r => r.text);
+  const clean = rs => (Array.isArray(rs) ? rs : []).slice(0, 6).map(r => (typeof r === 'string' ? { text: r } : r)).map(r => ({ text: String(r.text || '').slice(0, 100), rules: (r.rules || []).filter(id => pbk?.rules.some(x => x.id === id)), signals: (r.signals || []).filter(id => ids.has(id)), dataRefs: (r.dataRefs || []).filter(id => items.some(i => i.id === id)) })).filter(r => r.text);
   for (const c of CODES) {
     const p = out.funds?.[c]; const v = +p?.value; if (!Number.isFinite(v)) continue;
     let lo = +p.lo, hi = +p.hi; const vv = r2(clampV(v));
@@ -535,15 +608,15 @@ ${acctTxt}
     let budget = pv.cash;
     for (const c of CODES) {
       const t = out.trades?.[c] || {}; const act = ['买入', '卖出'].includes(t.action) ? t.action : '不动';
-      if (act === '买入') { const amt = Math.floor(Math.min(+t.amount || 0, budget)); if (amt >= CFG.paper.minTrade) { trades[c] = { action: '买入', amount: amt, reason: String(t.reason || '').slice(0, 80) }; budget -= amt; continue; } }
-      if (act === '卖出') { const ratio = Math.max(0, Math.min(1, +t.ratio || 0)); if (ratio > 0 && pv.pos[c].value * ratio >= CFG.paper.minTrade) { trades[c] = { action: '卖出', ratio: r3(ratio), estAmount: r2(pv.pos[c].value * ratio), reason: String(t.reason || '').slice(0, 80) }; continue; } }
-      trades[c] = { action: '不动', reason: String(t.reason || '').slice(0, 80) };
+      if (act === '买入') { const amt = Math.floor(Math.min(+t.amount || 0, budget)); if (amt >= CFG.paper.minTrade) { trades[c] = { action: '买入', amount: amt, rules: (t.rules || []).filter(id => pbk?.rules.some(x => x.id === id)), reason: String(t.reason || '').slice(0, 80) }; budget -= amt; continue; } }
+      if (act === '卖出') { const ratio = Math.max(0, Math.min(1, +t.ratio || 0)); if (ratio > 0 && pv.pos[c].value * ratio >= CFG.paper.minTrade) { trades[c] = { action: '卖出', ratio: r3(ratio), estAmount: r2(pv.pos[c].value * ratio), rules: (t.rules || []).filter(id => pbk?.rules.some(x => x.id === id)), reason: String(t.reason || '').slice(0, 80) }; continue; } }
+      trades[c] = { action: '不动', rules: (t.rules || []).filter(id => pbk?.rules.some(x => x.id === id)), reason: String(t.reason || '').slice(0, 80) };
     }
   }
   const ov = portfolio(fx);
   { const L = portfolio(Object.fromEntries(Object.entries(fx).map(([c, x]) => [c, { value: x.lo }]))), H = portfolio(Object.fromEntries(Object.entries(fx).map(([c, x]) => [c, { value: x.hi }]))); ov.lo = L.value; ov.hi = H.value; }
   ov.logic = (Array.isArray(out.overall?.logic) ? out.overall.logic : []).map(x => String(typeof x === 'string' ? x : x.text || '').slice(0, 100)).filter(Boolean).slice(0, 4);
-  return { modelName, body: { funds: fx, overall: ov, ...(pv ? { trades, tradeSummary: String(out.tradeSummary || '').slice(0, 120), accountView: pv } : {}) } };
+  return { modelName, body: { playbookVersion: pbk?.version || null, funds: fx, overall: ov, ...(pv ? { trades, tradeSummary: String(out.tradeSummary || '').slice(0, 120), accountView: pv } : {}) } };
 }
 // ---------- 6b. 模拟账户：AI 每天的买卖决定按真实申赎规则执行，对照"一直持有不动" ----------
 const paperF = P('paper', 'account.json');
@@ -686,13 +759,25 @@ async function review(T, preds, res) {
     const keys = (r.signals || []).map(id => defs.find(d => d.id === id)?.key).filter(k => k && model.signals.includes(k));
     if (keys.length && snap) { const base = modelValue(model, snap.features, c), dropV = modelValue(model, snap.features, c, keys); ablation.push({ fund: c, reason: i, verdict: tri(base) !== tri(dropV) ? '核心变量' : '非核心变量', detail: `规则模型 ${pct(base)} → 去掉后 ${pct(dropV)}`, by: 'rule' }); }
   });
-  const newsAfter = (await news()).filter(n => ms(n.time) > ms(lockIso) && ms(n.time) <= ms(at(T, '15:00')) && NEWS_KEYS.test(n.text)).slice(0, 20);
+  const newsAfter = (await news(lockIso, at(T, '15:00'))).filter(n => n.relevant).slice(0, 25);
   const rows = funds.map(f => {
     const pf = p.funds?.[f.code]; const sc = res.scores[who]?.[f.code];
-    return `${f.short}：预测 ${pct(pf?.value)}，实际 ${pct(res.actual[f.code])}，${sc ? (sc.hit ? '方向对' : '方向错') + `，误差 ${sc.absErr}` : '未计分'}\n  理由：${(pf?.reasons || []).map((r, i) => `(${i}) ${r.text}${r.signals?.length ? ' [信号 ' + r.signals.join(',') + ']' : ''}`).join(' ')}\n  今天触发：${(trig?.funds?.[f.code] || []).map(x => x.signal + '(' + x.status + ')').join('、') || '无'}`;
+    return `${f.short}：预测 ${pct(pf?.value)}${pf?.lo != null ? `（区间 ${pf.lo}～${pf.hi}）` : ''}，实际 ${pct(res.actual[f.code])}，${sc ? (sc.hit ? '方向对' : '方向错') + `，误差 ${sc.absErr}` : '未计分'}\n  理由：${(pf?.reasons || []).map((r, i) => `(${i}) ${r.text}${r.rules?.length ? ' [手册 ' + r.rules.join(',') + ']' : ''}${r.signals?.length ? ' [信号 ' + r.signals.join(',') + ']' : ''}`).join(' ')}${p.trades?.[f.code] ? `\n  操作：${p.trades[f.code].action}${p.trades[f.code].amount ? ' ¥' + p.trades[f.code].amount : ''}${p.trades[f.code].ratio ? ' ' + Math.round(p.trades[f.code].ratio * 100) + '%' : ''} ${p.trades[f.code].reason || ''}` : ''}\n  今天触发：${(trig?.funds?.[f.code] || []).map(x => x.signal + '(' + x.status + ')').join('、') || '无'}`;
   }).join('\n');
   // 只给研究集统计；不给留出集和提出后的数据
   const researchSig = defs.filter(d => statusOf(d.key) !== '淘汰').map(d => { const R = state[d.key]?.stats?.research || {}; return `${d.id} ${d.name}：when ${d.when} → ${d.vote > 0 ? '看涨' : '看跌'}，研究集 ${R.rate ?? '–'}%（${R.days ?? 0}天，基准${R.base ?? '–'}%）`; }).join('\n');
+  const pbk = who === 'ai' ? readJ(PB, null) : null, pbS = pbk ? pbStats() : {};
+  const th = who === 'ai' ? tradeHindsight() : [], acct = readJ(paperF, null), L = acct?.history?.at(-1);
+  const extra = pbk ? `
+你的交易手册 v${pbk.version}（规则后面是新版预测以来的实际表现）：
+${pbText(pbk, pbS)}
+
+模拟账户：${L ? `截至 ${L.date}，AI 操作累计 ${L.pnl} 元，一直不动 ${L.holdPnl} 元，差 ${L.excess} 元` : '尚未结算'}
+最近执行过的操作及之后的涨跌：${th.map(t => `${t.date} ${FUND[t.code].short} ${t.action} ¥${t.amount}（手续费 ${t.fee}）→ 之后 ${pct(t.after)}`).join('；') || '暂无'}
+
+另外请输出（这是你自己的学习记录，写给自己看，具体、有数字）：
+summary：一句话总结今天；lessons：今天学到的 1～3 条；tradeReview：对操作的复盘 1～2 条（手续费算进去，是否该少动）；
+playbookChanges：对交易手册的修订，最多 2 处，没有把握就不改（空数组）。[{"op":"新增/修改/删除","id":"修改或删除时写编号","kind":"预测/操作","text":"新的规则内容","reason":"依据，引用具体日期和数字"}]。引用 5 次以上且方向命中低于 45% 的规则应当修改或删除；只出现一两次的偶然现象不要写成规则。` : '';
   let out = {}, modelName = null;
   try {
     ({ out, modelName } = await gemini(`你在帮一位普通投资人复盘 ${T} 的基金涨跌预测（被复盘的是${who === 'user' ? '他本人的预测' : 'AI 草稿（他当天没有提交）'}，锁定时间 ${lockIso}）。用简体中文，具体、不说空话。
@@ -708,11 +793,13 @@ ${researchSig}
 hindsight：逐条检查没有引用数据编号的文字理由，是否用到了锁定后才知道的信息 [{"fund":"代码","reason":序号,"verdict":"预测前已成立/疑似事后信息","why":""}]；
 ablation：逐条判断"删掉这条理由，结论还一样吗"，只写没关联信号的理由 [{"fund":"代码","reason":序号,"verdict":"核心变量/装饰/无法判断","why":""}]（这只是辅助判断）；
 newSignals：最多2条值得实验的新信号（野路子也可以），只能用变量：${VARS.join(',')}，表达式只用变量、数字、比较和逻辑运算、Math.abs。[{"name":"","when":"","vote":1,"scope":"*"}]
+${extra}
 只输出 JSON。`, `复盘 ${T}`));
   } catch (e) { log('复盘 AI 部分失败：' + e.message); }
   const arr = x => Array.isArray(x) ? x.slice(0, 5).map(String) : [];
   const aiH = (Array.isArray(out.hindsight) ? out.hindsight.slice(0, 15) : []).map(x => ({ ...x, suspected_hindsight: x.verdict === '疑似事后信息', by: 'ai' }));
-  writeOnce(P('reviews', T + '.json'), { date: T, subject: who, createdAt: nowISO, aiModel: modelName, right: arr(out.right), wrong: arr(out.wrong), bestSignal: out.bestSignal || null, misleading: out.misleading || null, nextTime: arr(out.nextTime),
+  let pbChange = null; if (pbk) { try { pbChange = pbApply(T, Array.isArray(out.playbookChanges) ? out.playbookChanges : []); } catch (e) { log('手册修订失败：' + e.message); } }
+  writeOnce(P('reviews', T + '.json'), { date: T, subject: who, createdAt: nowISO, aiModel: modelName, summary: String(out.summary || '').slice(0, 120), lessons: arr(out.lessons), tradeReview: arr(out.tradeReview), playbookBefore: pbk?.version || null, playbookChange: pbChange, right: arr(out.right), wrong: arr(out.wrong), bestSignal: out.bestSignal || null, misleading: out.misleading || null, nextTime: arr(out.nextTime),
     hindsight: [...hindsight, ...aiH], ablation: [...ablation, ...(Array.isArray(out.ablation) ? out.ablation.slice(0, 15).map(x => ({ ...x, by: 'ai' })) : [])] });
   index.days[T].review = true;
   // 新信号：只新建定义，从"实验中"开始，只能用提出之后的数据验证
@@ -784,6 +871,7 @@ function computeStats() {
   };
   out.conclusion = concl('user');
   out.conclusionAi = concl('ai');
+  try { out.playbook = pbStats(); } catch { out.playbook = {}; }
   { const lives = results.filter(r => r.date >= CFG.paper.start); out.aiLive = { since: CFG.paper.start, ...(() => { let n = 0, hit = 0, e = 0, rn = 0, rin = 0; for (const r of lives) for (const x of Object.values(r.scores.ai || {})) { n++; hit += x.hit; e += x.absErr; if (x.inRange != null) { rn++; rin += x.inRange; } } return { obs: n, days: lives.length, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null, rangeObs: rn, rangeRate: rn ? r2(rin / rn * 100) : null }; })() }; }
   for (const c of CODES) out.byFund[c] = Object.fromEntries(PREDICTORS.map(k => { let n = 0, hit = 0, e = 0; for (const r of results) { const s = r.scores[k]?.[c]; if (s) { n++; hit += s.hit; e += s.absErr; } } return [k, { obs: n, rate: n ? r2(hit / n * 100) : null, mae: n ? r3(e / n) : null }]; }));
   const g = { clean: [], flagged: [], subjective: [] };
@@ -809,6 +897,7 @@ function computeStats() {
 try {
   const pdir = P('predictions');
   const pdays = exists(pdir) ? fs.readdirSync(pdir).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= today).sort() : [];
+  try { await pbBootstrap(); } catch (e) { log('交易手册初始化失败：' + e.message); }
   for (const T of pdays) await settle(T);
   tryUpgrade();
   try { paperRun(); } catch (e) { log('模拟账户结算失败：' + (e.stack || e.message).slice(0, 300)); }

@@ -56,6 +56,15 @@ p{margin:0}
 .row .nm .rg{display:block;font-family:var(--f-num);font-weight:400;margin-top:1px}
 .strip{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;flex-wrap:wrap}
 .trades{display:flex;flex-direction:column}
+ol.pb{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.55}
+ol.pb li{display:flex;flex-direction:column;gap:3px;border-top:1px solid var(--line);padding-top:8px}
+.pbh{display:flex;align-items:center;gap:6px;min-width:0}
+details.jr{border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px}
+details.jr summary{display:flex;align-items:center;gap:8px;cursor:pointer;min-height:32px}
+details.jr[open]{gap:6px}
+.jrs{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.jr[open] .jrs{display:none}
+.kpis.k2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .tbl.pt{table-layout:fixed}
 .tbl.pt td,.tbl.pt th{padding:7px 2px;vertical-align:top}
 .tbl.pt th:first-child,.tbl.pt td:first-child{width:32%}
@@ -296,7 +305,7 @@ details>summary{cursor:pointer}
     if(ov.logic&&ov.logic.length)h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h3>科技仓整体</h3><span class="num '+cls(ov.value)+'" style="font-weight:600">'+fmt(ov.value)+(ov.lo!=null?' <span class="sub tiny">'+f2(ov.lo)+'~'+f2(ov.hi)+'</span>':'')+'</span></div><ol class="pts">'+ov.logic.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div>';
     for(const f of G.funds){const x=ai.funds[f.code];if(!x)continue;const t=tr[f.code];
       h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h3>'+esc(f.short)+'</h3><span class="num '+cls(x.value)+'" style="font-weight:600;white-space:nowrap">'+fmt(x.value)+(x.lo!=null?' <span class="sub tiny">'+f2(x.lo)+'~'+f2(x.hi)+'</span>':'')+'</span></div>'+
-        ((x.reasons||[]).length?'<ol class="pts">'+x.reasons.map(r=>'<li>'+esc(r.text)+'</li>').join('')+'</ol>':'')+
+        ((x.reasons||[]).length?'<ol class="pts">'+x.reasons.map(r=>'<li>'+esc(r.text)+((r.rules||[]).length?' '+(r.rules||[]).map(id=>'<span class="tag t-ac">'+esc(id)+'</span>').join(' '):'')+'</li>').join('')+'</ol>':'')+
         (x.conclusion?'<div class="small" style="font-weight:600">结论：'+esc(x.conclusion)+'</div>':'')+
         (t?'<div class="small"><span class="tag '+(ACT[t.action]||"t-n")+'">'+esc(t.action)+'</span> '+esc(t.action==="买入"?yuan(t.amount):t.action==="卖出"?Math.round(t.ratio*100)+'%':'')+' <span class="sub">'+esc(t.reason||'')+'</span></div>':'')+'</div>'}
     return h;
@@ -314,7 +323,7 @@ details>summary{cursor:pointer}
   function paperCard(){
     const A=G.paper; if(!A)return '<div class="card"><h2>模拟账户</h2><span class="sub small" style="line-height:1.6">'+esc(G.config.paper?'从 '+G.config.paper.start.slice(5).replace("-","月")+'日开始：现有持仓 + 同额虚拟现金，AI 每天决定买卖，和「一直持有不动」比谁赚得多。':'')+'</span></div>';
     const L=A.history.at(-1), init=Object.values(A.init.holdings).reduce((a,b)=>a+b,0)+A.init.cash;
-    if(!L)return '<div class="card"><h2>模拟账户</h2><div class="kpis"><div class="kpi"><span class="sub tiny">起始资金</span><b>'+yuan(init)+'</b></div><div class="kpi"><span class="sub tiny">现金</span><b>'+yuan(A.cash)+'</b></div></div><span class="sub tiny">'+esc(A.start.slice(5))+' 开始，第一天收盘结算后出结果。</span></div>';
+    if(!L)return '<div class="card"><h2>模拟账户</h2><div class="kpis k2"><div class="kpi"><span class="sub tiny">起始资金</span><b>'+yuan(init)+'</b></div><div class="kpi"><span class="sub tiny">现金</span><b>'+yuan(A.cash)+'</b></div></div><span class="sub tiny">'+esc(A.start.slice(5))+' 开始，第一天收盘结算后出结果。</span></div>';
     return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>模拟账户</h2><span class="sub tiny">截至 '+esc(L.date.slice(5))+' 净值</span></div><div class="kpis"><div class="kpi"><span class="sub tiny">AI 操作</span><b class="'+clsM(L.pnl)+'">'+syuan(L.pnl)+'</b><span class="sub tiny">总资产 '+yuan(L.total)+'</span></div><div class="kpi"><span class="sub tiny">一直不动</span><b class="'+clsM(L.holdPnl)+'">'+syuan(L.holdPnl)+'</b><span class="sub tiny">总资产 '+yuan(L.hold)+'</span></div><div class="kpi"><span class="sub tiny">AI 多赚</span><b class="'+clsM(L.excess)+'">'+syuan(L.excess)+'</b><span class="sub tiny">'+A.history.length+' 个交易日</span></div></div></div>';
   }
   function holdingsCard(){
@@ -515,9 +524,37 @@ details>summary{cursor:pointer}
   }
 
   // ---------- 成绩 ----------
+  const PBTAG={"有效":"t-ok","一般":"t-n","存疑":"t-bad","试用中":"t-warn"};
+  function playbookCard(){
+    const pb=G.playbook, st=(G.stats&&G.stats.playbook)||{};
+    if(!pb)return '<div class="card"><h2>我的交易逻辑</h2><span class="sub small" style="line-height:1.6">AI 会先根据历史数据写出第一版交易手册（预测规则 + 买卖规则），之后每天收盘复盘后自己修订，这里能看到每条规则用了多少次、准不准、哪天为什么改。</span></div>';
+    const stat=id=>{const s=st[id];if(!s||s.uses<5)return "试用中";if(s.rate>=60)return "有效";if(s.rate<45)return "存疑";return "一般"};
+    const live=pb.rules.filter(r=>r.status!=="已删除");
+    const block=(kind)=>{const xs=live.filter(r=>r.kind===kind);return xs.length?'<h3 style="margin-top:4px">'+kind+'规则</h3><ol class="pb">'+xs.map(r=>{const s=st[r.id],t=stat(r.id);return '<li><div class="pbh"><b class="num">'+esc(r.id)+'</b><span class="tag '+PBTAG[t]+'">'+t+'</span><span class="sub tiny" style="margin-left:auto;white-space:nowrap">'+(s?'引用 '+s.uses+' 次 · 方向对 '+pp(s.rate):'还没用过')+'</span></div><div>'+esc(r.text)+'</div><div class="sub tiny">'+(r.addedFrom&&r.addedFrom!=="v1 初始"?esc(r.addedFrom.slice(5))+' 复盘新增':'初始规则')+(r.editedAt?' · '+esc(r.editedAt.slice(5))+' 修改':'')+'</div></li>'}).join('')+'</ol>':''};
+    return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>我的交易逻辑</h2><span class="sub tiny">交易手册 v'+pb.version+' · '+esc(md(pb.updatedAt))+' 更新</span></div>'+(pb.summary?'<div style="font-size:14.5px;line-height:1.6">'+esc(pb.summary)+'</div>':'')+block("预测")+block("操作")+'<span class="sub tiny" style="line-height:1.6">AI 每天预测时按这份手册判断并标出用了哪条；收盘后统计每条规则的实际命中，复盘时自己决定新增、修改或删除（每天最多改 2 处，要写依据）。引用满 5 次后：命中 ≥60% 记为有效，&lt;45% 记为存疑。</span></div>';
+  }
+  async function journalCard(){
+    const days=Object.keys(G.index.days).filter(d=>G.index.days[d].review).sort().reverse().slice(0,10);
+    const rs=(await Promise.all(days.map(T=>j(`data/reviews/${T}.json`)))).filter(Boolean);
+    if(!rs.length)return '';
+    let h='<div class="card"><h2>复盘日记</h2><span class="sub tiny">每天收盘出结果后 AI 自己写的复盘</span>';
+    for(const r of rs){
+      const ch=r.playbookChange;
+      h+='<details class="jr"'+(r===rs[0]?' open':'')+'><summary><b class="num" style="white-space:nowrap">'+esc(dlabel(r.date))+'</b>'+(ch?'<span class="tag t-ac">手册 → v'+ch.version+'</span>':'')+'<span class="sub small jrs">'+esc(r.summary||(r.wrong&&r.wrong[0])||(r.right&&r.right[0])||'')+'</span></summary>'+
+        (r.summary?'<div style="font-weight:600;font-size:14px;line-height:1.55">'+esc(r.summary)+'</div>':'')+
+        list("学到的",r.lessons)+list("判断对了",r.right)+list("判断错了",r.wrong)+list("操作复盘",r.tradeReview)+(!r.lessons||!r.lessons.length?list("下次怎么改",r.nextTime):'')+
+        (ch?'<div class="small"><b>修订交易手册</b><ul class="pts" style="font-size:13.5px">'+ch.changes.map(c=>'<li><span class="tag '+(c.op==="删除"?"t-bad":c.op==="新增"?"t-ok":"t-warn")+'">'+esc(c.op+" "+c.id)+'</span> '+esc(c.text||c.before||"")+'<div class="sub tiny">原因：'+esc(c.reason)+'</div></li>').join('')+'</ul></div>':'')+'</details>';
+    }
+    return h+'</div>';
+  }
+  function changelogCard(){
+    const cl=G.playbookLog||[]; if(cl.length<2)return '';
+    return '<details class="card"><summary style="font-weight:600;font-size:14px">交易手册修改记录（'+(cl.length-1)+' 次）</summary>'+[...cl].reverse().map(v=>'<div style="border-top:1px solid var(--line);padding-top:8px;font-size:13.5px"><b>v'+v.version+'</b> <span class="sub tiny">'+esc(v.date)+(v.from?' · 来自 '+esc(v.from.slice(5))+' 复盘':'')+'</span>'+v.changes.map(c=>'<div>'+esc(c.op+" "+c.id+"："+(c.text||c.before||""))+'</div>'+(c.before&&c.op==="修改"?'<div class="sub tiny">原：'+esc(c.before)+'</div>':'')+'<div class="sub tiny">'+esc(c.reason||"")+'</div>').join('')+'</div>').join('')+'</details>';
+  }
   function renderScore(){
     const S=G.stats||{}, P=S.predictors||{}, A=G.paper, L=A&&A.history.at(-1), LV=S.aiLive||{}, C=S.conclusionAi||{}, cmp=(S.compare&&S.compare.ai)||{};
-    let h='<div class="top"><h1>成绩</h1><span class="sub small">AI 能不能赚钱</span></div>';
+    let h='<div class="top"><h1>成绩</h1><span class="sub small">AI 的学习记录</span></div>';
+    h+=playbookCard()+'<div id="journal"></div>'+changelogCard();
     // 1) 模拟账户
     if(A&&L){
       const vt=L.excess>0?'目前 AI 操作比一直不动多赚 '+syuan(L.excess).replace("+",""):L.excess<0?'目前 AI 操作比一直不动少赚 '+syuan(-L.excess).replace("+",""):'目前和一直不动打平';
@@ -535,6 +572,7 @@ details>summary{cursor:pointer}
       '<details><summary class="small sub">简单方法怎么算</summary><ul class="pts small" style="margin-top:6px">'+Object.entries(LONG).map(([k,t])=>'<li>'+esc(t)+'</li>').join('')+'<li>规则模型：只用历史上被证明有效的规律。</li></ul></details></div>';
     h+='<div class="card"><h2>分基金</h2><div class="scroll"><table class="tbl"><thead><tr><th>基金</th><th>AI 命中</th><th>AI 误差</th><th>外盘 Beta 误差</th></tr></thead><tbody>'+G.funds.map(f=>{const b=(S.byFund||{})[f.code]||{};const u=b.ai||{},x=b.bench_external_beta||{};return '<tr><td class="t">'+esc(f.short)+'</td><td>'+pp(u.rate)+'</td><td>'+(u.mae!=null?f2(u.mae):'–')+'</td><td>'+(x.mae!=null?f2(x.mae):'–')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
     $("v-score").innerHTML=h+'<div id="ledger"></div>';
+    journalCard().then(x=>{const el=$("journal");if(el)el.outerHTML=x||''});
     renderLedger();
   }
   function chart(hist){
@@ -585,13 +623,13 @@ details>summary{cursor:pointer}
   document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
   try{const v=localStorage.getItem("fd-v");if(v&&$("v-"+v))show(v)}catch(e){}
   async function load(){
-    const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews,paper]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest","paper/account"].map(n=>j(`data/${n}.json`)));
+    const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews,paper,playbook,playbookLog]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest","paper/account","playbook/current","playbook/changelog"].map(n=>j(`data/${n}.json`)));
     if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
     const mks=await Promise.all(MK.flatMap(g=>g[1]).map(([k])=>j(`data/market/${k}.json`)));const market=Object.fromEntries(MK.flatMap(g=>g[1]).map(([k],i)=>[k,mks[i]]));
-    G={market,paper,latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
+    G={playbook,playbookLog,market,paper,latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
     cache={};
     await renderPred();renderScore();renderLab();
-    $("foot").textContent='界面 v2.3（10-20） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'AI 每晚 22:13 后给出初版预测，交易日 08:00 前后定稿并决定模拟操作，'+config.deadline+' 截止。仅作实验记录，不构成投资建议。';
+    $("foot").textContent='界面 v2.4（10-20） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'AI 每晚 22:13 后给出初版预测，交易日 08:00 前后定稿并决定模拟操作，'+config.deadline+' 截止。仅作实验记录，不构成投资建议。';
   }
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$("sheet").hidden)load()});
   load();
