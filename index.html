@@ -279,15 +279,15 @@ details>summary{cursor:pointer}
     liveCache={at:Date.now(),v:Object.keys(out).length?out:null};
     return liveCache.v;
   }
-  function recapCard(d){
-    const snap=d.snap||(G.latestNews?{items:[],asOf:G.latestNews.asOf}:null), dg=d.snap?d.digest:(G.latestNews&&G.latestNews.digest);
-    const mk=(d.snap?d.snap.items:[]).filter(it=>it.kind==="行情"&&!String(it.key).includes("."));
-    if(!mk.length&&!dg)return '';
-    const grp=[["A 股",["sh_prev","cyb_prev","kc50_prev"]],["港股",["hstech_prev","hstech_on"]],["美股（隔夜）",["ndx_on","spx_on","sox_on","kweb_on"]]];
-    const rows=grp.map(([g,ks])=>{const xs=mk.filter(it=>ks.includes(it.key));return xs.length?'<tr class="grp"><td colspan="3">'+g+'</td></tr>'+xs.map(it=>'<tr><td class="t">'+esc(String(it.name).replace(/（.*?）/,''))+(String(it.name).includes('累计')?' <span class="sub tiny">'+esc(String(it.name).match(/（(.*?)）/)[1].replace(/ 个交易日累计/,'日累计'))+'</span>':'')+'</td><td class="'+cls(it.value)+'">'+fmt(it.value)+'</td><td class="sub tiny">'+esc(String(it.dataTime).slice(5,10).replace("-","/"))+'</td></tr>').join(''):''}).join('');
-    return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>前一交易日市场</h2><span class="sub tiny">截至 '+esc(md(d.snap?d.snap.asOf:G.latestNews.asOf))+' '+esc(hm(d.snap?d.snap.asOf:G.latestNews.asOf))+'</span></div>'+
+  const MK=[["A 股",[["sh","上证指数"],["cyb","创业板指"],["kc50","科创50"]]],["港股",[["hstech","恒生科技"]]],["美股（隔夜）",[["ndx","纳斯达克100"],["spx","标普500"],["sox","费城半导体"],["kweb","中概互联网"]]]];
+  function recapCard(d){   // 用最新的行情序列（不是预测时冻结的数据），取这一天之前最近一个交易日
+    const dg=d.snap?d.digest:(G.latestNews&&G.latestNews.digest), M=G.market||{};
+    const last=k=>{const v=(M[k]||{}).values||{};const ds=Object.keys(v).filter(x=>x<d.T).sort();const x=ds.at(-1);return x?{date:x,v:v[x]}:null};
+    const rows=MK.map(([g,ks])=>{const xs=ks.map(([k,n])=>[n,last(k)]).filter(x=>x[1]);return xs.length?'<tr class="grp"><td colspan="3">'+g+'</td></tr>'+xs.map(([n,x])=>'<tr><td class="t">'+esc(n)+'</td><td class="'+cls(x.v)+'">'+fmt(x.v)+'</td><td class="sub tiny">'+esc(x.date.slice(5).replace("-","/"))+'</td></tr>').join(''):''}).join('');
+    if(!rows&&!dg)return '';
+    return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2>前一交易日市场</h2><span class="sub tiny">'+esc(dlabel(d.T))+' 之前</span></div>'+
       (dg&&dg.overall?'<div style="font-size:14.5px;line-height:1.6">'+esc(dg.overall)+'</div>':'')+
-      (rows?'<table class="tbl"><tbody>'+rows+'</tbody></table>':'')+'</div>';
+      (rows?'<table class="tbl"><tbody>'+rows+'</tbody></table><span class="sub tiny">右侧是数据所属日期；港股、美股遇假期显示最近一个交易日。</span>':'')+'</div>';
   }
   function basisSection(F){
     const ai=F.ai; if(!ai)return '';
@@ -587,7 +587,8 @@ details>summary{cursor:pointer}
   async function load(){
     const [config,funds,holdings,index,signals,stats,modelLog,status,model,latestNews,paper]=await Promise.all(["config","funds","state/holdings","index","signals/public","stats","models/changelog","status","models/current","news/latest","paper/account"].map(n=>j(`data/${n}.json`)));
     if(!config||!funds||!index){$("v-pred").innerHTML='<div class="empty">数据读取失败，请稍后再打开。</div>';return}
-    G={paper,latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
+    const mks=await Promise.all(MK.flatMap(g=>g[1]).map(([k])=>j(`data/market/${k}.json`)));const market=Object.fromEntries(MK.flatMap(g=>g[1]).map(([k],i)=>[k,mks[i]]));
+    G={market,paper,latestNews,config,funds:[...funds].sort((a,b)=>(a.order||0)-(b.order||0)),holdings:holdings||{},index,signals:signals||[],stats,modelLog:modelLog||[],status:status||{},model};
     cache={};
     await renderPred();renderScore();renderLab();
     $("foot").textContent='界面 v2.3（10-20） · '+(status&&status.lastRun?'数据更新于 '+String(status.lastRun).replace("T"," ").slice(0,16)+' · ':'')+'AI 每晚 22:13 后给出初版预测，交易日 08:00 前后定稿并决定模拟操作，'+config.deadline+' 截止。仅作实验记录，不构成投资建议。';
