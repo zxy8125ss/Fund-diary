@@ -56,7 +56,10 @@ p{margin:0}
 .row .nm .rg{display:block;font-family:var(--f-num);font-weight:400;margin-top:1px}
 .strip{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;flex-wrap:wrap}
 .trades{display:flex;flex-direction:column}
-.tbl.pt td,.tbl.pt th{padding:7px 3px;vertical-align:top}
+.tbl.pt{table-layout:fixed}
+.tbl.pt td,.tbl.pt th{padding:7px 2px;vertical-align:top}
+.tbl.pt th:first-child,.tbl.pt td:first-child{width:32%}
+.tbl.pt td.t{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tbl.pt th{white-space:nowrap}
 .tbl.pt tr[data-fund]{cursor:pointer}
 .tbl tr.grp td{text-align:left;font-family:var(--f-body);font-size:12px;color:var(--sub);padding-top:10px;border-bottom:none}
@@ -249,7 +252,7 @@ details>summary{cursor:pointer}
     h+='<div class="card"><h2>预测与实际</h2><div class="scroll"><table class="tbl pt"><thead><tr><th>基金</th><th>今日预测</th><th>实际</th><th>'+(nT?esc(nT.slice(5).replace("-","/")):'明日')+' 预测</th></tr></thead><tbody>'+
       G.funds.map(f=>'<tr data-fund="'+f.code+'"><td class="t">'+esc(f.short)+'</td><td>'+cell(ai&&ai.funds[f.code])+'</td><td>'+act(f.code)+'</td><td>'+cell(nai&&nai.funds[f.code])+'</td></tr>').join('')+
       '<tr class="me"><td class="t">科技仓</td><td>'+cell(ov)+'</td><td>'+(actAll!=null?'<span class="num '+cls(actAll)+'" style="font-weight:600">'+fmt(actAll)+'</span>'+(!res?'<div class="sub tiny">参考</div>':''):'<span class="sub">–</span>')+'</td><td>'+cell(nov)+'</td></tr></tbody></table></div>'+
-      '<span class="sub tiny" style="line-height:1.6">小字是预测区间。实际＝基金公布的净值涨跌，晚上公布（QDII 次日晚）。公布前显示「参考」＝这只基金跟踪的指数/ETF 的盘中涨跌，15:00 收盘后停止更新；平台的基金估值已被监管叫停，这里不是基金估值。'+(nai&&nai.batch!=="morning"?'明日预测是初版，早上 08:00 前后结合隔夜美股定稿。':'')+'点一行看详情。</span></div>';
+      '<span class="sub tiny" style="line-height:1.6">小字是预测区间。实际＝基金公布的净值涨跌，晚上公布（QDII 次日晚）。公布前显示「参考」＝这只基金跟踪的指数/ETF 的盘中涨跌（易方达看半导体ETF，财通、节能环保看电子ETF，国寿看创业板指），15:00 收盘后停止更新；平台的基金估值已被监管叫停，这里不是基金估值。'+(nai&&nai.batch!=="morning"?'明日预测是初版，早上 08:00 前后结合隔夜美股定稿。':'')+'点一行看详情。</span></div>';
     if(res&&res.scores.ai){const xs=Object.values(res.scores.ai),hit=xs.filter(s=>s.hit).length,inr=xs.filter(s=>s.inRange).length,rn=xs.filter(s=>s.inRange!=null).length;h+='<div class="card strip"><span>今日方向对 <b class="num">'+hit+'/'+xs.length+'</b></span>'+(rn?'<span>落在区间 <b class="num">'+inr+'/'+rn+'</b></span>':'')+'<span>平均误差 <b class="num">'+f2(xs.reduce((s,x)=>s+x.absErr,0)/xs.length)+'</b></span></div>'}
     h+=tradeCard(focus.d,focus.ai,focus.tag);
     h+=basisSection(focus);
