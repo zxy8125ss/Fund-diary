@@ -1,0 +1,45 @@
+{
+ "date": "2026-10-22",
+ "batch": "evening",
+ "snapshotId": "2026-10-22/evening",
+ "runId": "39653887267",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-22T02:34:11+08:00",
+ "funds": {
+  "002910": [],
+  "005698": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -10.15
+    }
+   }
+  ],
+  "024481": [],
+  "015060": [
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 4.43
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R012",
+    "key": "R012@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": 2.04
+    }
+   }
+  ]
+ }
+}

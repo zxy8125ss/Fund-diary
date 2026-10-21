@@ -79,6 +79,13 @@
    "batches": [
     "evening",
     "morning"
+   ],
+   "result": true,
+   "user": false
+  },
+  "2026-10-22": {
+   "batches": [
+    "evening"
    ]
   }
  }
