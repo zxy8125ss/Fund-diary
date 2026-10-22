@@ -1,0 +1,13 @@
+{
+ "key": "S013@v1",
+ "id": "S013",
+ "version": 1,
+ "name": "创业板弱势与外盘半导体背离杀跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1 && sox_on > 1 && mom5 < 0",
+ "vote": 1,
+ "createdAt": "2026-10-23",
+ "proposedFrom": "2026-10-22"
+}

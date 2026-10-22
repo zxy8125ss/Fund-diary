@@ -1,0 +1,13 @@
+{
+ "key": "S014@v1",
+ "id": "S014",
+ "version": 1,
+ "name": "高弹性科技基金在创业板大跌时的跟跌效应",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1.5 && vol20 > 0.025",
+ "vote": 1,
+ "createdAt": "2026-10-23",
+ "proposedFrom": "2026-10-22"
+}
