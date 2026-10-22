@@ -1,0 +1,232 @@
+{
+ "date": "2026-10-22",
+ "batch": "morning",
+ "snapshotId": "2026-10-22/morning",
+ "runId": "39702255544",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-22T08:52:04+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13,
+     "sox_on": 1.97
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13,
+     "sox_on": 1.97
+    }
+   },
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -10.15
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13,
+     "sox_on": 1.97
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13,
+     "sox_on": 1.97
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 4.43
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13,
+     "sox_on": 1.97
+    }
+   },
+   {
+    "signal": "R007",
+    "key": "R007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R009",
+    "key": "R009@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": -1
+    }
+   },
+   {
+    "signal": "R012",
+    "key": "R012@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": 2.04
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.13
+    }
+   }
+  ]
+ }
+}
