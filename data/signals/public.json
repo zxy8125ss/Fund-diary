@@ -1988,7 +1988,50 @@
   "proposedFrom": "2026-10-23",
   "status": "实验中",
   "pending": null,
-  "stats": null,
+  "stats": {
+   "research": {
+    "obs": 171,
+    "days": 35,
+    "hitObs": 102,
+    "up": 102,
+    "down": 69,
+    "rate": 59.57,
+    "lo": 43.16,
+    "hi": 74.09,
+    "base": 55.9,
+    "p": 0.331,
+    "signal_mean_forecast_mae": 3.08,
+    "implied": 0.7
+   },
+   "holdout": {
+    "obs": 56,
+    "days": 12,
+    "hitObs": 25,
+    "up": 25,
+    "down": 31,
+    "rate": 47.5,
+    "lo": 23.51,
+    "hi": 72.71,
+    "base": 49,
+    "p": 0.542,
+    "signal_mean_forecast_mae": 2.14,
+    "implied": -1.25
+   },
+   "forward": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": null,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   }
+  },
   "bhPass": false
  }
 ]
