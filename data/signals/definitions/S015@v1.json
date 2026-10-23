@@ -1,0 +1,13 @@
+{
+ "key": "S015@v1",
+ "id": "S015",
+ "version": 1,
+ "name": "创业板盘中低开超1.5%且 vol20 大于 0.03 的次日反抽",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1.5 && vol20 > 0.03",
+ "vote": 1,
+ "createdAt": "2026-10-24",
+ "proposedFrom": "2026-10-23"
+}
