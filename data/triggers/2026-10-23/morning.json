@@ -1,0 +1,479 @@
+{
+ "date": "2026-10-23",
+ "batch": "morning",
+ "snapshotId": "2026-10-23/morning",
+ "runId": "39880880321",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-23T08:54:25+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R002",
+    "key": "R002@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "R016",
+    "key": "R016@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -2.97,
+     "vol20": 1.2
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "prev": -2.97
+    }
+   },
+   {
+    "signal": "S005",
+    "key": "S005@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -4.98
+    }
+   },
+   {
+    "signal": "S006",
+    "key": "S006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S007",
+    "key": "S007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "vol20": 1.2
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R002",
+    "key": "R002@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "R016",
+    "key": "R016@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S005",
+    "key": "S005@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -3.93
+    }
+   },
+   {
+    "signal": "S006",
+    "key": "S006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S007",
+    "key": "S007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "vol20": 2.46
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R002",
+    "key": "R002@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -8.17
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -5.83
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -2.77
+    }
+   },
+   {
+    "signal": "R016",
+    "key": "R016@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -5.83,
+     "vol20": 2.63
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "prev": -5.83
+    }
+   },
+   {
+    "signal": "S004",
+    "key": "S004@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -8.17
+    }
+   },
+   {
+    "signal": "S005",
+    "key": "S005@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -8.17
+    }
+   },
+   {
+    "signal": "S006",
+    "key": "S006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S007",
+    "key": "S007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "vol20": 2.63
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R002",
+    "key": "R002@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -4.02
+    }
+   },
+   {
+    "signal": "R016",
+    "key": "R016@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -4.02,
+     "vol20": 2.39
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "prev": -4.02
+    }
+   },
+   {
+    "signal": "S005",
+    "key": "S005@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -4.86
+    }
+   },
+   {
+    "signal": "S006",
+    "key": "S006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S007",
+    "key": "S007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "vol20": 2.39
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R002",
+    "key": "R002@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.72
+    }
+   },
+   {
+    "signal": "R016",
+    "key": "R016@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -6.21
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.72,
+     "vol20": 2.12
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "prev": -3.72
+    }
+   },
+   {
+    "signal": "S005",
+    "key": "S005@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": -6.72,
+     "mom5": -1.61
+    }
+   },
+   {
+    "signal": "S006",
+    "key": "S006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "ndx_on": -2.9
+    }
+   },
+   {
+    "signal": "S007",
+    "key": "S007@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "sox_on": -6.72
+    }
+   },
+   {
+    "signal": "S008",
+    "key": "S008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": -2.9,
+     "anc_mom3": -6.21
+    }
+   },
+   {
+    "signal": "S010",
+    "key": "S010@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "anc_mom3": -6.21
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -4.37,
+     "vol20": 2.12
+    }
+   }
+  ]
+ }
+}
