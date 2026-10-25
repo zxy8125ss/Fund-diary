@@ -1,10 +1,9 @@
 {
- "lastRun": "2026-10-26T01:37:19+08:00",
- "runId": "40217338499",
+ "lastRun": "2026-10-26T01:50:30+08:00",
+ "runId": "40218384495",
  "trigger": "schedule",
  "report": [
-  "AI 草稿失败：Gemini 不可用",
-  "2026-10-26 evening 批次：快照 169 条，草稿已生成"
+  "2026-10-26 evening 批次已存在"
  ],
  "split": {
   "research": [
