@@ -100,6 +100,11 @@
    "result": true,
    "user": false,
    "review": true
+  },
+  "2026-10-26": {
+   "batches": [
+    "evening"
+   ]
   }
  }
 }
