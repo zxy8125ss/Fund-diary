@@ -1,0 +1,13 @@
+{
+ "key": "S016@v1",
+ "id": "S016",
+ "version": 1,
+ "name": "周一高弹性科技股与创业板共振杀跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "wd == 1 && cyb_prev < -1 && vol20 > 0.025",
+ "vote": -1,
+ "createdAt": "2026-10-27",
+ "proposedFrom": "2026-10-26"
+}
