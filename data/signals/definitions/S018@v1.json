@@ -1,0 +1,13 @@
+{
+ "key": "S018@v1",
+ "id": "S018",
+ "version": 1,
+ "name": "外盘科技大涨但A股连续5日超跌背离",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "wd == 1 && mom5 < -8 && sox_on > 2",
+ "vote": -1,
+ "createdAt": "2026-10-28",
+ "proposedFrom": "2026-10-27"
+}

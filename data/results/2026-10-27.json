@@ -1,0 +1,221 @@
+{
+ "date": "2026-10-27",
+ "actual": {
+  "002910": -0.87,
+  "024481": -3.28,
+  "015060": -3.56,
+  "001672": -3.19
+ },
+ "scoredAt": "2026-10-28T03:24:36+08:00",
+ "comparisonCutoff": "2026-10-27T09:15:00+08:00",
+ "scores": {
+  "ai": {
+   "002910": {
+    "pred": 1.5,
+    "actual": -0.87,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 2.37,
+    "lo": 0.3,
+    "hi": 2.2,
+    "inRange": false
+   },
+   "024481": {
+    "pred": 1.8,
+    "actual": -3.28,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 5.08,
+    "lo": 0.4,
+    "hi": 2.8,
+    "inRange": false
+   },
+   "015060": {
+    "pred": 1.6,
+    "actual": -3.56,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 5.16,
+    "lo": 0.3,
+    "hi": 2.6,
+    "inRange": false
+   },
+   "001672": {
+    "pred": 1.1,
+    "actual": -3.19,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.29,
+    "lo": 0.2,
+    "hi": 1.8,
+    "inRange": false
+   }
+  },
+  "model": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.87,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.87
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -3.28,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.28
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -3.56,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.56
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -3.19,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.19
+   }
+  },
+  "bench_external_raw": {},
+  "bench_external_beta": {},
+  "bench_prev": {
+   "002910": {
+    "pred": -0.85,
+    "actual": -0.87,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.02
+   },
+   "024481": {
+    "pred": -6.43,
+    "actual": -3.28,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.15
+   },
+   "015060": {
+    "pred": -6.26,
+    "actual": -3.56,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 2.7
+   },
+   "001672": {
+    "pred": -3.92,
+    "actual": -3.19,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.73
+   }
+  },
+  "bench_zero": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.87,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.87
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -3.28,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.28
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -3.56,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.56
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -3.19,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.19
+   }
+  }
+ },
+ "meta": {
+  "user": {
+   "status": "absent"
+  },
+  "ai": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening",
+   "aiVersion": "draft-4@2026-10-27",
+   "modelName": "gemini-3.6-flash"
+  },
+  "model": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening",
+   "modelVersion": "v1.0"
+  },
+  "bench_external_raw": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening"
+  },
+  "bench_external_beta": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening"
+  },
+  "bench_prev": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening"
+  },
+  "bench_zero": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-27T03:53:13+08:00",
+   "snapshotId": "2026-10-27/evening"
+  }
+ },
+ "versions": [
+  {
+   "v": 1,
+   "at": "2026-10-28T03:24:36+08:00",
+   "actual": {
+    "002910": -0.87,
+    "024481": -3.28,
+    "015060": -3.56,
+    "001672": -3.19
+   },
+   "source": "天天基金",
+   "reason": "首次结算"
+  }
+ ]
+}

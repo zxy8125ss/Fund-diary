@@ -1,0 +1,13 @@
+{
+ "key": "S017@v1",
+ "id": "S017",
+ "version": 1,
+ "name": "高波动率下创业板弱势共振做空",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -1.5 && vol20 > 0.03 && prev < -2",
+ "vote": -1,
+ "createdAt": "2026-10-28",
+ "proposedFrom": "2026-10-27"
+}
