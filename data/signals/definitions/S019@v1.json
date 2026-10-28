@@ -1,0 +1,13 @@
+{
+ "key": "S019@v1",
+ "id": "S019",
+ "version": 1,
+ "name": "超跌与外盘大涨共振爆破",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "mom5 < -10 && sox_on > 2.5",
+ "vote": 1,
+ "createdAt": "2026-10-29",
+ "proposedFrom": "2026-10-28"
+}

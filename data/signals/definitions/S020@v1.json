@@ -1,0 +1,13 @@
+{
+ "key": "S020@v1",
+ "id": "S020",
+ "version": 1,
+ "name": "高波动率暴跌后情绪修复",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "prev < -3.5 && vol20 > 0.03",
+ "vote": 1,
+ "createdAt": "2026-10-29",
+ "proposedFrom": "2026-10-28"
+}

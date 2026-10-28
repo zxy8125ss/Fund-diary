@@ -1,0 +1,137 @@
+{
+ "date": "2026-10-29",
+ "batch": "evening",
+ "snapshotId": "2026-10-29/evening",
+ "runId": "40754796077",
+ "trigger": "schedule",
+ "generatedAt": "2026-10-29T03:29:53+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -4.22
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.8
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -10.96
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   }
+  ]
+ }
+}
