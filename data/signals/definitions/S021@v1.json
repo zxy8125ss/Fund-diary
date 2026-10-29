@@ -1,0 +1,13 @@
+{
+ "key": "S021@v1",
+ "id": "S021",
+ "version": 1,
+ "name": "高波动科技板块动量破位杀跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "anc_mom3 < -3 && vol20 > 0.025",
+ "vote": -1,
+ "createdAt": "2026-10-30",
+ "proposedFrom": "2026-10-29"
+}
