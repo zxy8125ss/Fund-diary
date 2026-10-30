@@ -1,0 +1,170 @@
+{
+ "date": "2026-10-30",
+ "actual": {
+  "002910": -1.05,
+  "024481": -7.08,
+  "015060": -4.84,
+  "001672": -4.56
+ },
+ "scoredAt": "2026-10-31T03:16:35+08:00",
+ "comparisonCutoff": "2026-10-30T09:15:00+08:00",
+ "scores": {
+  "model": {
+   "002910": {
+    "pred": 0,
+    "actual": -1.05,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 1.05
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -7.08,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 7.08
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -4.84,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.84
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.56,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.56
+   }
+  },
+  "bench_external_raw": {},
+  "bench_external_beta": {},
+  "bench_prev": {
+   "002910": {
+    "pred": -0.23,
+    "actual": -1.05,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.82
+   },
+   "024481": {
+    "pred": -8.28,
+    "actual": -7.08,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 1.2
+   },
+   "015060": {
+    "pred": -5.81,
+    "actual": -4.84,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.97
+   },
+   "001672": {
+    "pred": -5.38,
+    "actual": -4.56,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.82
+   }
+  },
+  "bench_zero": {
+   "002910": {
+    "pred": 0,
+    "actual": -1.05,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 1.05
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -7.08,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 7.08
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -4.84,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.84
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.56,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.56
+   }
+  }
+ },
+ "meta": {
+  "user": {
+   "status": "absent"
+  },
+  "ai": {
+   "status": "absent"
+  },
+  "model": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-30T03:35:06+08:00",
+   "snapshotId": "2026-10-30/evening",
+   "modelVersion": "v1.0"
+  },
+  "bench_external_raw": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-30T03:35:06+08:00",
+   "snapshotId": "2026-10-30/evening"
+  },
+  "bench_external_beta": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-30T03:35:06+08:00",
+   "snapshotId": "2026-10-30/evening"
+  },
+  "bench_prev": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-30T03:35:06+08:00",
+   "snapshotId": "2026-10-30/evening"
+  },
+  "bench_zero": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-10-30T03:35:06+08:00",
+   "snapshotId": "2026-10-30/evening"
+  }
+ },
+ "versions": [
+  {
+   "v": 1,
+   "at": "2026-10-31T03:16:35+08:00",
+   "actual": {
+    "002910": -1.05,
+    "024481": -7.08,
+    "015060": -4.84,
+    "001672": -4.56
+   },
+   "source": "天天基金",
+   "reason": "首次结算"
+  }
+ ]
+}
