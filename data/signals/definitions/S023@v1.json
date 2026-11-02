@@ -1,0 +1,13 @@
+{
+ "key": "S023@v1",
+ "id": "S023",
+ "version": 1,
+ "name": "超跌跑输基准强补涨",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "dev < -2 && mom5 < -6",
+ "vote": 1,
+ "createdAt": "2026-11-03",
+ "proposedFrom": "2026-11-02"
+}

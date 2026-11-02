@@ -1,0 +1,13 @@
+{
+ "key": "S024@v1",
+ "id": "S024",
+ "version": 1,
+ "name": "外盘暴跌与本土超跌背离反弹",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -3 && mom5 < -6 && cyb_prev < -1.5",
+ "vote": 1,
+ "createdAt": "2026-11-03",
+ "proposedFrom": "2026-11-02"
+}
