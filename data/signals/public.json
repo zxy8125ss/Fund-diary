@@ -2588,7 +2588,50 @@
   "proposedFrom": "2026-11-03",
   "status": "实验中",
   "pending": null,
-  "stats": null,
+  "stats": {
+   "research": {
+    "obs": 128,
+    "days": 26,
+    "hitObs": 74,
+    "up": 54,
+    "down": 74,
+    "rate": 57.69,
+    "lo": 38.95,
+    "hi": 74.46,
+    "base": 44.1,
+    "p": 0.081,
+    "signal_mean_forecast_mae": 2.68,
+    "implied": -0.41
+   },
+   "holdout": {
+    "obs": 43,
+    "days": 9,
+    "hitObs": 25,
+    "up": 18,
+    "down": 25,
+    "rate": 57.78,
+    "lo": 28.34,
+    "hi": 82.57,
+    "base": 53.5,
+    "p": 0.398,
+    "signal_mean_forecast_mae": 2.57,
+    "implied": -1.51
+   },
+   "forward": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": null,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   }
+  },
   "bhPass": false
  },
  {
@@ -2605,7 +2648,50 @@
   "proposedFrom": "2026-11-03",
   "status": "实验中",
   "pending": null,
-  "stats": null,
+  "stats": {
+   "research": {
+    "obs": 10,
+    "days": 2,
+    "hitObs": 4,
+    "up": 6,
+    "down": 4,
+    "rate": 40,
+    "lo": 6.31,
+    "hi": 86.84,
+    "base": 44.1,
+    "p": 0.547,
+    "signal_mean_forecast_mae": 2.41,
+    "implied": 1.21
+   },
+   "holdout": {
+    "obs": 4,
+    "days": 1,
+    "hitObs": 4,
+    "up": 0,
+    "down": 4,
+    "rate": 100,
+    "lo": 20.65,
+    "hi": 100,
+    "base": 53.5,
+    "p": 0.176,
+    "signal_mean_forecast_mae": 1.95,
+    "implied": -4.25
+   },
+   "forward": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": null,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   }
+  },
   "bhPass": false
  }
 ]
