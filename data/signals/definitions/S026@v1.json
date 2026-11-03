@@ -1,0 +1,13 @@
+{
+ "key": "S026@v1",
+ "id": "S026",
+ "version": 1,
+ "name": "费半大跌超3%破坏创业板前日反弹惯性",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -3 && cyb_prev > 1.5",
+ "vote": -1,
+ "createdAt": "2026-11-04",
+ "proposedFrom": "2026-11-03"
+}

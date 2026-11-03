@@ -1,0 +1,13 @@
+{
+ "key": "S025@v1",
+ "id": "S025",
+ "version": 1,
+ "name": "美股芯片暴跌且高波动科技链恐慌杀跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -3 && vol20 > 0.025",
+ "vote": -1,
+ "createdAt": "2026-11-04",
+ "proposedFrom": "2026-11-03"
+}

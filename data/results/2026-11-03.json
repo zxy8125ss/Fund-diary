@@ -1,0 +1,287 @@
+{
+ "date": "2026-11-03",
+ "actual": {
+  "002910": -0.36,
+  "024481": -8.05,
+  "015060": -4.26,
+  "001672": -4.33
+ },
+ "scoredAt": "2026-11-04T04:29:09+08:00",
+ "comparisonCutoff": "2026-11-03T09:15:00+08:00",
+ "scores": {
+  "ai": {
+   "002910": {
+    "pred": -0.2,
+    "actual": -0.36,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.16,
+    "lo": -1.2,
+    "hi": 0.8,
+    "inRange": true
+   },
+   "024481": {
+    "pred": -0.5,
+    "actual": -8.05,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 7.55,
+    "lo": -1.8,
+    "hi": 0.8,
+    "inRange": false
+   },
+   "015060": {
+    "pred": -0.3,
+    "actual": -4.26,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.96,
+    "lo": -1.5,
+    "hi": 0.9,
+    "inRange": false
+   },
+   "001672": {
+    "pred": 0.2,
+    "actual": -4.33,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.53,
+    "lo": -0.8,
+    "hi": 1.2,
+    "inRange": false
+   }
+  },
+  "model": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.36,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.36
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -8.05,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 8.05
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -4.26,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.26
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.33,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.33
+   }
+  },
+  "bench_external_raw": {
+   "002910": {
+    "pred": -3.37,
+    "actual": -0.36,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.01
+   },
+   "024481": {
+    "pred": -3.37,
+    "actual": -8.05,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 4.68
+   },
+   "015060": {
+    "pred": -3.37,
+    "actual": -4.26,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.89
+   },
+   "001672": {
+    "pred": -1.39,
+    "actual": -4.33,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 2.94
+   }
+  },
+  "bench_external_beta": {
+   "002910": {
+    "pred": -0.81,
+    "actual": -0.36,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.45
+   },
+   "024481": {
+    "pred": -0.81,
+    "actual": -8.05,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 7.24
+   },
+   "015060": {
+    "pred": -0.81,
+    "actual": -4.26,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.45
+   },
+   "001672": {
+    "pred": -0.33,
+    "actual": -4.33,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 4
+   }
+  },
+  "bench_prev": {
+   "002910": {
+    "pred": 0.38,
+    "actual": -0.36,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.74
+   },
+   "024481": {
+    "pred": -0.56,
+    "actual": -8.05,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 7.49
+   },
+   "015060": {
+    "pred": 1.05,
+    "actual": -4.26,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 5.31
+   },
+   "001672": {
+    "pred": 2.36,
+    "actual": -4.33,
+    "dirPred": "涨",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 6.69
+   }
+  },
+  "bench_zero": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.36,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.36
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -8.05,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 8.05
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -4.26,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.26
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.33,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.33
+   }
+  }
+ },
+ "meta": {
+  "user": {
+   "status": "absent"
+  },
+  "ai": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning",
+   "aiVersion": "draft-4@2026-11-03",
+   "modelName": "gemini-3.6-flash"
+  },
+  "model": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning",
+   "modelVersion": "v1.0"
+  },
+  "bench_external_raw": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning"
+  },
+  "bench_external_beta": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning"
+  },
+  "bench_prev": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning"
+  },
+  "bench_zero": {
+   "status": "ok",
+   "batch": "morning",
+   "asOf": "2026-11-03T07:31:27+08:00",
+   "snapshotId": "2026-11-03/morning"
+  }
+ },
+ "versions": [
+  {
+   "v": 1,
+   "at": "2026-11-04T04:29:09+08:00",
+   "actual": {
+    "002910": -0.36,
+    "024481": -8.05,
+    "015060": -4.26,
+    "001672": -4.33
+   },
+   "source": "天天基金",
+   "reason": "首次结算"
+  }
+ ]
+}
