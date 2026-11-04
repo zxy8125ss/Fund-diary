@@ -161,6 +161,14 @@
   "2026-11-04": {
    "batches": [
     "evening"
+   ],
+   "result": true,
+   "user": false,
+   "review": true
+  },
+  "2026-11-05": {
+   "batches": [
+    "evening"
    ]
   }
  }
