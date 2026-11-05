@@ -1,0 +1,13 @@
+{
+ "key": "S028@v1",
+ "id": "S028",
+ "version": 1,
+ "name": "创业板暴涨次日与纳指大涨共振续涨",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev > 6 && ndx_on > 1",
+ "vote": 1,
+ "createdAt": "2026-11-06",
+ "proposedFrom": "2026-11-05"
+}

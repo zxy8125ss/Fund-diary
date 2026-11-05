@@ -1,0 +1,13 @@
+{
+ "key": "S029@v1",
+ "id": "S029",
+ "version": 1,
+ "name": "费半大跌但前日大涨超过10%的科技基金次日抵抗",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -3 && prev > 9",
+ "vote": 1,
+ "createdAt": "2026-11-06",
+ "proposedFrom": "2026-11-05"
+}
