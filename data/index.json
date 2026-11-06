@@ -177,7 +177,9 @@
   "2026-11-06": {
    "batches": [
     "evening"
-   ]
+   ],
+   "result": true,
+   "user": false
   }
  }
 }
