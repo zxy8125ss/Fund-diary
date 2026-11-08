@@ -180,6 +180,11 @@
    ],
    "result": true,
    "user": false
+  },
+  "2026-11-09": {
+   "batches": [
+    "evening"
+   ]
   }
  }
 }

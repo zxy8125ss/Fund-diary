@@ -1,0 +1,704 @@
+{
+ "date": "2026-11-09",
+ "batch": "evening",
+ "snapshotId": "2026-11-09/evening",
+ "runId": "42511813005",
+ "trigger": "schedule",
+ "generatedAt": "2026-11-09T02:48:29+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35,
+     "sox_on": 4.21
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R013",
+    "key": "R013@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "wd": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 12.59
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 1.64
+    }
+   },
+   {
+    "signal": "S015",
+    "key": "S015@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 1.64
+    }
+   },
+   {
+    "signal": "S016",
+    "key": "S016@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "wd": 1,
+     "vol20": 1.64
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35,
+     "sox_on": 4.21
+    }
+   },
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -19.31
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -7.75
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R013",
+    "key": "R013@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "wd": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -4.1
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -7.75,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -7.75
+    }
+   },
+   {
+    "signal": "S010",
+    "key": "S010@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "anc_mom3": -4.1
+    }
+   },
+   {
+    "signal": "S013",
+    "key": "S013@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "sox_on": 4.21,
+     "mom5": -19.31
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S015",
+    "key": "S015@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S016",
+    "key": "S016@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "wd": 1,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S017",
+    "key": "S017@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -7.75,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S018",
+    "key": "S018@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": 4.21,
+     "wd": 1,
+     "mom5": -19.31
+    }
+   },
+   {
+    "signal": "S019",
+    "key": "S019@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": 4.21,
+     "mom5": -19.31
+    }
+   },
+   {
+    "signal": "S020",
+    "key": "S020@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -7.75,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S021",
+    "key": "S021@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -4.1,
+     "vol20": 3.29
+    }
+   },
+   {
+    "signal": "S027",
+    "key": "S027@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -7.75,
+     "mom5": -19.31,
+     "vol20": 3.29
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35,
+     "sox_on": 4.21
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -5.68
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R013",
+    "key": "R013@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "wd": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 3.28
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -5.68,
+     "vol20": 4.52
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -5.68
+    }
+   },
+   {
+    "signal": "S013",
+    "key": "S013@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "sox_on": 4.21,
+     "mom5": -5.55
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 4.52
+    }
+   },
+   {
+    "signal": "S015",
+    "key": "S015@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 4.52
+    }
+   },
+   {
+    "signal": "S016",
+    "key": "S016@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "wd": 1,
+     "vol20": 4.52
+    }
+   },
+   {
+    "signal": "S017",
+    "key": "S017@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -5.68,
+     "vol20": 4.52
+    }
+   },
+   {
+    "signal": "S020",
+    "key": "S020@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -5.68,
+     "vol20": 4.52
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35,
+     "sox_on": 4.21
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R013",
+    "key": "R013@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "wd": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 3.63
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -2.04,
+     "vol20": 3.63
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -2.04
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.63
+    }
+   },
+   {
+    "signal": "S015",
+    "key": "S015@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.63
+    }
+   },
+   {
+    "signal": "S016",
+    "key": "S016@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "wd": 1,
+     "vol20": 3.63
+    }
+   },
+   {
+    "signal": "S017",
+    "key": "S017@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -2.04,
+     "vol20": 3.63
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35,
+     "sox_on": 4.21
+    }
+   },
+   {
+    "signal": "R005",
+    "key": "R005@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.21
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R013",
+    "key": "R013@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "wd": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 1.35
+    }
+   },
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 3.31
+    }
+   },
+   {
+    "signal": "S002",
+    "key": "S002@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "prev": -3.21,
+     "vol20": 3.41
+    }
+   },
+   {
+    "signal": "S003",
+    "key": "S003@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -3.21
+    }
+   },
+   {
+    "signal": "S014",
+    "key": "S014@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.41
+    }
+   },
+   {
+    "signal": "S015",
+    "key": "S015@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "vol20": 3.41
+    }
+   },
+   {
+    "signal": "S016",
+    "key": "S016@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "wd": 1,
+     "vol20": 3.41
+    }
+   },
+   {
+    "signal": "S017",
+    "key": "S017@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": -3.96,
+     "prev": -3.21,
+     "vol20": 3.41
+    }
+   }
+  ]
+ }
+}
