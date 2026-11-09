@@ -2403,6 +2403,51 @@
  "S030@v1": {
   "status": "实验中",
   "since": "2026-11-10",
-  "pending": null
+  "pending": null,
+  "stats": {
+   "research": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": 44.1,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   },
+   "holdout": {
+    "obs": 4,
+    "days": 1,
+    "hitObs": 0,
+    "up": 4,
+    "down": 0,
+    "rate": 0,
+    "lo": 0,
+    "hi": 79.35,
+    "base": 52.29,
+    "p": 0.852,
+    "signal_mean_forecast_mae": 0.15,
+    "implied": 0.58
+   },
+   "forward": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": null,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   }
+  },
+  "bhPass": false
  }
 }
