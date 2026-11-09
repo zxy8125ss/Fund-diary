@@ -1,0 +1,13 @@
+{
+ "key": "S030@v1",
+ "id": "S030",
+ "version": 1,
+ "name": "外盘暴涨逢周一高开回吐压制",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "wd == 1 && sox_on > 3 && cyb_prev < -3",
+ "vote": -1,
+ "createdAt": "2026-11-10",
+ "proposedFrom": "2026-11-09"
+}

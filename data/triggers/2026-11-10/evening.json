@@ -1,0 +1,252 @@
+{
+ "date": "2026-11-10",
+ "batch": "evening",
+ "snapshotId": "2026-11-10/evening",
+ "runId": "42720226076",
+ "trigger": "schedule",
+ "generatedAt": "2026-11-10T07:24:56+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4,
+     "sox_on": 6.85
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4,
+     "sox_on": 6.85
+    }
+   },
+   {
+    "signal": "R003",
+    "key": "R003@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "mom5": -11.46
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4
+    }
+   },
+   {
+    "signal": "S019",
+    "key": "S019@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "sox_on": 6.85,
+     "mom5": -11.46
+    }
+   }
+  ],
+  "024481": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4,
+     "sox_on": 6.85
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4
+    }
+   }
+  ],
+  "015060": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4,
+     "sox_on": 6.85
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -2.16
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R001",
+    "key": "R001@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4,
+     "sox_on": 6.85
+    }
+   },
+   {
+    "signal": "R006",
+    "key": "R006@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R008",
+    "key": "R008@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "guxia": 1
+    }
+   },
+   {
+    "signal": "R015",
+    "key": "R015@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "ndx_on": 3.4
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.36
+    }
+   },
+   {
+    "signal": "S021",
+    "key": "S021@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.36,
+     "vol20": 3.4
+    }
+   }
+  ]
+ }
+}
