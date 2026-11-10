@@ -1,0 +1,13 @@
+{
+ "key": "S031@v1",
+ "id": "S031",
+ "version": 1,
+ "name": "创业板大幅高开与外盘科技大涨共振",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev > 2 && ndx_on > 1",
+ "vote": 1,
+ "createdAt": "2026-11-11",
+ "proposedFrom": "2026-11-10"
+}
