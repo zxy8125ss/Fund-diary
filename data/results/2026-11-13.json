@@ -1,0 +1,236 @@
+{
+ "date": "2026-11-13",
+ "actual": {
+  "002910": -0.99,
+  "024481": -6.93,
+  "015060": -3.38,
+  "001672": -4.26
+ },
+ "scoredAt": "2026-11-14T04:53:04+08:00",
+ "comparisonCutoff": "2026-11-13T09:15:00+08:00",
+ "scores": {
+  "model": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.99,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.99
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -6.93,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 6.93
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -3.38,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.38
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.26,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.26
+   }
+  },
+  "bench_external_raw": {
+   "002910": {
+    "pred": -0.54,
+    "actual": -0.99,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.45
+   },
+   "024481": {
+    "pred": -0.54,
+    "actual": -6.93,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 6.39
+   },
+   "015060": {
+    "pred": -0.54,
+    "actual": -3.38,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 2.84
+   },
+   "001672": {
+    "pred": -0.3,
+    "actual": -4.26,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.96
+   }
+  },
+  "bench_external_beta": {
+   "002910": {
+    "pred": -0.13,
+    "actual": -0.99,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 0.86
+   },
+   "024481": {
+    "pred": -0.13,
+    "actual": -6.93,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 6.8
+   },
+   "015060": {
+    "pred": -0.13,
+    "actual": -3.38,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 3.25
+   },
+   "001672": {
+    "pred": -0.07,
+    "actual": -4.26,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.19
+   }
+  },
+  "bench_prev": {
+   "002910": {
+    "pred": -2.84,
+    "actual": -0.99,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 1.85
+   },
+   "024481": {
+    "pred": -1.19,
+    "actual": -6.93,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 5.74
+   },
+   "015060": {
+    "pred": -1.27,
+    "actual": -3.38,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 2.11
+   },
+   "001672": {
+    "pred": -2,
+    "actual": -4.26,
+    "dirPred": "跌",
+    "dirActual": "跌",
+    "hit": true,
+    "absErr": 2.26
+   }
+  },
+  "bench_zero": {
+   "002910": {
+    "pred": 0,
+    "actual": -0.99,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 0.99
+   },
+   "024481": {
+    "pred": 0,
+    "actual": -6.93,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 6.93
+   },
+   "015060": {
+    "pred": 0,
+    "actual": -3.38,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 3.38
+   },
+   "001672": {
+    "pred": 0,
+    "actual": -4.26,
+    "dirPred": "平",
+    "dirActual": "跌",
+    "hit": false,
+    "absErr": 4.26
+   }
+  }
+ },
+ "meta": {
+  "user": {
+   "status": "absent"
+  },
+  "ai": {
+   "status": "absent"
+  },
+  "model": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-11-13T05:26:51+08:00",
+   "snapshotId": "2026-11-13/evening",
+   "modelVersion": "v1.0"
+  },
+  "bench_external_raw": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-11-13T05:26:51+08:00",
+   "snapshotId": "2026-11-13/evening"
+  },
+  "bench_external_beta": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-11-13T05:26:51+08:00",
+   "snapshotId": "2026-11-13/evening"
+  },
+  "bench_prev": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-11-13T05:26:51+08:00",
+   "snapshotId": "2026-11-13/evening"
+  },
+  "bench_zero": {
+   "status": "ok",
+   "batch": "evening",
+   "asOf": "2026-11-13T05:26:51+08:00",
+   "snapshotId": "2026-11-13/evening"
+  }
+ },
+ "versions": [
+  {
+   "v": 1,
+   "at": "2026-11-14T04:53:04+08:00",
+   "actual": {
+    "002910": -0.99,
+    "024481": -6.93,
+    "015060": -3.38,
+    "001672": -4.26
+   },
+   "source": "天天基金",
+   "reason": "首次结算"
+  }
+ ]
+}
