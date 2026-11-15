@@ -220,6 +220,11 @@
    ],
    "result": true,
    "user": false
+  },
+  "2026-11-16": {
+   "batches": [
+    "evening"
+   ]
   }
  }
 }
