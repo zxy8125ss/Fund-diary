@@ -1,0 +1,13 @@
+{
+ "key": "S034@v1",
+ "id": "S034",
+ "version": 1,
+ "name": "高波动率暴跌共振杀跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "vol20 > 0.03 && cyb_prev < -2 && prev < -3",
+ "vote": -1,
+ "createdAt": "2026-11-17",
+ "proposedFrom": "2026-11-16"
+}
