@@ -1,11 +1,9 @@
 {
- "lastRun": "2026-11-18T07:30:37+08:00",
- "runId": "44199940694",
+ "lastRun": "2026-11-18T11:50:15+08:00",
+ "runId": "44233143210",
  "trigger": "schedule",
  "report": [
-  "快讯源失败：新浪 fetch failed",
-  "2026-11-18 morning 批次：快照 169 条，草稿已生成",
-  "快讯源失败：新浪 fetch failed"
+  "不在批次时间窗内，只做结算"
  ],
  "split": {
   "research": [
