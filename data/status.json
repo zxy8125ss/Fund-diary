@@ -1,10 +1,9 @@
 {
- "lastRun": "2026-11-19T06:18:32+08:00",
- "runId": "44410253025",
+ "lastRun": "2026-11-19T06:57:13+08:00",
+ "runId": "44416311131",
  "trigger": "schedule",
  "report": [
-  "2026-11-19 evening 批次已存在",
-  "最新消息面摘要失败：Gemini 不可用"
+  "2026-11-19 evening 批次已存在"
  ],
  "split": {
   "research": [
