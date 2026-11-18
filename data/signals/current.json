@@ -2653,6 +2653,51 @@
  "S035@v1": {
   "status": "实验中",
   "since": "2026-11-19",
-  "pending": null
+  "pending": null,
+  "stats": {
+   "research": {
+    "obs": 32,
+    "days": 17,
+    "hitObs": 11,
+    "up": 11,
+    "down": 21,
+    "rate": 44.12,
+    "lo": 23.86,
+    "hi": 66.55,
+    "base": 55.9,
+    "p": 0.836,
+    "signal_mean_forecast_mae": 3.85,
+    "implied": -0.82
+   },
+   "holdout": {
+    "obs": 22,
+    "days": 9,
+    "hitObs": 4,
+    "up": 4,
+    "down": 18,
+    "rate": 31.48,
+    "lo": 11.02,
+    "hi": 63.02,
+    "base": 46.31,
+    "p": 0.814,
+    "signal_mean_forecast_mae": 2.58,
+    "implied": -3.15
+   },
+   "forward": {
+    "obs": 0,
+    "days": 0,
+    "hitObs": 0,
+    "up": 0,
+    "down": 0,
+    "rate": null,
+    "lo": null,
+    "hi": null,
+    "base": null,
+    "p": null,
+    "signal_mean_forecast_mae": null,
+    "implied": null
+   }
+  },
+  "bhPass": false
  }
 }
