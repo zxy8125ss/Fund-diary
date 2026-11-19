@@ -1,0 +1,13 @@
+{
+ "key": "S036@v1",
+ "id": "S036",
+ "version": 1,
+ "name": "动量破位叠加高波动强看跌",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "anc_mom3 < -3 && vol20 > 0.025 && dev < -1",
+ "vote": -1,
+ "createdAt": "2026-11-20",
+ "proposedFrom": "2026-11-19"
+}

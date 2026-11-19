@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-19T15:57:31+08:00",
+ "updatedAt": "2026-11-20T06:07:10+08:00",
  "sampleUnit": "交易日 × 基金",
  "predictors": {
   "user": {
@@ -11,49 +11,49 @@
    "lockedDays": 0
   },
   "bench_external_raw": {
-   "obs": 104,
-   "days": 21,
+   "obs": 109,
+   "days": 22,
    "hit": 56,
-   "rate": 53.85,
-   "mae": 3.615
+   "rate": 51.38,
+   "mae": 3.506
   },
   "bench_external_beta": {
-   "obs": 104,
-   "days": 21,
+   "obs": 109,
+   "days": 22,
    "hit": 50,
-   "rate": 48.08,
-   "mae": 2.359
+   "rate": 45.87,
+   "mae": 2.3
   },
   "bench_prev": {
-   "obs": 149,
-   "days": 30,
-   "hit": 78,
-   "rate": 52.35,
-   "mae": 3.601
+   "obs": 154,
+   "days": 31,
+   "hit": 81,
+   "rate": 52.6,
+   "mae": 3.568
   },
   "bench_zero": {
-   "obs": 149,
-   "days": 30,
+   "obs": 154,
+   "days": 31,
    "hit": 3,
-   "rate": 2.01,
-   "mae": 2.756
+   "rate": 1.95,
+   "mae": 2.699
   },
   "model": {
-   "obs": 149,
-   "days": 30,
+   "obs": 154,
+   "days": 31,
    "hit": 3,
-   "rate": 2.01,
-   "mae": 2.756
+   "rate": 1.95,
+   "mae": 2.699
   },
   "ai": {
-   "obs": 124,
-   "days": 25,
-   "hit": 64,
-   "rate": 51.61,
-   "mae": 3.083,
-   "rangeObs": 84,
-   "rangeHit": 19,
-   "rangeRate": 22.62
+   "obs": 129,
+   "days": 26,
+   "hit": 66,
+   "rate": 51.16,
+   "mae": 3.021,
+   "rangeObs": 89,
+   "rangeHit": 21,
+   "rangeRate": 23.6
   }
  },
  "compare": {
@@ -63,7 +63,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 3.615,
+     "bench": 3.506,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -72,7 +72,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 53.85,
+     "bench": 51.38,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -88,7 +88,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.359,
+     "bench": 2.3,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -97,7 +97,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 48.08,
+     "bench": 45.87,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -113,7 +113,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 3.601,
+     "bench": 3.568,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -122,7 +122,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 52.35,
+     "bench": 52.6,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -138,7 +138,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.756,
+     "bench": 2.699,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -147,7 +147,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 2.01,
+     "bench": 1.95,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -163,7 +163,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 2.756,
+     "bench": 2.699,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -172,7 +172,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 2.01,
+     "bench": 1.95,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -188,7 +188,7 @@
     "days": 0,
     "mae": {
      "mine": null,
-     "bench": 3.083,
+     "bench": 3.021,
      "improvePct": 100,
      "meanGain": null,
      "ci95": null,
@@ -197,7 +197,7 @@
     },
     "direction": {
      "mine": null,
-     "bench": 51.61,
+     "bench": 51.16,
      "liftPP": null,
      "wins": 0,
      "losses": 0,
@@ -211,104 +211,104 @@
   },
   "model": {
    "bench_external_raw": {
-    "obs": 104,
-    "days": 21,
+    "obs": 109,
+    "days": 22,
     "mae": {
-     "mine": 2.756,
-     "bench": 3.615,
-     "improvePct": 23.76,
-     "meanGain": 1.259,
+     "mine": 2.699,
+     "bench": 3.506,
+     "improvePct": 23.02,
+     "meanGain": 1.213,
      "ci95": [
-      0.431,
-      2.139
+      0.406,
+      2.03
      ],
      "signFlipP": 0.005,
-     "alwaysValidP": 0.424
+     "alwaysValidP": 0.408
     },
     "direction": {
-     "mine": 2.01,
-     "bench": 53.85,
-     "liftPP": -51.84,
+     "mine": 1.95,
+     "bench": 51.38,
+     "liftPP": -49.43,
      "wins": 2,
      "losses": 56,
      "both": 0,
-     "neither": 46,
+     "neither": 51,
      "ci95": [
-      -70,
-      -33.571
+      -66.364,
+      -30.909
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_external_beta": {
-    "obs": 104,
-    "days": 21,
+    "obs": 109,
+    "days": 22,
     "mae": {
-     "mine": 2.756,
-     "bench": 2.359,
-     "improvePct": -16.83,
-     "meanGain": 0.015,
+     "mine": 2.699,
+     "bench": 2.3,
+     "improvePct": -17.35,
+     "meanGain": 0.017,
      "ci95": [
-      -0.233,
-      0.271
+      -0.223,
+      0.267
      ],
-     "signFlipP": 0.46,
+     "signFlipP": 0.44,
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 2.01,
-     "bench": 48.08,
-     "liftPP": -46.07,
+     "mine": 1.95,
+     "bench": 45.87,
+     "liftPP": -43.92,
      "wins": 1,
      "losses": 49,
      "both": 1,
-     "neither": 53,
+     "neither": 58,
      "ci95": [
-      -64.762,
-      -27.857
+      -61.818,
+      -25.455
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_prev": {
-    "obs": 149,
-    "days": 30,
+    "obs": 154,
+    "days": 31,
     "mae": {
-     "mine": 2.756,
-     "bench": 3.601,
-     "improvePct": 23.47,
-     "meanGain": 0.846,
+     "mine": 2.699,
+     "bench": 3.568,
+     "improvePct": 24.36,
+     "meanGain": 0.867,
      "ci95": [
-      0.165,
-      1.536
+      0.179,
+      1.543
      ],
-     "signFlipP": 0.016,
-     "alwaysValidP": 0.508
+     "signFlipP": 0.011,
+     "alwaysValidP": 0.452
     },
     "direction": {
-     "mine": 2.01,
-     "bench": 52.35,
-     "liftPP": -50.34,
+     "mine": 1.95,
+     "bench": 52.6,
+     "liftPP": -50.65,
      "wins": 3,
-     "losses": 78,
+     "losses": 81,
      "both": 0,
-     "neither": 68,
+     "neither": 70,
      "ci95": [
-      -63.333,
-      -36.167
+      -63.71,
+      -37.258
      ],
      "signFlipP": 1,
      "alwaysValidP": 1
     }
    },
    "bench_zero": {
-    "obs": 149,
-    "days": 30,
+    "obs": 154,
+    "days": 31,
     "mae": {
-     "mine": 2.756,
-     "bench": 2.756,
+     "mine": 2.699,
+     "bench": 2.699,
      "improvePct": 0,
      "meanGain": 0,
      "ci95": [
@@ -319,13 +319,13 @@
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 2.01,
-     "bench": 2.01,
+     "mine": 1.95,
+     "bench": 1.95,
      "liftPP": 0,
      "wins": 0,
      "losses": 0,
      "both": 3,
-     "neither": 146,
+     "neither": 151,
      "ci95": [
       0,
       0
@@ -337,134 +337,134 @@
   },
   "ai": {
    "bench_external_raw": {
-    "obs": 89,
-    "days": 18,
+    "obs": 94,
+    "days": 19,
     "mae": {
-     "mine": 3.083,
-     "bench": 3.615,
-     "improvePct": 14.72,
-     "meanGain": 0.903,
+     "mine": 3.021,
+     "bench": 3.506,
+     "improvePct": 13.83,
+     "meanGain": 0.848,
      "ci95": [
-      0.305,
-      1.571
+      0.233,
+      1.513
      ],
-     "signFlipP": 0.009,
-     "alwaysValidP": 0.53
+     "signFlipP": 0.008,
+     "alwaysValidP": 0.534
     },
     "direction": {
-     "mine": 51.61,
-     "bench": 53.85,
-     "liftPP": -2.24,
-     "wins": 7,
+     "mine": 51.16,
+     "bench": 51.38,
+     "liftPP": -0.22,
+     "wins": 9,
      "losses": 5,
      "both": 41,
-     "neither": 36,
+     "neither": 39,
      "ci95": [
-      -6.667,
-      13.333
+      -5.263,
+      16.316
      ],
-     "signFlipP": 0.428,
+     "signFlipP": 0.252,
      "alwaysValidP": 1
     }
    },
    "bench_external_beta": {
-    "obs": 89,
-    "days": 18,
+    "obs": 94,
+    "days": 19,
     "mae": {
-     "mine": 3.083,
-     "bench": 2.359,
-     "improvePct": -30.69,
+     "mine": 3.021,
+     "bench": 2.3,
+     "improvePct": -31.35,
      "meanGain": -0.319,
      "ci95": [
-      -0.731,
-      0.107
+      -0.688,
+      0.088
      ],
-     "signFlipP": 0.922,
+     "signFlipP": 0.929,
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 51.61,
-     "bench": 48.08,
-     "liftPP": 3.53,
-     "wins": 10,
+     "mine": 51.16,
+     "bench": 45.87,
+     "liftPP": 5.29,
+     "wins": 12,
      "losses": 5,
      "both": 38,
-     "neither": 36,
+     "neither": 39,
      "ci95": [
-      -5.556,
-      18.889
+      -4.211,
+      21.053
      ],
-     "signFlipP": 0.25,
-     "alwaysValidP": 1
+     "signFlipP": 0.148,
+     "alwaysValidP": 0.962
     }
    },
    "bench_prev": {
-    "obs": 124,
-    "days": 25,
+    "obs": 129,
+    "days": 26,
     "mae": {
-     "mine": 3.083,
-     "bench": 3.601,
-     "improvePct": 14.38,
-     "meanGain": 0.718,
+     "mine": 3.021,
+     "bench": 3.568,
+     "improvePct": 15.33,
+     "meanGain": 0.734,
      "ci95": [
-      0.075,
-      1.356
+      0.158,
+      1.345
      ],
-     "signFlipP": 0.022,
-     "alwaysValidP": 0.62
+     "signFlipP": 0.018,
+     "alwaysValidP": 0.56
     },
     "direction": {
-     "mine": 51.61,
-     "bench": 52.35,
-     "liftPP": -0.74,
+     "mine": 51.16,
+     "bench": 52.6,
+     "liftPP": -1.44,
      "wins": 24,
-     "losses": 19,
-     "both": 40,
-     "neither": 41,
+     "losses": 20,
+     "both": 42,
+     "neither": 43,
      "ci95": [
-      -12,
-      20.8
+      -11.731,
+      20
      ],
-     "signFlipP": 0.347,
+     "signFlipP": 0.387,
      "alwaysValidP": 1
     }
    },
    "bench_zero": {
-    "obs": 124,
-    "days": 25,
+    "obs": 129,
+    "days": 26,
     "mae": {
-     "mine": 3.083,
-     "bench": 2.756,
-     "improvePct": -11.87,
+     "mine": 3.021,
+     "bench": 2.699,
+     "improvePct": -11.93,
      "meanGain": -0.373,
      "ci95": [
-      -0.811,
-      0.065
+      -0.793,
+      0.063
      ],
-     "signFlipP": 0.934,
+     "signFlipP": 0.936,
      "alwaysValidP": 1
     },
     "direction": {
-     "mine": 51.61,
-     "bench": 2.01,
-     "liftPP": 49.6,
-     "wins": 64,
+     "mine": 51.16,
+     "bench": 1.95,
+     "liftPP": 49.21,
+     "wins": 66,
      "losses": 3,
      "both": 0,
-     "neither": 57,
+     "neither": 60,
      "ci95": [
-      34,
-      64
+      35,
+      63.077
      ],
      "signFlipP": 0,
-     "alwaysValidP": 0.004
+     "alwaysValidP": 0.002
     }
    }
   }
  },
  "conclusion": {
   "subject": "user",
-  "bestDirectionBenchmark": "bench_external_raw",
+  "bestDirectionBenchmark": "bench_prev",
   "bestMaeBenchmark": "bench_external_beta",
   "endpoints": [
    {
@@ -474,7 +474,7 @@
    },
    {
     "id": "DIR",
-    "bench": "bench_external_raw",
+    "bench": "bench_prev",
     "p": null
    }
   ],
@@ -491,34 +491,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 21,
-    "rate": 52.38,
-    "mae": 3.915
+    "obs": 22,
+    "rate": 50,
+    "mae": 3.781
    },
    "bench_external_beta": {
-    "obs": 21,
-    "rate": 42.86,
-    "mae": 1.514
+    "obs": 22,
+    "rate": 40.91,
+    "mae": 1.485
    },
    "bench_prev": {
-    "obs": 30,
-    "rate": 40,
-    "mae": 1.741
+    "obs": 31,
+    "rate": 41.94,
+    "mae": 1.718
    },
    "bench_zero": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 1.217
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 1.206
    },
    "model": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 1.217
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 1.206
    },
    "ai": {
-    "obs": 25,
-    "rate": 48,
-    "mae": 1.914
+    "obs": 26,
+    "rate": 50,
+    "mae": 1.843
    }
   },
   "005698": {
@@ -528,34 +528,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 20,
-    "rate": 40,
-    "mae": 3.006
+    "obs": 21,
+    "rate": 38.1,
+    "mae": 2.951
    },
    "bench_external_beta": {
-    "obs": 20,
-    "rate": 35,
-    "mae": 2.366
+    "obs": 21,
+    "rate": 33.33,
+    "mae": 2.315
    },
    "bench_prev": {
-    "obs": 29,
-    "rate": 62.07,
-    "mae": 3.735
+    "obs": 30,
+    "rate": 60,
+    "mae": 3.82
    },
    "bench_zero": {
-    "obs": 29,
+    "obs": 30,
     "rate": 0,
-    "mae": 2.871
+    "mae": 2.813
    },
    "model": {
-    "obs": 29,
+    "obs": 30,
     "rate": 0,
-    "mae": 2.871
+    "mae": 2.813
    },
    "ai": {
-    "obs": 24,
-    "rate": 45.83,
-    "mae": 3.163
+    "obs": 25,
+    "rate": 44,
+    "mae": 3.154
    }
   },
   "024481": {
@@ -565,34 +565,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 21,
-    "rate": 66.67,
-    "mae": 4.486
+    "obs": 22,
+    "rate": 63.64,
+    "mae": 4.303
    },
    "bench_external_beta": {
-    "obs": 21,
-    "rate": 57.14,
-    "mae": 3.335
+    "obs": 22,
+    "rate": 54.55,
+    "mae": 3.208
    },
    "bench_prev": {
-    "obs": 30,
-    "rate": 56.67,
-    "mae": 5.371
+    "obs": 31,
+    "rate": 58.06,
+    "mae": 5.305
    },
    "bench_zero": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 4.145
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 4.029
    },
    "model": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 4.145
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 4.029
    },
    "ai": {
-    "obs": 25,
-    "rate": 64,
-    "mae": 4.023
+    "obs": 26,
+    "rate": 65.38,
+    "mae": 3.893
    }
   },
   "015060": {
@@ -602,34 +602,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 21,
-    "rate": 57.14,
-    "mae": 3.937
+    "obs": 22,
+    "rate": 54.55,
+    "mae": 3.815
    },
    "bench_external_beta": {
-    "obs": 21,
-    "rate": 57.14,
-    "mae": 2.324
+    "obs": 22,
+    "rate": 54.55,
+    "mae": 2.272
    },
    "bench_prev": {
-    "obs": 30,
-    "rate": 50,
-    "mae": 3.569
+    "obs": 31,
+    "rate": 48.39,
+    "mae": 3.49
    },
    "bench_zero": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 2.783
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 2.73
    },
    "model": {
-    "obs": 30,
-    "rate": 3.33,
-    "mae": 2.783
+    "obs": 31,
+    "rate": 3.23,
+    "mae": 2.73
    },
    "ai": {
-    "obs": 25,
-    "rate": 52,
-    "mae": 3.101
+    "obs": 26,
+    "rate": 50,
+    "mae": 3.057
    }
   },
   "001672": {
@@ -639,34 +639,34 @@
     "mae": null
    },
    "bench_external_raw": {
-    "obs": 21,
-    "rate": 52.38,
-    "mae": 2.7
+    "obs": 22,
+    "rate": 50,
+    "mae": 2.657
    },
    "bench_external_beta": {
-    "obs": 21,
-    "rate": 47.62,
-    "mae": 2.259
+    "obs": 22,
+    "rate": 45.45,
+    "mae": 2.221
    },
    "bench_prev": {
-    "obs": 30,
-    "rate": 53.33,
-    "mae": 3.594
+    "obs": 31,
+    "rate": 54.84,
+    "mae": 3.515
    },
    "bench_zero": {
-    "obs": 30,
+    "obs": 31,
     "rate": 0,
-    "mae": 2.768
+    "mae": 2.721
    },
    "model": {
-    "obs": 30,
+    "obs": 31,
     "rate": 0,
-    "mae": 2.768
+    "mae": 2.721
    },
    "ai": {
-    "obs": 25,
-    "rate": 48,
-    "mae": 3.216
+    "obs": 26,
+    "rate": 46.15,
+    "mae": 3.163
    }
   }
  },
@@ -689,10 +689,10 @@
  },
  "models": {
   "v1.0": {
-   "obs": 149,
+   "obs": 154,
    "hit": 3,
-   "rate": 2.01,
-   "mae": 2.756
+   "rate": 1.95,
+   "mae": 2.699
   }
  },
  "aiVersions": {
@@ -913,18 +913,27 @@
    "mae": 1.89
   },
   "draft-4@2026-11-18": {
+   "obs": 5,
+   "hit": 2,
+   "modelNames": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rate": 40,
+   "mae": 2.312
+  },
+  "draft-4@2026-11-19": {
    "obs": 4,
    "hit": 2,
    "modelNames": [
     "gemini-3.5-flash-lite"
    ],
    "rate": 50,
-   "mae": 2.158
+   "mae": 1.125
   }
  },
  "conclusionAi": {
   "subject": "ai",
-  "bestDirectionBenchmark": "bench_external_raw",
+  "bestDirectionBenchmark": "bench_prev",
   "bestMaeBenchmark": "bench_external_beta",
   "endpoints": [
    {
@@ -936,14 +945,14 @@
    },
    {
     "id": "DIR",
-    "bench": "bench_external_raw",
+    "bench": "bench_prev",
     "p": 1,
     "level": 0.05,
     "reject": false
    }
   ],
-  "obs": 124,
-  "days": 25,
+  "obs": 129,
+  "days": 26,
   "gateOpen": true,
   "verdict": "no_evidence"
  },
@@ -965,11 +974,11 @@
    "trades": 3
   },
   "P02": {
-   "uses": 8,
+   "uses": 9,
    "hits": 5,
-   "rate": 62.5,
+   "rate": 55.56,
    "inRange": 4,
-   "days": 8,
+   "days": 9,
    "trades": 1
   },
   "P06": {
@@ -978,7 +987,7 @@
    "rate": null,
    "inRange": 0,
    "days": 0,
-   "trades": 9
+   "trades": 10
   },
   "P05": {
    "uses": 9,
@@ -986,7 +995,7 @@
    "rate": 44.44,
    "inRange": 3,
    "days": 9,
-   "trades": 6
+   "trades": 7
   },
   "P04": {
    "uses": 7,
@@ -1007,12 +1016,12 @@
  },
  "aiLive": {
   "since": "2026-10-21",
-  "obs": 84,
-  "days": 21,
-  "rate": 45.24,
-  "mae": 3.742,
-  "rangeObs": 84,
-  "rangeRate": 22.62
+  "obs": 89,
+  "days": 22,
+  "rate": 44.94,
+  "mae": 3.616,
+  "rangeObs": 89,
+  "rangeRate": 23.6
  },
  "reliable": [
   {
@@ -1080,41 +1089,41 @@
   {
    "id": "R012",
    "name": "跑赢锚定指数2%以上，次日回吐",
-   "days": 96,
-   "rate": 47.14,
-   "lo": 37.45,
-   "hi": 57.04,
+   "days": 97,
+   "rate": 46.65,
+   "lo": 37.04,
+   "hi": 56.51,
    "base": 44.1,
    "status": "待验证"
   },
   {
    "id": "R018",
    "name": "锚定指数近3日跌超3%（动量延续）",
-   "days": 79,
-   "rate": 46.56,
-   "lo": 35.98,
-   "hi": 57.46,
+   "days": 80,
+   "rate": 46.61,
+   "lo": 36.08,
+   "hi": 57.44,
    "base": 44.1,
    "status": "待验证"
   },
   {
    "id": "S021",
    "name": "高波动科技板块动量破位杀跌",
-   "days": 79,
-   "rate": 46.56,
-   "lo": 35.98,
-   "hi": 57.46,
+   "days": 80,
+   "rate": 46.61,
+   "lo": 36.08,
+   "hi": 57.44,
    "base": 44.1,
    "status": "实验中"
   },
   {
-   "id": "S034",
-   "name": "高波动率暴跌共振杀跌",
-   "days": 40,
-   "rate": 43.08,
-   "lo": 29.02,
-   "hi": 58.36,
-   "base": 44.1,
+   "id": "S035",
+   "name": "创业板小幅高开与前期动量共振反弹",
+   "days": 27,
+   "rate": 39.2,
+   "lo": 23.26,
+   "hi": 57.83,
+   "base": 55.9,
    "status": "实验中"
   }
  ]
