@@ -258,7 +258,10 @@
   "2026-11-20": {
    "batches": [
     "evening"
-   ]
+   ],
+   "result": true,
+   "user": false,
+   "review": true
   }
  }
 }

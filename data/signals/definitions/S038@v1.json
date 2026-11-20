@@ -1,0 +1,13 @@
+{
+ "key": "S038@v1",
+ "id": "S038",
+ "version": 1,
+ "name": "外盘半导体深跌与国内高波动超跌共振加速下杀",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "sox_on < -2 && mom5 < -8 && vol20 > 0.025",
+ "vote": -1,
+ "createdAt": "2026-11-21",
+ "proposedFrom": "2026-11-20"
+}
