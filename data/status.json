@@ -1,9 +1,10 @@
 {
- "lastRun": "2026-11-23T04:49:25+08:00",
- "runId": "45068566703",
+ "lastRun": "2026-11-23T05:46:05+08:00",
+ "runId": "45073908674",
  "trigger": "schedule",
  "report": [
-  "2026-11-23 evening 批次已存在"
+  "2026-11-23 evening 批次已存在",
+  "快讯源失败：新浪 fetch failed"
  ],
  "split": {
   "research": [
