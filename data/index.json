@@ -270,6 +270,11 @@
    "result": true,
    "user": false,
    "review": true
+  },
+  "2026-11-25": {
+   "batches": [
+    "evening"
+   ]
   }
  }
 }
