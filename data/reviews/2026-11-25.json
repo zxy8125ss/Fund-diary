@@ -1,0 +1,171 @@
+{
+ "date": "2026-11-25",
+ "subject": "ai",
+ "createdAt": "2026-11-26T07:03:20+08:00",
+ "aiModel": null,
+ "summary": "",
+ "lessons": [],
+ "tradeReview": [],
+ "playbookBefore": 11,
+ "playbookChange": null,
+ "right": [],
+ "wrong": [],
+ "bestSignal": null,
+ "misleading": null,
+ "nextTime": [],
+ "hindsight": [
+  {
+   "fund": "002910",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "费城半导体 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "002910",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "科创50 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "002910",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "易方达供给改革 锚定（半导体） 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "002910",
+   "reason": 2,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "易方达供给改革 上一净值日涨跌 可获得于 2026-11-24T21:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "纳斯达克100 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "费城半导体 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "快讯 可获得于 2026-11-24T22:31:22+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "快讯 可获得于 2026-11-24T18:49:37+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "005698",
+   "reason": 2,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "纳斯达克100 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "024481",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "快讯 可获得于 2026-11-24T23:10:42+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "024481",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "财通品质甄选 锚定（PCB） 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "024481",
+   "reason": 2,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "创业板指 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "015060",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "费城半导体 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "015060",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "华夏节能环保 锚定（元件） 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "015060",
+   "reason": 2,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "华夏节能环保 上一净值日涨跌 可获得于 2026-11-24T21:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 0,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "创业板指 可获得于 2026-11-24T15:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "纳斯达克100 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 1,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "中概互联网(KWEB) 可获得于 2026-11-25T05:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  },
+  {
+   "fund": "001672",
+   "reason": 2,
+   "verdict": "预测前已成立",
+   "suspected_hindsight": false,
+   "evidence": "国寿智慧生活 上一净值日涨跌 可获得于 2026-11-24T21:00:00+08:00，锁定于 2026-11-25T07:37:19+08:00",
+   "by": "rule"
+  }
+ ],
+ "ablation": []
+}
