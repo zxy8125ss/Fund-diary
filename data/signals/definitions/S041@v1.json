@@ -1,0 +1,13 @@
+{
+ "key": "S041@v1",
+ "id": "S041",
+ "version": 1,
+ "name": "创业板极值暴跌次日修复",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "cyb_prev < -4 && prev < -3",
+ "vote": 1,
+ "createdAt": "2026-11-27",
+ "proposedFrom": "2026-11-26"
+}
