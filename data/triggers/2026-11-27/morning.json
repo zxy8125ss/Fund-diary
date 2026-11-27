@@ -1,0 +1,136 @@
+{
+ "date": "2026-11-27",
+ "batch": "morning",
+ "snapshotId": "2026-11-27/morning",
+ "runId": "45917637166",
+ "trigger": "schedule",
+ "generatedAt": "2026-11-27T08:36:02+08:00",
+ "funds": {
+  "002910": [
+   {
+    "signal": "R012",
+    "key": "R012@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": 2.22
+    }
+   },
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.99
+    }
+   },
+   {
+    "signal": "S021",
+    "key": "S021@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -5.99,
+     "vol20": 1.69
+    }
+   },
+   {
+    "signal": "S037",
+    "key": "S037@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": 0.29,
+     "anc_mom3": -5.99
+    }
+   }
+  ],
+  "005698": [
+   {
+    "signal": "R017",
+    "key": "R017@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": 4.23
+    }
+   }
+  ],
+  "024481": [],
+  "015060": [
+   {
+    "signal": "R011",
+    "key": "R011@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "dev": -3
+    }
+   },
+   {
+    "signal": "S023",
+    "key": "S023@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "mom5": -6.38,
+     "dev": -3
+    }
+   },
+   {
+    "signal": "S035",
+    "key": "S035@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": 0.29,
+     "mom5": -6.38,
+     "vol20": 3.44
+    }
+   }
+  ],
+  "001672": [
+   {
+    "signal": "R018",
+    "key": "R018@v1",
+    "status": "待验证",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.95
+    }
+   },
+   {
+    "signal": "S021",
+    "key": "S021@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "anc_mom3": -3.95,
+     "vol20": 3.72
+    }
+   },
+   {
+    "signal": "S035",
+    "key": "S035@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": 0.29,
+     "mom5": -6.86,
+     "vol20": 3.72
+    }
+   },
+   {
+    "signal": "S037",
+    "key": "S037@v1",
+    "status": "实验中",
+    "triggered": true,
+    "inputs": {
+     "cyb_prev": 0.29,
+     "anc_mom3": -3.95
+    }
+   }
+  ]
+ }
+}
