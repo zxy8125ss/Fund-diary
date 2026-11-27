@@ -1,0 +1,13 @@
+{
+ "key": "S043@v1",
+ "id": "S043",
+ "version": 1,
+ "name": "高弹性超跌跑输强补涨",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "vol20 > 0.025 && mom5 < -6 && dev < -1.5",
+ "vote": 1,
+ "createdAt": "2026-11-28",
+ "proposedFrom": "2026-11-27"
+}

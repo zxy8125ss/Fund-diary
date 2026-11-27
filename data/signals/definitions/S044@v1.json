@@ -1,0 +1,13 @@
+{
+ "key": "S044@v1",
+ "id": "S044",
+ "version": 1,
+ "name": "动量破位下创业板微涨反转",
+ "sourceType": "复盘提炼",
+ "proposedBy": "review",
+ "scope": "*",
+ "when": "anc_mom3 < -3 && cyb_prev > 0 && cyb_prev < 1 && vol20 > 0.025",
+ "vote": 1,
+ "createdAt": "2026-11-28",
+ "proposedFrom": "2026-11-27"
+}
